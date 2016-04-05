@@ -23,12 +23,12 @@ The status command will run PyLint over code in the src folder and then (if no l
 
 ### Status ###
 
-0/8 components ported
-* AI
-* Connection
-* FileController
-* Foxes_and_GeeseAppDelegate
-* GameInterface
-* GameNode
-* HistoryNode
-* Rules
+Functions to be ported and tested, organized by component
+* AI 							0/11
+* Connection 					0/5
+* FileController 				0/2
+* GameInterface 				0/23
+* GameNode 						0/7
+* HistoryNode 					0/11
+* Rules 						0/14
+* TOTAL							0/73
