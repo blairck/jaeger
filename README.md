@@ -30,5 +30,5 @@ Functions to be ported and tested, organized by component
 * GameInterface 				0/23
 * GameNode 						0/7
 * HistoryNode 					0/11
-* Rules 						0/14
-* TOTAL							0/73
+* Rules 						1/14
+* TOTAL							1/73
