@@ -1,6 +1,7 @@
 # Description #
 
 This an engine for analyzing games of Fox(es) & Geese. This is a port of an engine I wrote originally in Objective-C.
+Project Status: Inactive
 
 ### Requirements ###
 
