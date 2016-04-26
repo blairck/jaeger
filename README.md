@@ -1,7 +1,7 @@
 # Description #
 
 Jaeger is an engine for analyzing games of Fox(es) & Geese. This is a port of
-an engine I wrote originally in Objective-C. See:
+an engine I wrote originally in Objective-C in 2011. See:
 https://en.wikipedia.org/wiki/Fox_games
 
 ### Goals ###
