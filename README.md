@@ -1,11 +1,32 @@
 # Description #
 
-This an engine for analyzing games of Fox(es) & Geese. This is a port of an engine I wrote originally in Objective-C.
-Project Status: Inactive
+Jaeger is an engine for analyzing games of Fox(es) & Geese. This is a port of
+an engine I wrote originally in Objective-C. See:
+https://en.wikipedia.org/wiki/Fox_games
+
+### Goals ###
+* Port game playing engine from Objective-C to Python (in progress, see Status)
+* Seperate UI logic from the rest of the game. Jaeger will be a tool only for
+  the command line.
+* Thorough unit testing coverage
+* Currently the algorithm is strictly minimax. Implement alpha-beta pruning.
+* Analysis of completed games, and suggest alternative lines.
+
+### Status ###
+
+Functions to be ported and tested, organized by component
+* AI                            0/11
+* Connection                    0/5
+* FileController                0/2
+* GameInterface                 0/23
+* GameNode                      0/7
+* HistoryNode                   0/11
+* Rules                         1/14
+* TOTAL                         1/73
 
 ### Requirements ###
 
-* Python 2.7
+* Python 3.5.1
 * Virtualenv
 * Make
 * Pylint
@@ -21,15 +42,3 @@ pip install -r requirements.txt
 make status
 ```
 The status command will run PyLint over code in the src folder and then (if no lint issues are found) execute all unittest files in the test folder.
-
-### Status ###
-
-Functions to be ported and tested, organized by component
-* AI 							0/11
-* Connection 					0/5
-* FileController 				0/2
-* GameInterface 				0/23
-* GameNode 						0/7
-* HistoryNode 					0/11
-* Rules 						1/14
-* TOTAL							1/73
