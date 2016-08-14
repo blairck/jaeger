@@ -1,8 +1,9 @@
-# Description #
-
+### Description ###
 Jaeger is an engine for analyzing games of Fox(es) & Geese. This is a port of
 an engine I wrote originally in Objective-C in 2011. See:
 https://en.wikipedia.org/wiki/Fox_games
+
+Project Status: Active
 
 ### Goals ###
 * Port game playing engine from Objective-C to Python (in progress, see Status)
@@ -13,7 +14,6 @@ https://en.wikipedia.org/wiki/Fox_games
 * Analysis of completed games, and suggest alternative lines.
 
 ### Status ###
-
 Functions to be ported and tested, organized by component
 * AI                            0/11
 * Connection                    0/5
@@ -25,20 +25,27 @@ Functions to be ported and tested, organized by component
 * TOTAL                         1/73
 
 ### Requirements ###
+To use:
+* Python 3.5
 
-* Python 3.5.1
+For developers:
 * Virtualenv
 * Make
 * Pylint
 * Coverage
 
 ### Setting Up ###
-
-Copy over the template to your project directory. Move your source code to to the src directory, and unittest tests to the test folder. In the root folder of the project do the following:
+Copy over the template to your project directory. Move your source code to to
+the src directory, and unittest tests to the test folder. In the root folder of
+the project do the following:
 ```
 virtualenv env
 pip install -r requirements.txt
 . env/bin/activate
 make status
 ```
-The status command will run PyLint over code in the src folder and then (if no lint issues are found) execute all unittest files in the test folder.
+The status command will run PyLint over code in the src folder and then (if no
+lint issues are found) execute all unittest files in the test folder.
+
+### Todo ###
+* See: https://github.com/blairck/jaeger/issues
