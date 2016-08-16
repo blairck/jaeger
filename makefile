@@ -9,14 +9,13 @@ lint:
 	$(ENVIRONMENT)/bin/pylint test/ -rn --rcfile=pylint_config.txt
 
 run:
-	#Run tests and then main.py
-	$(ENVIRONMENT)/bin/coverage run test/run_tests.py
+	#Run the program
 	$(ENVIRONMENT)/bin/python src/main.py
 
-status: lint tests 
+status: tests lint
 	#Overall project status with lint and tests
 
 tests:
 	#Just run unit tests and display code coverage result
-	$(ENVIRONMENT)/bin/coverage run test/run_tests.py
-	$(ENVIRONMENT)/bin/coverage report
+	$(ENVIRONMENT)/bin/coverage run test/run_tests.py --include src/*,test/*
+	$(ENVIRONMENT)/bin/coverage report -m --skip-covered --include src/*,test/*
