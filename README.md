@@ -19,10 +19,10 @@ Functions to be ported and tested, organized by component
 * Connection                    0/5
 * FileController                0/2
 * GameInterface                 0/23
-* GameNode                      0/7
+* GameNode                      7/7
 * HistoryNode                   0/11
 * Rules                         1/14
-* TOTAL                         1/73
+* TOTAL                         8/73
 
 ### Requirements ###
 To use:
