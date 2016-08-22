@@ -16,6 +16,6 @@ class Rules(object):
         except ValueError:
             if self.debug:
                 message = "convertCharToInt received '{0}' when num expected"
-                print message.format(value)
+                print(message.format(value))
             value = 0
         return value
