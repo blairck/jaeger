@@ -6,10 +6,10 @@ class GameNode(object):
                           [-1, -1, -1, -1, -1, -1, -1],
                           [-1, -1, -1, -1, -1, -1, -1],
                           [-1, -1, -1, -1, -1, -1, -1],
-                          [-1, -1, -1, -1, -1, -1, -1],]
-        self.leafP = None
-        self.rootP = None
-        self.score = None
+                          [-1, -1, -1, -1, -1, -1, -1],] # int array
+        self.leafP = None # float
+        self.rootP = None # bool
+        self.score = None # bool
 
     def initialize(self):
         pass
