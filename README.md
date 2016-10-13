@@ -4,6 +4,7 @@ port of a game I wrote originally in Objective-C in 2011. See:
 https://en.wikipedia.org/wiki/Fox_games
 
 Project Status: Active
+
 Note: I am unable to accept any pull requests at this time. If you would like 
 to work on Jaeger, please fork it.
 
