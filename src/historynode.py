@@ -54,7 +54,47 @@ class HistoryNode(gamenode.GameNode):
                                                self.gameState[4][0]))
 
     def constructor(self):
-        pass
+        self.score = 0.0;
+        self.leafP = False
+        self.rootP = True
+
+        self.result = 0
+        self.gameType = 1
+        self.foxSearch = 1
+        self.gooseSearch = 1
+        self.halfMove = 1
+
+        self.gameState[0][0] = -1
+        self.gameState[0][1] = -1
+        self.gameState[1][0] = -1
+        self.gameState[1][1] = -1
+        self.gameState[0][5] = -1
+        self.gameState[0][6] = -1
+        self.gameState[1][5] = -1
+        self.gameState[1][6] = -1
+        self.gameState[5][0] = -1
+        self.gameState[5][1] = -1
+        self.gameState[6][0] = -1
+        self.gameState[6][1] = -1
+        self.gameState[5][5] = -1
+        self.gameState[5][6] = -1
+        self.gameState[6][5] = -1
+        self.gameState[6][6] = -1
+
+        # for (int j=3;j<=7;j++)
+        # {
+        #     for (int i=1;i<=7;i++)
+        #         {
+        #             if (j==3 && i>=3 && i<=5)
+        #                 continue;
+        #             if (j>=6 && (i<3 || i>5))
+        #                 continue;
+        #             gameState[i-1][j-1] = 1;
+        #         }
+        # }
+
+        # gameState[2][0]=2;
+        # gameState[4][0]=2;
 
     def setP1(self, a_string):
         pass

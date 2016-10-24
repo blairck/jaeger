@@ -29,3 +29,16 @@ class TestHistoryNode(unittest.TestCase):
                               "      -1 -1 -1      \n"
                               "      -1 -1 -1")
             self.assertEqual(actual_print, expected_print)
+
+    def test_constructor(self):
+        hn_obj = historynode.HistoryNode()
+        hn_obj.constructor()
+        self.assertEqual(hn_obj.leafP, False)
+        self.assertEqual(hn_obj.rootP, True)
+        self.assertEqual(hn_obj.result, 0)
+        self.assertEqual(hn_obj.gameType, 1)
+        self.assertEqual(hn_obj.foxSearch, 1)
+        self.assertEqual(hn_obj.gooseSearch, 1)
+        self.assertEqual(hn_obj.halfMove, 1)
+        self.assertEqual(hn_obj.gameState[1][1], -1)
+        self.assertEqual(hn_obj.gameState[6][0], -1)
