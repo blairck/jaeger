@@ -31,6 +31,7 @@ class TestHistoryNode(unittest.TestCase):
             self.assertEqual(actual_print, expected_print)
 
     def test_constructor(self):
+        """ Check that HistoryNode object is initialized correctly """
         hn_obj = historynode.HistoryNode()
         hn_obj.constructor()
         self.assertEqual(hn_obj.leafP, False)
