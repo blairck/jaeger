@@ -52,11 +52,11 @@ class TestGameNode(unittest.TestCase):
             gn_obj = gamenode.GameNode()
             gn_obj.print_board()
             actual_print = out.getvalue().strip()
-            expected_print = ("-1-1-1   \n"
-                              "   -1-1-1   \n"
-                              "-1-1-1-1-1-1-1\n"
-                              "-1-1-1-1-1-1-1\n"
-                              "-1-1-1-1-1-1-1\n"
-                              "   -1-1-1   \n"
-                              "   -1-1-1")
+            expected_print = ("000   \n"
+                              "   000   \n"
+                              "0000000\n"
+                              "0000000\n"
+                              "0000000\n"
+                              "   000   \n"
+                              "   000")
             self.assertEqual(actual_print, expected_print)
