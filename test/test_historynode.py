@@ -21,13 +21,13 @@ class TestHistoryNode(unittest.TestCase):
                               "Fox Search: None\n"
                               "Goose Search: None\n"
                               "Half Move: None\n"
-                              "      -1 -1 -1      \n"
-                              "      -1 -1 -1      \n"
-                              "-1 -1 -1 -1 -1 -1 -1\n"
-                              "-1 -1 -1 -1 -1 -1 -1\n"
-                              "-1 -1 -1 -1 -1 -1 -1\n"
-                              "      -1 -1 -1      \n"
-                              "      -1 -1 -1")
+                              "      0 0 0      \n"
+                              "      0 0 0      \n"
+                              "0 0 0 0 0 0 0\n"
+                              "0 0 0 0 0 0 0\n"
+                              "0 0 0 0 0 0 0\n"
+                              "      0 0 0      \n"
+                              "      0 0 0")
             self.assertEqual(actual_print, expected_print)
 
     def test_constructor(self):
