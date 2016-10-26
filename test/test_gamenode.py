@@ -20,8 +20,7 @@ class TestGameNode(unittest.TestCase):
     def test_initialize(self):
         """ Test initialization """
         gn_obj = gamenode.GameNode()
-        result = gn_obj.initialize()
-        self.assertFalse(result)
+        self.assertRaises(NotImplementedError, gn_obj.initialize)
 
     def test_getState_default(self):
         """ Test a known getState value """

@@ -12,7 +12,7 @@ class GameNode(object):
         self.score = None # bool
 
     def initialize(self):
-        pass
+        raise NotImplementedError("This function should be removed")
 
     def print_board(self):
         """ Originally called 'print' """
