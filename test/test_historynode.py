@@ -43,3 +43,25 @@ class TestHistoryNode(unittest.TestCase):
         self.assertEqual(hn_obj.halfMove, 1)
         self.assertEqual(hn_obj.gameState[1][1], -1)
         self.assertEqual(hn_obj.gameState[6][0], -1)
+
+        with helper.captured_output() as out:
+            hn_obj.print_board()
+            actual_print = out.getvalue().strip()
+            expected_print = ("Player 1: None\n"
+                              "Player 2: None\n"
+                              "Result: 0\n"
+                              "Game Type: 1\n"
+                              "Fox Search: 1\n"
+                              "Goose Search: 1\n"
+                              "Half Move: 1\n"
+                              "      1 1 1      \n"
+                              "      1 1 1      \n"
+                              "1 1 1 1 1 1 1\n"
+                              "1 1 1 1 1 1 1\n"
+                              "1 1 0 0 0 1 1\n"
+                              "      0 0 0      \n"
+                              "      2 0 2")
+            self.assertEqual(actual_print, expected_print)
+
+        self.assertEqual(hn_obj.gameState[3][1], 0)
+        self.assertEqual(hn_obj.gameState[4][0], 2)

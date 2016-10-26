@@ -81,20 +81,16 @@ class HistoryNode(gamenode.GameNode):
         self.gameState[6][5] = -1
         self.gameState[6][6] = -1
 
-        # for (int j=3;j<=7;j++)
-        # {
-        #     for (int i=1;i<=7;i++)
-        #         {
-        #             if (j==3 && i>=3 && i<=5)
-        #                 continue;
-        #             if (j>=6 && (i<3 || i>5))
-        #                 continue;
-        #             gameState[i-1][j-1] = 1;
-        #         }
-        # }
+        for j in range(3, 8):
+            for i in range(1, 8):
+                if j == 3 and i >= 3 and i <= 5:
+                    continue
+                if j >= 6 and (i < 3 or i > 5):
+                    continue
+                self.gameState[i-1][j-1] = 1
 
-        # gameState[2][0]=2;
-        # gameState[4][0]=2;
+        self.gameState[2][0] = 2
+        self.gameState[4][0] = 2
 
     def setP1(self, a_string):
         pass
