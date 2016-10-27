@@ -65,3 +65,15 @@ class TestHistoryNode(unittest.TestCase):
 
         self.assertEqual(hn_obj.gameState[3][1], 0)
         self.assertEqual(hn_obj.gameState[4][0], 2)
+
+    def test_setP1_good(self):
+        """ Check that P1 is set correctly with valid input """
+        hn_obj = historynode.HistoryNode()
+        hn_obj.setP1("abc")
+        self.assertEqual(hn_obj.p1, "abc")
+
+    def test_setP1_bad(self):
+        """ Check that P1 is raises an error with non-string input """
+        hn_obj = historynode.HistoryNode()
+        self.assertRaises(TypeError, hn_obj.setP1, 10)
+

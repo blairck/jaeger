@@ -93,7 +93,10 @@ class HistoryNode(gamenode.GameNode):
         self.gameState[4][0] = 2
 
     def setP1(self, a_string):
-        pass
+        if not isinstance(a_string, str):
+            raise TypeError(("a_string is not a string. "
+                            "a_string = {0}").format(a_string))
+        self.p1 = a_string
 
     def setP2(self, a_string):
         pass
