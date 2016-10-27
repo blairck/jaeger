@@ -77,3 +77,13 @@ class TestHistoryNode(unittest.TestCase):
         hn_obj = historynode.HistoryNode()
         self.assertRaises(TypeError, hn_obj.setP1, 10)
 
+    def test_setP2_good(self):
+        """ Check that P2 is set correctly with valid input """
+        hn_obj = historynode.HistoryNode()
+        hn_obj.setP2("abc")
+        self.assertEqual(hn_obj.p2, "abc")
+
+    def test_setP2_bad(self):
+        """ Check that P2 is raises an error with non-string input """
+        hn_obj = historynode.HistoryNode()
+        self.assertRaises(TypeError, hn_obj.setP2, 10)
