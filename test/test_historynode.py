@@ -87,3 +87,44 @@ class TestHistoryNode(unittest.TestCase):
         """ Check that P2 is raises an error with non-string input """
         hn_obj = historynode.HistoryNode()
         self.assertRaises(TypeError, hn_obj.setP2, 10)
+
+    def test_geeseWinP_good(self):
+        """ Check that geeseWinP can detect a clear win state """
+        hn_obj = historynode.HistoryNode()
+        hn_obj.constructor()
+        hn_obj.gameState[2][0] = 1
+        hn_obj.gameState[2][1] = 3
+        hn_obj.gameState[2][2] = 1
+        hn_obj.gameState[3][0] = 1
+        hn_obj.gameState[3][1] = 1
+        hn_obj.gameState[3][2] = 3
+        hn_obj.gameState[4][0] = 1
+        hn_obj.gameState[4][1] = 3
+        hn_obj.gameState[4][2] = 1
+        expected_result = True
+        actual_result = hn_obj.geeseWinP()
+        self.assertEqual(actual_result, expected_result)
+
+    def test_geeseWinP_not_quite(self):
+        """ Check that geeseWinP detects that an almost win isn't a win"""
+        hn_obj = historynode.HistoryNode()
+        hn_obj.constructor()
+        hn_obj.gameState[2][0] = 1
+        hn_obj.gameState[2][2] = 1
+        hn_obj.gameState[3][0] = 1
+        hn_obj.gameState[3][1] = 1
+        hn_obj.gameState[3][2] = 3
+        hn_obj.gameState[4][0] = 1
+        hn_obj.gameState[4][1] = 3
+        hn_obj.gameState[4][2] = 1
+        expected_result = False
+        actual_result = hn_obj.geeseWinP()
+        self.assertEqual(actual_result, expected_result)
+
+    def test_geeseWinP_not_at_all(self):
+        """ Check that geeseWinP detects that starting position isn't a win"""
+        hn_obj = historynode.HistoryNode()
+        hn_obj.constructor()
+        expected_result = False
+        actual_result = hn_obj.geeseWinP()
+        self.assertEqual(actual_result, expected_result)

@@ -105,7 +105,16 @@ class HistoryNode(gamenode.GameNode):
         self.p2 = a_string
 
     def geeseWinP(self):
-        pass
+        foxSpacesOccupied = 0
+        for i in range(2, 5):
+            for j in range(0, 3):
+                if self.gameState[i][j] == 1 or self.gameState[i][j] == 3:
+                    foxSpacesOccupied += 1
+                    if foxSpacesOccupied == 9:
+                        # Geese win
+                        return True
+        # Geese haven't won yet
+        return False
 
     def foxesWinP(self):
         pass
