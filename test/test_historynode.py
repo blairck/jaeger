@@ -171,6 +171,17 @@ class TestHistoryNode(unittest.TestCase):
         actual_result = hn_obj.foxesWinP()
         self.assertEqual(actual_result, expected_result)
 
+    def test_checkIfInt_good(self):
+        """ Check that checkIfInt correctly assesses an input """
+        hn_obj = historynode.HistoryNode()
+        actual_result = hn_obj.checkIfInt(123)
+        self.assertFalse(actual_result)
+
+    def test_checkIfInt_bad(self):
+        """ Check that checkIfInt raises an error with non-int input """
+        hn_obj = historynode.HistoryNode()
+        self.assertRaises(TypeError, hn_obj.checkIfInt, "abc")
+
     def test_setGameType_good(self):
         """ Check that gameType is set correctly with valid input """
         hn_obj = historynode.HistoryNode()
@@ -192,4 +203,3 @@ class TestHistoryNode(unittest.TestCase):
         """ Check that foxSearch is raises an error with non-int input """
         hn_obj = historynode.HistoryNode()
         self.assertRaises(TypeError, hn_obj.setFoxSearch, "abc")
-
