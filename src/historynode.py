@@ -127,3 +127,9 @@ class HistoryNode(gamenode.GameNode):
                         return False
         # Geese have insufficient material, Foxes win
         return True
+
+    def setGameType(self, value):
+        if not isinstance(value, int):
+            raise TypeError(("value is not an int. "
+                            "value = {0}").format(value))
+        self.gameType = value

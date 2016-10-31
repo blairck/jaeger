@@ -171,3 +171,14 @@ class TestHistoryNode(unittest.TestCase):
         actual_result = hn_obj.foxesWinP()
         self.assertEqual(actual_result, expected_result)
 
+    def test_setGameType_good(self):
+        """ Check that gameType is set correctly with valid input """
+        hn_obj = historynode.HistoryNode()
+        hn_obj.setGameType(123)
+        self.assertEqual(hn_obj.gameType, 123)
+
+    def test_setGameType_bad(self):
+        """ Check that gameType is raises an error with non-int input """
+        hn_obj = historynode.HistoryNode()
+        self.assertRaises(TypeError, hn_obj.setGameType, "abc")
+
