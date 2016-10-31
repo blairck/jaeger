@@ -144,3 +144,7 @@ class HistoryNode(gamenode.GameNode):
     def setResult(self, value):
         self.checkIfInt(value)
         self.result = value
+
+    def setGooseSearch(self, value):
+        self.checkIfInt(value)
+        self.gooseSearch = value

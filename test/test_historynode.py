@@ -214,3 +214,14 @@ class TestHistoryNode(unittest.TestCase):
         """ Check that result is raises an error with non-int input """
         hn_obj = historynode.HistoryNode()
         self.assertRaises(TypeError, hn_obj.setResult, "abc")
+
+    def test_setGooseSearch_good(self):
+        """ Check that gooseSearch is set correctly with valid input """
+        hn_obj = historynode.HistoryNode()
+        hn_obj.setGooseSearch(123)
+        self.assertEqual(hn_obj.gooseSearch, 123)
+
+    def test_setGooseSearch_bad(self):
+        """ Check that gooseSearch is raises an error with non-int input """
+        hn_obj = historynode.HistoryNode()
+        self.assertRaises(TypeError, hn_obj.setGooseSearch, "abc")
