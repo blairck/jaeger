@@ -128,3 +128,46 @@ class TestHistoryNode(unittest.TestCase):
         expected_result = False
         actual_result = hn_obj.geeseWinP()
         self.assertEqual(actual_result, expected_result)
+
+    def test_foxesWinP_good(self):
+        """ Check that foxesWinP can detect a clear win state """
+        hn_obj = historynode.HistoryNode()
+        # Don't run the constructor since it populates Geese pieces
+        hn_obj.gameState[2][0] = 1
+        hn_obj.gameState[2][2] = 1
+        hn_obj.gameState[3][0] = 1
+        hn_obj.gameState[3][1] = 1
+        hn_obj.gameState[3][2] = 3
+        hn_obj.gameState[4][0] = 1
+        hn_obj.gameState[4][1] = 3
+        hn_obj.gameState[4][2] = 1
+        expected_result = True
+        actual_result = hn_obj.foxesWinP()
+        self.assertEqual(actual_result, expected_result)
+
+    def test_foxesWinP_not_quite(self):
+        """ Check that foxesWinP detects that an almost win isn't a win"""
+        hn_obj = historynode.HistoryNode()
+        # Don't run the constructor since it populates Geese pieces
+        hn_obj.gameState[1][2] = 1
+        hn_obj.gameState[2][2] = 3
+        hn_obj.gameState[3][2] = 1
+        hn_obj.gameState[4][6] = 1
+        hn_obj.gameState[4][5] = 1
+        hn_obj.gameState[4][4] = 3
+        hn_obj.gameState[2][0] = 3
+        hn_obj.gameState[3][0] = 3
+        hn_obj.gameState[4][0] = 3
+        hn_obj.gameState[4][1] = 3
+        expected_result = False
+        actual_result = hn_obj.foxesWinP()
+        self.assertEqual(actual_result, expected_result)
+
+    def test_foxesWinP_not_at_all(self):
+        """ Check that foxesWinP detects that starting position isn't a win"""
+        hn_obj = historynode.HistoryNode()
+        hn_obj.constructor()
+        expected_result = False
+        actual_result = hn_obj.foxesWinP()
+        self.assertEqual(actual_result, expected_result)
+

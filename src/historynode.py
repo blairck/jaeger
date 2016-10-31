@@ -117,4 +117,13 @@ class HistoryNode(gamenode.GameNode):
         return False
 
     def foxesWinP(self):
-        pass
+        geeseRemaining = 0
+        for i in range(0, 7):
+            for j in range(0, 7):
+                if self.gameState[i][j] == 1 or self.gameState[i][j] == 3:
+                    geeseRemaining += 1
+                    # Too many geese, foxes have not won yet
+                    if geeseRemaining >= 9:
+                        return False
+        # Geese have insufficient material, Foxes win
+        return True
