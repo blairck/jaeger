@@ -148,3 +148,7 @@ class HistoryNode(gamenode.GameNode):
     def setGooseSearch(self, value):
         self.checkIfInt(value)
         self.gooseSearch = value
+
+    def setHalfMove(self, value):
+        self.checkIfInt(value)
+        self.halfMove = value
