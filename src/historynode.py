@@ -141,3 +141,6 @@ class HistoryNode(gamenode.GameNode):
         self.checkIfInt(value)
         self.foxSearch = value
 
+    def setResult(self, value):
+        self.checkIfInt(value)
+        self.result = value

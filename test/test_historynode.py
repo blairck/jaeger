@@ -203,3 +203,14 @@ class TestHistoryNode(unittest.TestCase):
         """ Check that foxSearch is raises an error with non-int input """
         hn_obj = historynode.HistoryNode()
         self.assertRaises(TypeError, hn_obj.setFoxSearch, "abc")
+
+    def test_setResult_good(self):
+        """ Check that result is set correctly with valid input """
+        hn_obj = historynode.HistoryNode()
+        hn_obj.setResult(123)
+        self.assertEqual(hn_obj.result, 123)
+
+    def test_setResult_bad(self):
+        """ Check that result is raises an error with non-int input """
+        hn_obj = historynode.HistoryNode()
+        self.assertRaises(TypeError, hn_obj.setResult, "abc")
