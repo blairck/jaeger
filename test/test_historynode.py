@@ -182,3 +182,14 @@ class TestHistoryNode(unittest.TestCase):
         hn_obj = historynode.HistoryNode()
         self.assertRaises(TypeError, hn_obj.setGameType, "abc")
 
+    def test_setFoxSearch_good(self):
+        """ Check that foxSearch is set correctly with valid input """
+        hn_obj = historynode.HistoryNode()
+        hn_obj.setFoxSearch(123)
+        self.assertEqual(hn_obj.foxSearch, 123)
+
+    def test_setFoxSearch_bad(self):
+        """ Check that foxSearch is raises an error with non-int input """
+        hn_obj = historynode.HistoryNode()
+        self.assertRaises(TypeError, hn_obj.setFoxSearch, "abc")
+

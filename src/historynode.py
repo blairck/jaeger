@@ -133,3 +133,9 @@ class HistoryNode(gamenode.GameNode):
             raise TypeError(("value is not an int. "
                             "value = {0}").format(value))
         self.gameType = value
+
+    def setFoxSearch(self, value):
+        if not isinstance(value, int):
+            raise TypeError(("value is not an int. "
+                            "value = {0}").format(value))
+        self.foxSearch = value
