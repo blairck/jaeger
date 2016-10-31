@@ -81,13 +81,13 @@ class HistoryNode(gamenode.GameNode):
         self.gameState[6][5] = -1
         self.gameState[6][6] = -1
 
-        for j in range(3, 8):
-            for i in range(1, 8):
-                if j == 3 and i >= 3 and i <= 5:
+        for j in range(2, 7):
+            for i in range(0, 7):
+                if j == 2 and i >= 2 and i <= 4:
                     continue
-                if j >= 6 and (i < 3 or i > 5):
+                if j >= 5 and (i < 2 or i > 4):
                     continue
-                self.gameState[i-1][j-1] = 1
+                self.gameState[i][j] = 1
 
         self.gameState[2][0] = 2
         self.gameState[4][0] = 2
