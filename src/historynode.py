@@ -7,7 +7,7 @@ class HistoryNode(gamenode.GameNode):
     logic """
 
     # pylint: disable=too-many-instance-attributes
-    # Ten is reasonable for the curreunt version
+    # Ten is reasonable for the current version
 
     def __init__(self):
         super(HistoryNode, self).__init__()
