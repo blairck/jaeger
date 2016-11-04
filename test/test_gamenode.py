@@ -1,22 +1,9 @@
 """ Tests for the GameNode module """
 
-from contextlib import contextmanager
-from io import StringIO
-import sys
 import unittest
 
 from src import gamenode
-
-@contextmanager
-def captured_output():
-    """ Redirects stdout to StringIO so we can inspect Print statements """
-    new_out = StringIO()
-    old_out = sys.stdout
-    try:
-        sys.stdout = new_out
-        yield sys.stdout
-    finally:
-        sys.stdout = old_out
+from test import helper
 
 class TestGameNode(unittest.TestCase):
     """ Tests for the GameNode module """
@@ -29,12 +16,6 @@ class TestGameNode(unittest.TestCase):
         self.assertFalse(gn_obj.leafP)
         self.assertFalse(gn_obj.rootP)
         self.assertFalse(gn_obj.score)
-
-    def test_initialize(self):
-        """ Test initialization """
-        gn_obj = gamenode.GameNode()
-        result = gn_obj.initialize()
-        self.assertFalse(result)
 
     def test_getState_default(self):
         """ Test a known getState value """
@@ -62,15 +43,37 @@ class TestGameNode(unittest.TestCase):
 
     def test_print_board(self):
         """Check that print_board works"""
-        with captured_output() as out:
+        with helper.captured_output() as out:
             gn_obj = gamenode.GameNode()
             gn_obj.print_board()
             actual_print = out.getvalue().strip()
-            expected_print = ("-1-1-1   \n"
-                              "   -1-1-1   \n"
-                              "-1-1-1-1-1-1-1\n"
-                              "-1-1-1-1-1-1-1\n"
-                              "-1-1-1-1-1-1-1\n"
-                              "   -1-1-1   \n"
-                              "   -1-1-1")
+            expected_print = ("000   \n"
+                              "   000   \n"
+                              "0000000\n"
+                              "0000000\n"
+                              "0000000\n"
+                              "   000   \n"
+                              "   000")
+            self.assertEqual(actual_print, expected_print)
+
+    def test_print_middle_rows_without_seperator(self):
+        """ Check that print_middle_rows() works without seperator """
+        with helper.captured_output() as out:
+            gn_obj = gamenode.GameNode()
+            gn_obj.print_middle_rows()
+            actual_print = out.getvalue().strip()
+            expected_print = ("0000000\n"
+                              "0000000\n"
+                              "0000000")
+            self.assertEqual(actual_print, expected_print)
+
+    def test_print_middle_rows_with_seperator(self):
+        """ Check that print_middle_rows() works with a seperator """
+        with helper.captured_output() as out:
+            gn_obj = gamenode.GameNode()
+            gn_obj.print_middle_rows(1)
+            actual_print = out.getvalue().strip()
+            expected_print = ("0101010101010\n"
+                              "0101010101010\n"
+                              "0101010101010")
             self.assertEqual(actual_print, expected_print)
