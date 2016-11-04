@@ -8,6 +8,9 @@ from test import helper
 class TestHistoryNode(unittest.TestCase):
     """ Tests for the historynode module, containing the HistoryNode class """
 
+    # pylint: disable=too-many-public-methods
+    # Never too many tests
+
     def test_print_board(self):
         """Check that print_board works"""
         with helper.captured_output() as out:
