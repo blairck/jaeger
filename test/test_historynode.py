@@ -173,14 +173,11 @@ class TestHistoryNode(unittest.TestCase):
 
     def test_checkIfInt_good(self):
         """ Check that checkIfInt correctly assesses an input """
-        hn_obj = historynode.HistoryNode()
-        actual_result = hn_obj.checkIfInt(123)
-        self.assertFalse(actual_result)
+        self.assertFalse(historynode.checkIfInt(123))
 
     def test_checkIfInt_bad(self):
         """ Check that checkIfInt raises an error with non-int input """
-        hn_obj = historynode.HistoryNode()
-        self.assertRaises(TypeError, hn_obj.checkIfInt, "abc")
+        self.assertRaises(TypeError, historynode.checkIfInt, "abc")
 
     def test_setGameType_good(self):
         """ Check that gameType is set correctly with valid input """

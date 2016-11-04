@@ -128,11 +128,6 @@ class HistoryNode(gamenode.GameNode):
         # Geese have insufficient material, Foxes win
         return True
 
-    def checkIfInt(self, value):
-        if not isinstance(value, int):
-            raise TypeError(("value is not an int. "
-                            "value = {0}").format(value))
-
     def setGameType(self, value):
         self.checkIfInt(value)
         self.gameType = value
@@ -152,3 +147,10 @@ class HistoryNode(gamenode.GameNode):
     def setHalfMove(self, value):
         self.checkIfInt(value)
         self.halfMove = value
+
+# Helper function
+def checkIfInt(value):
+    """ Type checker for values to determine if they are of type int """
+    if not isinstance(value, int):
+        raise TypeError(("value is not an int. "
+                         "value = {0}").format(value))
