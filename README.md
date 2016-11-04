@@ -23,9 +23,9 @@ Functions to be ported and tested, organized by component
 * FileController                0/2
 * GameInterface                 0/23
 * GameNode                      7/7
-* HistoryNode                   6/11
+* HistoryNode                   11/11
 * Rules                         1/14
-* TOTAL                         14/73
+* TOTAL                         19/73
 
 ### Requirements ###
 To use:
