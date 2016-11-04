@@ -1,6 +1,14 @@
+""" Stores board state with additional game specific logic """
+
 from src import gamenode
 
 class HistoryNode(gamenode.GameNode):
+    """ Class that inherits from GameNode and has additional game specific
+    logic """
+
+    # pylint: disable=too-many-instance-attributes
+    # Ten is reasonable for the curreunt version
+
     def __init__(self):
         super(HistoryNode, self).__init__()
         self.result = None # int
@@ -34,7 +42,8 @@ class HistoryNode(gamenode.GameNode):
                                                self.gameState[4][0]))
 
     def constructor(self):
-        self.score = 0.0;
+        """ Sets up the internal state of the HistoryNode instance """
+        self.score = 0.0
         self.leafP = False
         self.rootP = True
 
@@ -73,18 +82,21 @@ class HistoryNode(gamenode.GameNode):
         self.gameState[4][0] = 2
 
     def setP1(self, a_string):
+        """ Setter for P1 with type checking """
         if not isinstance(a_string, str):
             raise TypeError(("a_string is not a string. "
-                            "a_string = {0}").format(a_string))
+                             "a_string = {0}").format(a_string))
         self.p1 = a_string
 
     def setP2(self, a_string):
+        """ Setter for P2 with type checking """
         if not isinstance(a_string, str):
             raise TypeError(("a_string is not a string. "
-                            "a_string = {0}").format(a_string))
+                             "a_string = {0}").format(a_string))
         self.p2 = a_string
 
     def geeseWinP(self):
+        """ Returns True if the geese have won, false otherwise """
         foxSpacesOccupied = 0
         for i in range(2, 5):
             for j in range(0, 3):
@@ -97,6 +109,7 @@ class HistoryNode(gamenode.GameNode):
         return False
 
     def foxesWinP(self):
+        """ Returns True if the foxes have won, false otherwise """
         geeseRemaining = 0
         for i in range(0, 7):
             for j in range(0, 7):
@@ -109,23 +122,28 @@ class HistoryNode(gamenode.GameNode):
         return True
 
     def setGameType(self, value):
-        self.checkIfInt(value)
+        """ Setter for gameType with type checking """
+        checkIfInt(value)
         self.gameType = value
 
     def setFoxSearch(self, value):
-        self.checkIfInt(value)
+        """ Setter for foxSearch with type checking """
+        checkIfInt(value)
         self.foxSearch = value
 
     def setResult(self, value):
-        self.checkIfInt(value)
+        """ Setter for result with type checking """
+        checkIfInt(value)
         self.result = value
 
     def setGooseSearch(self, value):
-        self.checkIfInt(value)
+        """ Setter for gooseSearch with type checking """
+        checkIfInt(value)
         self.gooseSearch = value
 
     def setHalfMove(self, value):
-        self.checkIfInt(value)
+        """ Setter for halfMove with type checking """
+        checkIfInt(value)
         self.halfMove = value
 
 # Helper function

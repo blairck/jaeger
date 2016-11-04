@@ -1,4 +1,7 @@
+""" The basic state of the game board """
+
 class GameNode(object):
+    """ Class that stores the basic state of the game board """
     def __init__(self):
         # int array, defaults to 0 in C
         self.gameState = [[-1, -1, 0, 0, 0, -1, -1],
@@ -58,7 +61,9 @@ class GameNode(object):
                                        self.gameState[4][0]))
 
     def setState(self, x, y, value):
+        """ Modify value at a specific board location. """
         self.gameState[x][y] = value
 
     def getState(self, x, y):
+        """ Get value from a specific board location. """
         return self.gameState[x][y]
