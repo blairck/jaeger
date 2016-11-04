@@ -17,11 +17,6 @@ class TestGameNode(unittest.TestCase):
         self.assertFalse(gn_obj.rootP)
         self.assertFalse(gn_obj.score)
 
-    def test_initialize(self):
-        """ Test initialization """
-        gn_obj = gamenode.GameNode()
-        self.assertRaises(NotImplementedError, gn_obj.initialize)
-
     def test_getState_default(self):
         """ Test a known getState value """
         gn_obj = gamenode.GameNode()
@@ -59,4 +54,26 @@ class TestGameNode(unittest.TestCase):
                               "0000000\n"
                               "   000   \n"
                               "   000")
+            self.assertEqual(actual_print, expected_print)
+
+    def test_print_middle_rows_without_seperator(self):
+        """ Check that print_middle_rows() works without seperator """
+        with helper.captured_output() as out:
+            gn_obj = gamenode.GameNode()
+            gn_obj.print_middle_rows()
+            actual_print = out.getvalue().strip()
+            expected_print = ("0000000\n"
+                              "0000000\n"
+                              "0000000")
+            self.assertEqual(actual_print, expected_print)
+
+    def test_print_middle_rows_with_seperator(self):
+        """ Check that print_middle_rows() works with a seperator """
+        with helper.captured_output() as out:
+            gn_obj = gamenode.GameNode()
+            gn_obj.print_middle_rows(1)
+            actual_print = out.getvalue().strip()
+            expected_print = ("0101010101010\n"
+                              "0101010101010\n"
+                              "0101010101010")
             self.assertEqual(actual_print, expected_print)
