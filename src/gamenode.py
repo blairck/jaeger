@@ -12,8 +12,34 @@ class GameNode(object):
         self.rootP = None # bool
         self.score = None # bool
 
-    def initialize(self):
-        raise NotImplementedError("This function should be removed")
+    def print_middle_rows(self, seperator=""):
+        """ Print the middle 3 rows of the game board """
+        # Element 7 in the template is the seperator
+        row_template = "{0}{7}{1}{7}{2}{7}{3}{7}{4}{7}{5}{7}{6}"
+        print(row_template.format(self.gameState[0][4],
+                                  self.gameState[1][4],
+                                  self.gameState[2][4],
+                                  self.gameState[3][4],
+                                  self.gameState[4][4],
+                                  self.gameState[5][4],
+                                  self.gameState[6][4],
+                                  seperator))
+        print(row_template.format(self.gameState[0][3],
+                                  self.gameState[1][3],
+                                  self.gameState[2][3],
+                                  self.gameState[3][3],
+                                  self.gameState[4][3],
+                                  self.gameState[5][3],
+                                  self.gameState[6][3],
+                                  seperator))
+        print(row_template.format(self.gameState[0][2],
+                                  self.gameState[1][2],
+                                  self.gameState[2][2],
+                                  self.gameState[3][2],
+                                  self.gameState[4][2],
+                                  self.gameState[5][2],
+                                  self.gameState[6][2],
+                                  seperator))
 
     def print_board(self):
         """ Originally called 'print' """
