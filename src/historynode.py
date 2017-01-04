@@ -1,6 +1,7 @@
 """ Stores board state with additional game specific logic """
 
 from src import gamenode
+from src import helper
 
 class HistoryNode(gamenode.GameNode):
     """ Class that inherits from GameNode and has additional game specific
@@ -123,32 +124,26 @@ class HistoryNode(gamenode.GameNode):
 
     def setGameType(self, value):
         """ Setter for gameType with type checking """
-        checkIfInt(value)
+        helper.checkIfInt(value)
         self.gameType = value
 
     def setFoxSearch(self, value):
         """ Setter for foxSearch with type checking """
-        checkIfInt(value)
+        helper.checkIfInt(value)
         self.foxSearch = value
 
     def setResult(self, value):
         """ Setter for result with type checking """
-        checkIfInt(value)
+        helper.checkIfInt(value)
         self.result = value
 
     def setGooseSearch(self, value):
         """ Setter for gooseSearch with type checking """
-        checkIfInt(value)
+        helper.checkIfInt(value)
         self.gooseSearch = value
 
     def setHalfMove(self, value):
         """ Setter for halfMove with type checking """
-        checkIfInt(value)
+        helper.checkIfInt(value)
         self.halfMove = value
 
-# Helper function
-def checkIfInt(value):
-    """ Type checker for values to determine if they are of type int """
-    if not isinstance(value, int):
-        raise TypeError(("value is not an int. "
-                         "value = {0}").format(value))
