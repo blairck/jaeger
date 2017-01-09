@@ -6,17 +6,15 @@ def checkIfInt(value):
         raise TypeError(("value is not an int. "
                          "value = {0}").format(value))
 
-def checkIfCoordinateIsValid(coordinate):
-    """ Check if a coordinate value is a valid location on the board """
-    x = coordinate.get_x_board()
-    y = coordinate.get_y_board()
+def checkIfCoordinateIsValid(x, y):
+    """ Check if board values constitute a valid location on the board """
     if x < 1 or x > 7:
         raise ValueError("Invalid board coordinate value, X: ({0}, {1})"
                          .format(x, y))
     if y < 1 or y > 7:
         raise ValueError("Invalid board coordinate value, Y: ({0}, {1})"
                          .format(x, y))
-    if coordinate.get_x_board() in (1, 2, 6, 7):
-        if coordinate.get_y_board() in (1, 2, 6, 7):
+    if x in (1, 2, 6, 7):
+        if y in (1, 2, 6, 7):
             raise ValueError("Invalid board coordinate values: ({0}, {1})"
                              .format(x, y))
