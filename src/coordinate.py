@@ -1,11 +1,11 @@
 from src import helper
 
 class Coordinate(object):
-    """ Simple interface to pass game coordinates around """
-    """ Can return 2 types of coordinates: """
-    """ Board - The coordinate on a board, which is 1-indexed """
-    """     and is used in the constructor. """
-    """ Array - Coordinate in the array, which is 0-indexed """
+    """ Simple interface to pass game coordinates around
+    Can return 2 types of coordinates:
+    Board - The coordinate on a board, which is 1-indexed
+    and is used in the constructor.
+    Array - Coordinate in the array, which is 0-indexed """
     def __init__(self, x, y):
         helper.checkIfInt(x)
         helper.checkIfInt(y)
