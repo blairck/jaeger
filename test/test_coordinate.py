@@ -27,3 +27,12 @@ class TestRules(unittest.TestCase):
         expected_result = 5
         actual_result = board_location.get_y_array()
         self.assertEqual(actual_result, expected_result)
+
+    def test_coordinate_bad_x(self):
+        self.assertRaises(TypeError, coordinate.Coordinate, "4", 6)
+
+    def test_coordinate_bad_y(self):
+        self.assertRaises(TypeError, coordinate.Coordinate, 4, "6")
+
+    def test_coordinate_bad_location(self):
+        self.assertRaises(ValueError, coordinate.Coordinate, 50, 100)
