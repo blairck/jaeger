@@ -59,15 +59,14 @@ class Rules(object):
             raise ValueError(error_template.format(startX, startY, endX, endY))
 
     def convertCharToInt(self, value):
-        """ Converts a string of length 1 (char) to an int. This has an
-        intentional return of 0 if the input is non-int. """
+        """ Converts a string of length 1 (char) to an int. """
         try:
             value = int(value)
-            if value > 9 or value < 1:
-                value = 0
         except ValueError:
-            if self.debug:
-                message = "convertCharToInt received '{0}' when num expected"
-                print(message.format(value))
-            value = 0
+            error_template = ("convertCharToInt received '{0}' when num "
+                              "expected")
+            raise ValueError(error_template.format(value))
+        if value > 9 or value < 0:
+            error_template = "Value larger or smaller than 1 digit: {0}"
+            raise ValueError(error_template.format(value))
         return value
