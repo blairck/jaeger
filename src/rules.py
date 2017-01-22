@@ -1,10 +1,34 @@
 """ This module contains rules to the game."""
 
+from src import coordinate
+
 # -*- coding: utf-8 -*-
 class Rules(object):
     """Rules class"""
-    def __init__(self, debug=False):
-        self.debug = debug
+    def makeCapture(self, theGame, startCoordinate, endCoordinate):
+        startX = startCoordinate.get_x_board()
+        startY = startCoordinate.get_y_board()
+        endX = endCoordinate.get_x_board()
+        endY = endCoordinate.get_y_board()
+        if abs(startX - endX) not in (0, 2):
+            error_template = "Illegal X capture: {0} -> {1}"
+            raise ValueError(error_template.format(startX, endX))
+        elif abs(startY - endY) not in (0, 2):
+            error_template = "Illegal Y capture: {0} -> {1}"
+            raise ValueError(error_template.format(startY, endY))
+        elif startX == endX and startY == endY:
+            error_template = ("Start and end capture coordinates are the "
+                              "same: ({0}, {1})")
+            raise ValueError(error_template.format(startX, startY))
+
+        captureStartX = int(startX + (endX - startX)/2)
+        captureStartY = int(startY + (endY - startY)/2)
+        captureCoordinate = coordinate.Coordinate(captureStartX, captureStartY)
+
+        theGame.setState(startCoordinate, 0)
+        theGame.setState(captureCoordinate, 0)
+        theGame.setState(endCoordinate, 2)
+
 
     def makeCapture(self, theGame, startX, startY, endX, endY):
         theGame.setState(startX-1, startY-1, 0)
