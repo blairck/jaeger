@@ -29,6 +29,13 @@ class Rules(object):
         theGame.setState(captureCoordinate, 0)
         theGame.setState(endCoordinate, 2)
 
+    def findDirection(self, startCoordinate, endCoordinate):
+        startX = startCoordinate.get_x_array()
+        startY = startCoordinate.get_y_array()
+        endX = endCoordinate.get_x_array()
+        endY = endCoordinate.get_y_array()
+        differenceX = endX - startX
+        differenceY = endY - startY
 
     def makeCapture(self, theGame, startX, startY, endX, endY):
         theGame.setState(startX-1, startY-1, 0)
