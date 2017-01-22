@@ -37,12 +37,26 @@ class Rules(object):
         differenceX = endX - startX
         differenceY = endY - startY
 
-    def makeCapture(self, theGame, startX, startY, endX, endY):
-        theGame.setState(startX-1, startY-1, 0)
-        theGame.setState((startX-1)+((endX-1)-(startX-1))/2,
-                         (startY-1)+((endY-1)-(startY-1))/2,
-                         0)
-        theGame.setState(endX-1, endY-1, 2)
+        if differenceX == 0 and differenceY == 2:
+            return 1
+        elif differenceX == 2 and differenceY == 2:
+            return 2
+        elif differenceX == 2 and differenceY == 0:
+            return 3
+        elif differenceX == 2 and differenceY == -2:
+            return 4
+        elif differenceX == 0 and differenceY == -2:
+            return 5
+        elif differenceX == -2 and differenceY == -2:
+            return 6
+        elif differenceX == -2 and differenceY == 0:
+            return 7
+        elif differenceX == -2 and differenceY == 2:
+            return 8
+        else:
+            error_template = ("findDirection() unable to resolve coordinates: "
+                              "Start - ({0}, {1}), End - ({2}, {3})")
+            raise ValueError(error_template.format(startX, startY, endX, endY))
 
     def convertCharToInt(self, value):
         """ Converts a string of length 1 (char) to an int. This has an
