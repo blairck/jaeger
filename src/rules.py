@@ -84,10 +84,7 @@ class Rules(object):
     #     NSString* fileRoot = [[NSBundle mainBundle] pathForResource:@"board_connections" ofType:@"txt"];
     #     NSString* fileContents = [NSString stringWithContentsOfFile:fileRoot encoding:NSUTF8StringEncoding error:nil];
     #     NSArray* allLinedStrings = [fileContents componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    #     NSEnumerator *enumerator = [allLinedStrings objectEnumerator];
-    #     id object;
     #     while ((object = [enumerator nextObject]))
-    #     {
     #         Connection *buffer = [Connection new];
     #         [buffer setStartX:[self convertCharToInt:[object characterAtIndex:0]]];
     #         [buffer setStartY:[self convertCharToInt:[object characterAtIndex:2]]];
@@ -95,8 +92,6 @@ class Rules(object):
     #         [buffer setEndX:[self convertCharToInt:[object characterAtIndex:6]]];
     #         [buffer setEndY:[self convertCharToInt:[object characterAtIndex:8]]];
     #         [boardConnections addObject: buffer];
-    #     }
-    # }
 
     # "Finds the connection between a start coordinate and an end coordinate."
     # -(bool)findConnectionP: (int) startX: (int) startY: (int) endX: (int) endY
