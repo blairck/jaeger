@@ -1,6 +1,7 @@
 """ Tests for the rules module """
 
 import unittest
+from unittest.mock import patch, mock_open
 from src import coordinate
 from src import gamenode
 from src import rules
@@ -211,3 +212,12 @@ class TestRules(unittest.TestCase):
         """ Test a value that isn't an int"""
         rules_obj = rules.Rules(test_mode=True)
         self.assertRaises(ValueError, rules_obj.convertCharToInt, 'qq')
+
+    def test_readFile(self):
+        file_data = "3,1 1 3,2\n5,3 2 4,3"
+        with patch("builtins.open",
+                   mock_open(read_data=file_data)) as mock_file:
+            rules_obj = rules.Rules(test_mode=True)
+            actual_result = rules_obj.readFile("board_connections.txt")
+            mock_file.assert_called_with("res/board_connections.txt")
+            self.assertEqual(actual_result, "data2")

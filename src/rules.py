@@ -1,5 +1,6 @@
 """ This module contains rules to the game."""
 
+from src import connection
 from src import coordinate
 
 # -*- coding: utf-8 -*-
@@ -65,10 +66,21 @@ class Rules(object):
 
     def readFile(self, file_name):
         """ Reads in the file of connections """
-        return None
-    # -(void)readFile
-    # {
-    #     boardConnections = [NSMutableArray new];
+        file_path = "res/{0}".format(file_name)
+        print("Using this path: {0}".format(file_path))
+        result = []
+        with open(file_path) as f:
+            print("CKB - {0}".format(f))
+            for line in f:
+                print("Did this happen?")
+                single_connection = connection.Connection()
+                single_connection.setstartX(line[0])
+                single_connection.setstartY(line[2])
+                single_connection.setdirection(line[4])
+                single_connection.setendX(line[6])
+                single_connection.setendY(line[8])
+                result.append(single_connection)
+        return result
     #     NSString* fileRoot = [[NSBundle mainBundle] pathForResource:@"board_connections" ofType:@"txt"];
     #     NSString* fileContents = [NSString stringWithContentsOfFile:fileRoot encoding:NSUTF8StringEncoding error:nil];
     #     NSArray* allLinedStrings = [fileContents componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
