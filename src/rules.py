@@ -5,8 +5,9 @@ from src import coordinate
 # -*- coding: utf-8 -*-
 class Rules(object):
     """Rules class"""
-    def __init__(self):
-        boardConnections = self.readFile("board_connections.txt")
+    def __init__(self, test_mode=False):
+        if not test_mode:
+            boardConnections = self.readFile("board_connections.txt")
 
     def makeCapture(self, theGame, startCoordinate, endCoordinate):
         startX = startCoordinate.get_x_board()
