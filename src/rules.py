@@ -204,38 +204,38 @@ class Rules(object):
     #      }
     # }
 
-    def existsCaptureP(self, theGame):
-        """ Returns true if the foxes can make a capture, false otherwise """
-        raise NotImplementedError("TODO - Finish this")
-        firstP = True
-        foxOneX = -1
-        foxOneY = -1
-        foxTwoX = -1
-        foxTwoY = -1
+    # def existsCaptureP(self, theGame):
+    #     """ Returns true if the foxes can make a capture, false otherwise """
+    #     raise NotImplementedError("TODO - Finish this")
+    #     firstP = True
+    #     foxOneX = -1
+    #     foxOneY = -1
+    #     foxTwoX = -1
+    #     foxTwoY = -1
 
-        for (int i=0; i<7; i++):
-            for (int j=0;j<7;j++):
-                if (firstP && [theGame getState:i :j] == 2):
-                    foxOneX = i
-                    foxOneY = j
-                    firstP = False
-                else if (!firstP && [theGame getState:i :j] == 2):
-                    foxTwoX = i
-                    foxTwoY = j
-                    break
+    #     for (int i=0; i<7; i++):
+    #         for (int j=0;j<7;j++):
+    #             if (firstP && [theGame getState:i :j] == 2):
+    #                 foxOneX = i
+    #                 foxOneY = j
+    #                 firstP = False
+    #             else if (!firstP && [theGame getState:i :j] == 2):
+    #                 foxTwoX = i
+    #                 foxTwoY = j
+    #                 break
 
-        if (-1 in (foxOneX, foxOneY, foxTwoX, foxTwoY)):
-            error_template = "Didn't find both foxes on the board"
-            raise ValueError(error_template)
+    #     if (-1 in (foxOneX, foxOneY, foxTwoX, foxTwoY)):
+    #         error_template = "Didn't find both foxes on the board"
+    #         raise ValueError(error_template)
 
-        for (int i=1; i<=8; i++):
-            if ([self isACaptureP: theGame: foxOneX+1: foxOneY+1: i]):
-                # "Fox One can capture"
-                return True
-            if ([self isACaptureP: theGame: foxTwoX+1: foxTwoY+1: i]):
-                # "Fox Two can capture.
-                return True
-        return False
+    #     for (int i=1; i<=8; i++):
+    #         if ([self isACaptureP: theGame: foxOneX+1: foxOneY+1: i]):
+    #             # "Fox One can capture"
+    #             return True
+    #         if ([self isACaptureP: theGame: foxTwoX+1: foxTwoY+1: i]):
+    #             # "Fox Two can capture.
+    #             return True
+    #     return False
 
     def convertCharToInt(self, value):
         """ Converts a string of length 1 (char) to an int. """
