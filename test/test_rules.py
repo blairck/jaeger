@@ -132,8 +132,8 @@ class TestRules(unittest.TestCase):
 
     def test_findDirection_2(self):
         rules_obj = rules.Rules(test_mode=True)
-        startCoordinate = coordinate.Coordinate(5, 5)
-        endCoordinate = coordinate.Coordinate(7, 7)
+        startCoordinate = coordinate.Coordinate(3, 3)
+        endCoordinate = coordinate.Coordinate(5, 5)
         expected_result = 2
         actual_result = rules_obj.findDirection(startCoordinate, endCoordinate)
         self.assertEqual(actual_result, expected_result)
@@ -213,11 +213,26 @@ class TestRules(unittest.TestCase):
         rules_obj = rules.Rules(test_mode=True)
         self.assertRaises(ValueError, rules_obj.convertCharToInt, 'qq')
 
-    def test_readFile(self):
-        file_data = "3,1 1 3,2\n5,3 2 4,3"
+    def test_readFile_good(self):
         with patch("builtins.open",
-                   mock_open(read_data=file_data)) as mock_file:
+                   mock_open(read_data="data")) as mock_file:
             rules_obj = rules.Rules(test_mode=True)
             actual_result = rules_obj.readFile("board_connections.txt")
             mock_file.assert_called_with("res/board_connections.txt")
-            self.assertEqual(actual_result, "data2")
+
+    def test_readFile_parsing(self):
+        fake_file = ("3,1 1 3,2", "5,3 2 4,3")
+        rules_obj = rules.Rules(test_mode=True)
+        actual_result = rules_obj.readFile("board_connections.txt",
+                                           test_data=fake_file)
+        self.assertEqual(len(actual_result), 2)
+
+    def test_parseConnectionLine(self):
+        fake_connection = "5,3 2 4,3"
+        rules_obj = rules.Rules(test_mode=True)
+        actual_result = rules_obj.parseConnectionLine(fake_connection)
+        self.assertEqual(actual_result.startX, 5)
+        self.assertEqual(actual_result.startY, 3)
+        self.assertEqual(actual_result.direction, 2)
+        self.assertEqual(actual_result.endX, 4)
+        self.assertEqual(actual_result.endY, 3)

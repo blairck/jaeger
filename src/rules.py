@@ -7,6 +7,7 @@ from src import coordinate
 class Rules(object):
     """Rules class"""
     def __init__(self, test_mode=False):
+        self.test_mode = test_mode
         if not test_mode:
             boardConnections = self.readFile("board_connections.txt")
 
@@ -64,34 +65,26 @@ class Rules(object):
                               "Start - ({0}, {1}), End - ({2}, {3})")
             raise ValueError(error_template.format(startX, startY, endX, endY))
 
-    def readFile(self, file_name):
+    def parseConnectionLine(self, line):
+        result = connection.Connection()
+        result.setstartX(int(line[0]))
+        result.setstartY(int(line[2]))
+        result.setdirection(int(line[4]))
+        result.setendX(int(line[6]))
+        result.setendY(int(line[8]))
+        return result
+
+    def readFile(self, file_name, test_data=None):
         """ Reads in the file of connections """
         file_path = "res/{0}".format(file_name)
         print("Using this path: {0}".format(file_path))
         result = []
         with open(file_path) as f:
-            print("CKB - {0}".format(f))
+            if test_data and self.test_mode:
+                f = test_data
             for line in f:
-                print("Did this happen?")
-                single_connection = connection.Connection()
-                single_connection.setstartX(line[0])
-                single_connection.setstartY(line[2])
-                single_connection.setdirection(line[4])
-                single_connection.setendX(line[6])
-                single_connection.setendY(line[8])
-                result.append(single_connection)
+                result.append(self.parseConnectionLine(line))
         return result
-    #     NSString* fileRoot = [[NSBundle mainBundle] pathForResource:@"board_connections" ofType:@"txt"];
-    #     NSString* fileContents = [NSString stringWithContentsOfFile:fileRoot encoding:NSUTF8StringEncoding error:nil];
-    #     NSArray* allLinedStrings = [fileContents componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    #     while ((object = [enumerator nextObject]))
-    #         Connection *buffer = [Connection new];
-    #         [buffer setStartX:[self convertCharToInt:[object characterAtIndex:0]]];
-    #         [buffer setStartY:[self convertCharToInt:[object characterAtIndex:2]]];
-    #         [buffer setDirection:[self convertCharToInt:[object characterAtIndex:4]]];
-    #         [buffer setEndX:[self convertCharToInt:[object characterAtIndex:6]]];
-    #         [buffer setEndY:[self convertCharToInt:[object characterAtIndex:8]]];
-    #         [boardConnections addObject: buffer];
 
     # "Finds the connection between a start coordinate and an end coordinate."
     # -(bool)findConnectionP: (int) startX: (int) startY: (int) endX: (int) endY
