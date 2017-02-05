@@ -9,7 +9,7 @@ class Rules(object):
     def __init__(self, test_mode=False):
         self.test_mode = test_mode
         if not test_mode:
-            boardConnections = self.readFile("board_connections.txt")
+            self.boardConnections = self.readFile("board_connections.txt")
 
     def makeCapture(self, theGame, startCoordinate, endCoordinate):
         startX = startCoordinate.get_x_board()
@@ -86,23 +86,20 @@ class Rules(object):
                 result.append(self.parseConnectionLine(line))
         return result
 
-    # "Finds the connection between a start coordinate and an end coordinate."
-    # -(bool)findConnectionP: (int) startX: (int) startY: (int) endX: (int) endY
-    # {
-    #     NSEnumerator *enumerator = [boardConnections objectEnumerator];
-    #     id object;
-    #     while ((object = [enumerator nextObject]))
-    #     {
-    #         if (([object startX] == startX) && ([object startY] == startY)
-    #                 && ([object endX] == endX) && ([object endY] == endY))
-    #          {
-    #             //NSLog(@"%i, %i => %i, %i", startX, startX, [object endX], [object endY]);
-    #             return TRUE;
-    #          }
-    #     }
-    #     return FALSE;
-    # }
-
+    def findConnectionP(self, startCoordinate, endCoordinate):
+        """Finds connection between start coordinate and end coordinate.
+        Returns True if connection exists, False otherwise"""
+        startX = startCoordinate.get_x_board()
+        startY = startCoordinate.get_y_board()
+        endX = endCoordinate.get_x_board()
+        endY = endCoordinate.get_y_board()
+        for connection in self.boardConnections:
+            if (connection.startX == startX and
+                connection.startY == startY and
+                connection.endX == endX and
+                connection.endY == endY):
+                return True
+        return False
 
     # "Tests whether a start coordinate and end coordinate constitute a legal move"
     # -(bool)legalMoveP: (GameNode *) theGame: (int) startX: (int) startY: (int) endX: (int) endY

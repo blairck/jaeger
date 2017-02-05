@@ -217,15 +217,17 @@ class TestRules(unittest.TestCase):
         with patch("builtins.open",
                    mock_open(read_data="data")) as mock_file:
             rules_obj = rules.Rules(test_mode=True)
-            actual_result = rules_obj.readFile("board_connections.txt")
-            mock_file.assert_called_with("res/board_connections.txt")
+            actual_result = rules_obj.readFile("nonexistant_file")
+            mock_file.assert_called_with("res/nonexistant_file")
 
     def test_readFile_parsing(self):
-        fake_file = ("3,1 1 3,2", "5,3 2 4,3")
-        rules_obj = rules.Rules(test_mode=True)
-        actual_result = rules_obj.readFile("board_connections.txt",
-                                           test_data=fake_file)
-        self.assertEqual(len(actual_result), 2)
+        fake_data = ("3,1 1 3,2", "5,3 2 4,3")
+        with patch("builtins.open",
+                   mock_open(read_data="data")) as mock_file:
+            rules_obj = rules.Rules(test_mode=True)
+            actual_result = rules_obj.readFile("nonexistant_file",
+                                               test_data=fake_data)
+            self.assertEqual(len(actual_result), 2)
 
     def test_parseConnectionLine(self):
         fake_connection = "5,3 2 4,3"
@@ -236,3 +238,33 @@ class TestRules(unittest.TestCase):
         self.assertEqual(actual_result.direction, 2)
         self.assertEqual(actual_result.endX, 4)
         self.assertEqual(actual_result.endY, 3)
+
+    def test_findConnectionP_nonexistant(self):
+        fake_data = ("3,1 1 3,2", "5,3 2 4,3")
+        rules_obj = rules.Rules(test_mode=True)
+        with patch("builtins.open",
+                   mock_open(read_data="data")) as mock_file:
+            fake_file = "nonexistant_file"
+            rules_obj.boardConnections = \
+                rules_obj.readFile(fake_file, test_data=fake_data)
+        startCoordinate = coordinate.Coordinate(5, 5)
+        endCoordinate = coordinate.Coordinate(3, 3)
+        actual_result = rules_obj.findConnectionP(startCoordinate,
+                                                  endCoordinate)
+        expected_result = False
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findConnectionP_exists(self):
+        fake_data = ("3,1 1 3,2", "5,3 2 4,3")
+        rules_obj = rules.Rules(test_mode=True)
+        with patch("builtins.open",
+                   mock_open(read_data="data")) as mock_file:
+            fake_file = "nonexistant_file"
+            rules_obj.boardConnections = \
+                rules_obj.readFile(fake_file, test_data=fake_data)
+        startCoordinate = coordinate.Coordinate(3, 1)
+        endCoordinate = coordinate.Coordinate(3, 2)
+        actual_result = rules_obj.findConnectionP(startCoordinate,
+                                                  endCoordinate)
+        expected_result = True
+        self.assertEqual(actual_result, expected_result)
