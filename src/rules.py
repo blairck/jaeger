@@ -1,5 +1,6 @@
 """ This module contains rules to the game."""
 
+from res import types
 from src import connection
 from src import coordinate
 
@@ -77,7 +78,6 @@ class Rules(object):
     def readFile(self, file_name, test_data=None):
         """ Reads in the file of connections """
         file_path = "res/{0}".format(file_name)
-        print("Using this path: {0}".format(file_path))
         result = []
         with open(file_path) as f:
             if test_data and self.test_mode:
@@ -101,28 +101,16 @@ class Rules(object):
                 return True
         return False
 
-    # "Tests whether a start coordinate and end coordinate constitute a legal move"
-    # -(bool)legalMoveP: (GameNode *) theGame: (int) startX: (int) startY: (int) endX: (int) endY
-    # {
-    #     int game[7][7];
-    #     for (int i=0;i<7;i++)
-    #      {
-    #         for (int j=0;j<7;j++)
-    #          {
-    #             game[i][j]=[theGame getState:i :j];
-    #          }
-    #      }
-
-    #     if (game[startX-1][startY-1]==1 && (endY > startY))
-    #      {
-    #         return FALSE;
-    #      }
-    #     else if (game[endX-1][endY-1] == 0 && [self findConnectionP: startX: startY: endX: endY])
-    #      {
-    #         return TRUE;
-    #      }
-    #     return FALSE;
-    # }
+    def legalMoveP(self, theGame, startCoordinate, endCoordinate):
+        """"Tests whether a start coordinate and end coordinate constitute a
+        legal move"""
+        if (theGame.getState(startCoordinate)==types.GOOSE and
+            endCoordinate.get_y_board()>startCoordinate.get_y_board()):
+            return False
+        elif (theGame.getState(endCoordinate)==types.EMPTY and
+              self.findConnectionP(startCoordinate, endCoordinate)):
+            return True
+        return False
 
     # "Returns true if there's a capture, given a fox coordinate and a direction. otherwise returns false"
     # -(bool)isACaptureP: (GameNode *) theGame: (int) foxX: (int) foxY: (int) direction

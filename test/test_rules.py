@@ -1,7 +1,9 @@
 """ Tests for the rules module """
 
 import unittest
-from unittest.mock import patch, mock_open
+from unittest.mock import mock_open, patch
+
+from res import types
 from src import coordinate
 from src import gamenode
 from src import rules
@@ -267,4 +269,44 @@ class TestRules(unittest.TestCase):
         actual_result = rules_obj.findConnectionP(startCoordinate,
                                                   endCoordinate)
         expected_result = True
+        self.assertEqual(actual_result, expected_result)
+
+    def test_legalMoveP_backwards_goose(self):
+        rules_obj = rules.Rules(test_mode=True)
+        board = gamenode.GameNode()
+        startCoordinate = coordinate.Coordinate(3, 1)
+        endCoordinate = coordinate.Coordinate(3, 2)
+        board.setState(startCoordinate, types.GOOSE)
+        actual_result = rules_obj.legalMoveP(board,
+                                             startCoordinate,
+                                             endCoordinate)
+        expected_result = False
+        self.assertEqual(actual_result, expected_result)
+
+    @patch.object(rules.Rules, "findConnectionP")
+    def test_legalMoveP_good(self, mock_findConnectionP):
+        mock_findConnectionP.return_value=True
+        rules_obj = rules.Rules(test_mode=True)
+        board = gamenode.GameNode()
+        startCoordinate = coordinate.Coordinate(5, 3)
+        endCoordinate = coordinate.Coordinate(4, 3)
+        board.setState(startCoordinate, types.FOX)
+        actual_result = rules_obj.legalMoveP(board,
+                                             startCoordinate,
+                                             endCoordinate)
+        expected_result = True
+        self.assertEqual(actual_result, expected_result)
+
+    @patch.object(rules.Rules, "findConnectionP")
+    def test_legalMoveP_bad(self, mock_findConnectionP):
+        mock_findConnectionP.return_value=False
+        rules_obj = rules.Rules(test_mode=True)
+        board = gamenode.GameNode()
+        startCoordinate = coordinate.Coordinate(5, 3)
+        endCoordinate = coordinate.Coordinate(3, 3)
+        board.setState(startCoordinate, types.FOX)
+        actual_result = rules_obj.legalMoveP(board,
+                                             startCoordinate,
+                                             endCoordinate)
+        expected_result = False
         self.assertEqual(actual_result, expected_result)
