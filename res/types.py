@@ -1,0 +1,4 @@
+OUTSIDE = -1
+EMPTY = 0
+GOOSE = 1
+FOX = 2
