@@ -146,4 +146,3 @@ class HistoryNode(gamenode.GameNode):
         """ Setter for halfMove with type checking """
         helper.checkIfInt(value)
         self.halfMove = value
-

@@ -1,3 +1,5 @@
+""" Implementation of the coordinate class """
+
 from src import helper
 
 class Coordinate(object):
@@ -14,13 +16,17 @@ class Coordinate(object):
         self.y = y
 
     def get_x_board(self):
+        """ Get the X coordinate in board notation """
         return self.x
 
     def get_y_board(self):
+        """ Get the Y coordinate in board notation """
         return self.y
 
     def get_x_array(self):
+        """ Get the X coordinate in array notation """
         return self.x - 1
 
     def get_y_array(self):
+        """ Get the Y coordinate in array notation """
         return self.y - 1

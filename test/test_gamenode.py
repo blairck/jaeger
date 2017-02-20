@@ -2,7 +2,6 @@
 
 import unittest
 
-from src import coordinate
 from src import gamenode
 from test import helper
 

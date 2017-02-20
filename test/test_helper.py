@@ -1,9 +1,11 @@
+""" Tests for the helper module """
+
 import unittest
 
-from src import coordinate
 from src import helper
 
-class TestHistoryNode(unittest.TestCase):
+class TestHelper(unittest.TestCase):
+    """ Tests for the helper module """
     def test_checkIfInt_good(self):
         """ Check that checkIfInt correctly assesses an input """
         self.assertFalse(helper.checkIfInt(123))
