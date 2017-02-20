@@ -60,10 +60,14 @@ class GameNode(object):
                                        self.gameState[3][0],
                                        self.gameState[4][0]))
 
-    def setState(self, x, y, value):
+    def setState(self, coordinate_arg, value):
         """ Modify value at a specific board location. """
+        x = coordinate_arg.get_x_array()
+        y = coordinate_arg.get_y_array()
         self.gameState[x][y] = value
 
-    def getState(self, x, y):
+    def getState(self, coordinate_arg):
         """ Get value from a specific board location. """
+        x = coordinate_arg.get_x_array()
+        y = coordinate_arg.get_y_array()
         return self.gameState[x][y]
