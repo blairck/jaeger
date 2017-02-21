@@ -156,6 +156,10 @@ class Rules(object):
                 return True
         return False
 
+    # TODO
+    #-(NSMutableString *)saveGame: (NSMutableArray *) game
+    #-(NSMutableArray *)readSavedFile:(NSString *) str
+
 # Static functions
 def makeCapture(theGame, startCoordinate, endCoordinate):
     """ Update the board for a capture between a start + end
@@ -238,3 +242,36 @@ def convertCharToInt(value):
         error_template = "Value larger or smaller than 1 digit: {0}"
         raise ValueError(error_template.format(value))
     return value
+
+def resultingGoose(currentType, gooseCoordinate):
+    """ This returns a supergoose when a goose moves into the fox area (for
+    use in the AI algorithm) """
+    if ((3 <= gooseCoordinate.get_x_board() <= 5) and
+            (1 <= gooseCoordinate.get_y_board() <= 3)):
+        return 3
+    else:
+        return currentType
+
+def findXCoordinateFromDirection(direction):
+    """ Returns delta X, when given a direction value """
+    if direction in (1, 5):
+        return 0
+    elif direction in (2, 3, 4):
+        return 2
+    elif direction in (6, 7, 8):
+        return -2
+    else:
+        error_template = "Unexpected direction value of: {0}"
+        raise ValueError(error_template)
+
+def findYCoordinateFromDirection(direction):
+    """ Returns delta Y, when given a direction value """
+    if direction in (3, 7):
+        return 0
+    elif direction in (8, 1, 2):
+        return 2
+    elif direction in (4, 5, 6):
+        return -2
+    else:
+        error_template = "Unexpected direction value of: {0}"
+        raise ValueError(error_template)

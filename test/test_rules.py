@@ -544,3 +544,65 @@ class TestRules(unittest.TestCase):
         self.assertEqual(actual_result, expected_result)
         direction = 1
         mock_isACaptureP.assert_called_with(board, mock.ANY, direction)
+
+    def test_resultingGoose_outside(self):
+        """ Don't promote a goose when it's outside of the promotion area """
+        goose = coordinate.Coordinate(5, 5)
+        actual_result = rules.resultingGoose(types.GOOSE, goose)
+        expected_result = 1
+        self.assertEqual(actual_result, expected_result)
+
+    def test_resultingGoose_inside(self):
+        """ Promote the goose when it's inside the promotion area """
+        goose = coordinate.Coordinate(4, 2)
+        actual_result = rules.resultingGoose(types.GOOSE, goose)
+        expected_result = 3
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findXCoordinateFromDirection_up(self):
+        """ Get the delta X from an up direction """
+        actual_result = rules.findXCoordinateFromDirection(1)
+        expected_result = 0
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findXCoordinateFromDirection_right(self):
+        """ Get the delta X from a right direction """
+        actual_result = rules.findXCoordinateFromDirection(3)
+        expected_result = 2
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findXCoordinateFromDirection_left(self):
+        """ Get the delta X from a left direction """
+        actual_result = rules.findXCoordinateFromDirection(8)
+        expected_result = -2
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findXCoordinateFromDirection_bad(self):
+        """ Handle a bad direction """
+        self.assertRaises(ValueError,
+                          rules.findXCoordinateFromDirection,
+                          80)
+
+    def test_findYCoordinateFromDirection_left(self):
+        """ Get the delta Y from a left direction """
+        actual_result = rules.findYCoordinateFromDirection(7)
+        expected_result = 0
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findYCoordinateFromDirection_up(self):
+        """ Get the delta Y from a right direction """
+        actual_result = rules.findYCoordinateFromDirection(1)
+        expected_result = 2
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findYCoordinateFromDirection_down(self):
+        """ Get the delta Y from a left direction """
+        actual_result = rules.findYCoordinateFromDirection(4)
+        expected_result = -2
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findYCoordinateFromDirection_bad(self):
+        """ Handle a bad direction """
+        self.assertRaises(ValueError,
+                          rules.findYCoordinateFromDirection,
+                          80)
