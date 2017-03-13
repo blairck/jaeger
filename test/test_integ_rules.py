@@ -23,3 +23,10 @@ class TestIntegRules(unittest.TestCase):
         actual_result = rules_obj.existsCaptureP(board)
         expected_result = True
         self.assertEqual(actual_result, expected_result)
+
+    def test_readSavedFile_real(self):
+        """ Read in a real saved game file and verify result """
+        rules_obj = rules.Rules()
+        expected_result = 6
+        actual_result = len(rules_obj.readSavedFile("test/savedGame.txt"))
+        self.assertEqual(actual_result, expected_result)
