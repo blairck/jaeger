@@ -29,5 +29,5 @@
 -(void)readFile;
 -(NSMutableArray *)readSavedFile: (NSString *) str;
 -(NSMutableString *)saveGame: (NSMutableArray *) game;
-//-(void)readSavedFile;
+-(void)readSavedFile;
 @end

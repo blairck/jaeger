@@ -223,22 +223,152 @@ class TestRules(unittest.TestCase):
         self.assertRaises(ValueError, rules.convertCharToInt, 'qq')
 
     # pylint: disable=no-self-use
-    def test_readFile_good(self):
-        """ Readfile is called """
+    def test_readConnectionFile_good(self):
+        """ ReadConnectionFile is called """
         with patch("builtins.open",
                    mock_open(read_data="data")) as mock_file:
             rules_obj = rules.Rules(test_mode=True)
-            rules_obj.readFile("nonexistant_file")
-            mock_file.assert_called_with("res/nonexistant_file")
+            rules_obj.readConnectionFile("nonexistant_file")
+            mock_file.assert_called_with("nonexistant_file")
 
-    def test_readFile_parsing(self):
-        """ ReadFile parses file content """
+    def test_readConnectionFile_parsing(self):
+        """ ReadConnectionFile parses file content """
         fake_data = ("3,1 1 3,2", "5,3 2 4,3")
         with patch("builtins.open", mock_open(read_data="data")):
             rules_obj = rules.Rules(test_mode=True)
-            actual_result = rules_obj.readFile("nonexistant_file",
-                                               test_data=fake_data)
+            actual_result = rules_obj.readConnectionFile("nonexistant_file",
+                                                         test_data=fake_data)
             self.assertEqual(len(actual_result), 2)
+
+    def test_saveGame(self):
+        """ Test that game history is convered to a string correctly for
+        writing to a save file """
+        gameHistory = []
+        board_1 = gamenode.GameNode()
+        foxCoordinate = coordinate.Coordinate(5, 3)
+        gooseCoordinate = coordinate.Coordinate(4, 3)
+        board_1.setState(foxCoordinate, types.FOX)
+        board_1.setState(gooseCoordinate, types.GOOSE)
+        gameHistory.append(board_1)
+        board_2 = gamenode.GameNode()
+        foxCoordinate = coordinate.Coordinate(3, 3)
+        board_2.setState(foxCoordinate, types.FOX)
+        gameHistory.append(board_2)
+        metadata = {'p1':1, 'p2':2, 're':3, 'gt':4, 'gs':5, 'fs':6}
+        actual_result = rules.saveGame(gameHistory, metadata)
+        expected_result = ("p1: 1\n"
+                           "p2: 2\n"
+                           "re: 3\n"
+                           "gt: 4\n"
+                           "gs: 5\n"
+                           "fs: 6\n"
+                           "hm: 1\n"
+                           "    0 0 0    \n"
+                           "    0 0 0    \n"
+                           "0 0 0 0 0 0 0\n"
+                           "0 0 0 0 0 0 0\n"
+                           "0 0 0 1 2 0 0\n"
+                           "    0 0 0    \n"
+                           "    0 0 0    \n"
+                           "hm: 2\n"
+                           "    0 0 0    \n"
+                           "    0 0 0    \n"
+                           "0 0 0 0 0 0 0\n"
+                           "0 0 0 0 0 0 0\n"
+                           "0 0 2 0 0 0 0\n"
+                           "    0 0 0    \n"
+                           "    0 0 0    \n")
+        self.assertEqual(actual_result, expected_result)
+
+    def test_readSavedFile(self):
+        """ Test that saved game file is processed correctly """
+        test_input = [{"p1": "Chris",
+                       "p2": "AI",
+                       "re": "0-2",
+                       "gt": "2",
+                       "gs": "2",
+                       "fs": "3",
+                       "ga": "1"},
+                      "hm: 1",
+                      "    1 1 1    ",
+                      "    1 1 1    ",
+                      "1 1 1 1 1 1 1",
+                      "1 1 1 1 1 1 1",
+                      "1 1 0 0 0 1 1",
+                      "    0 0 0    ",
+                      "    2 0 2    ",
+                      "hm: 2",
+                      "    1 1 1    ",
+                      "    1 1 1    ",
+                      "1 1 1 1 1 1 1",
+                      "1 1 1 0 1 1 1",
+                      "1 1 0 3 0 1 1",
+                      "    0 0 0    ",
+                      "    2 0 2    ",
+                      "hm: 3",
+                      "    1 1 1    ",
+                      "    1 1 1    ",
+                      "1 1 1 1 1 1 1",
+                      "1 1 1 0 1 1 1",
+                      "1 1 0 3 0 1 1",
+                      "    0 0 0    ",
+                      "    0 2 2   "]
+        rules_obj = rules.Rules(test_mode=True)
+        expected_result = 4
+        actual_result = len(rules_obj.readSavedFile("foo", test_input))
+        self.assertEqual(actual_result, expected_result)
+
+    def test_readGameFile(self):
+        """ Test that game file is read in correctly """
+        test_input = ["p1: Chris\n",
+                      "p2: AI\n",
+                      "re: 0-2\n",
+                      "gt: 2\n",
+                      "gs: 2\n",
+                      "fs: 3\n",
+                      "ga: 1\n",
+                      "hm: 1\n",
+                      "    1 1 1    \n",
+                      "    1 1 1    \n",
+                      "1 1 1 1 1 1 1\n",
+                      "1 1 1 1 1 1 1\n",
+                      "1 1 0 0 0 1 1\n",
+                      "    0 0 0    \n",
+                      "    2 0 2    \n"]
+        rules_obj = rules.Rules(test_mode=True)
+        actual_result = None
+        with patch("builtins.open", mock_open(read_data="data")):
+            fake_file = "nonexistant_file"
+            actual_result = rules_obj.readGameFile(fake_file,
+                                                   test_data=test_input)
+        expected_result = 15
+        actual_result = len(actual_result)
+        self.assertEqual(actual_result, expected_result)
+
+    def test_makeMetadata(self):
+        """ Test meta data input gets correct output """
+        test_input = ["p1: Chris\n",
+                      "p2: AI\n",
+                      "re: 0-2\n",
+                      "gt: 1\n",
+                      "gs: 2\n",
+                      "fs: 3\n",
+                      "ga: 4\n"]
+        expected_result = {"p1": "Chris",
+                           "p2": "AI",
+                           "re": "0-2",
+                           "gt": "1",
+                           "gs": "2",
+                           "fs": "3",
+                           "ga": "4"}
+        actual_result = rules.makeMetadata(test_input)
+        self.assertEqual(actual_result['p1'], expected_result['p1'])
+        self.assertEqual(actual_result['p2'], expected_result['p2'])
+        self.assertEqual(actual_result['re'], expected_result['re'])
+        self.assertEqual(actual_result['gt'], expected_result['gt'])
+        self.assertEqual(actual_result['gs'], expected_result['gs'])
+        self.assertEqual(actual_result['fs'], expected_result['fs'])
+        self.assertEqual(actual_result['ga'], expected_result['ga'])
 
     def test_parseConnectionLine(self):
         """ Connection line is properly parsed """
@@ -257,7 +387,7 @@ class TestRules(unittest.TestCase):
         with patch("builtins.open", mock_open(read_data="data")):
             fake_file = "nonexistant_file"
             rules_obj.boardConnections = \
-                rules_obj.readFile(fake_file, test_data=fake_data)
+                rules_obj.readConnectionFile(fake_file, test_data=fake_data)
         startCoordinate = coordinate.Coordinate(5, 5)
         endCoordinate = coordinate.Coordinate(3, 3)
         actual_result = rules_obj.findConnectionP(startCoordinate,
@@ -272,7 +402,7 @@ class TestRules(unittest.TestCase):
         with patch("builtins.open", mock_open(read_data="data")):
             fake_file = "nonexistant_file"
             rules_obj.boardConnections = \
-                rules_obj.readFile(fake_file, test_data=fake_data)
+                rules_obj.readConnectionFile(fake_file, test_data=fake_data)
         startCoordinate = coordinate.Coordinate(3, 1)
         endCoordinate = coordinate.Coordinate(3, 2)
         actual_result = rules_obj.findConnectionP(startCoordinate,
@@ -544,3 +674,65 @@ class TestRules(unittest.TestCase):
         self.assertEqual(actual_result, expected_result)
         direction = 1
         mock_isACaptureP.assert_called_with(board, mock.ANY, direction)
+
+    def test_resultingGoose_outside(self):
+        """ Don't promote a goose when it's outside of the promotion area """
+        goose = coordinate.Coordinate(5, 5)
+        actual_result = rules.resultingGoose(types.GOOSE, goose)
+        expected_result = 1
+        self.assertEqual(actual_result, expected_result)
+
+    def test_resultingGoose_inside(self):
+        """ Promote the goose when it's inside the promotion area """
+        goose = coordinate.Coordinate(4, 2)
+        actual_result = rules.resultingGoose(types.GOOSE, goose)
+        expected_result = 3
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findXCoordinateFromDirection_up(self):
+        """ Get the delta X from an up direction """
+        actual_result = rules.findXCoordinateFromDirection(1)
+        expected_result = 0
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findXCoordinateFromDirection_right(self):
+        """ Get the delta X from a right direction """
+        actual_result = rules.findXCoordinateFromDirection(3)
+        expected_result = 2
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findXCoordinateFromDirection_left(self):
+        """ Get the delta X from a left direction """
+        actual_result = rules.findXCoordinateFromDirection(8)
+        expected_result = -2
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findXCoordinateFromDirection_bad(self):
+        """ Handle a bad direction """
+        self.assertRaises(ValueError,
+                          rules.findXCoordinateFromDirection,
+                          80)
+
+    def test_findYCoordinateFromDirection_left(self):
+        """ Get the delta Y from a left direction """
+        actual_result = rules.findYCoordinateFromDirection(7)
+        expected_result = 0
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findYCoordinateFromDirection_up(self):
+        """ Get the delta Y from a right direction """
+        actual_result = rules.findYCoordinateFromDirection(1)
+        expected_result = 2
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findYCoordinateFromDirection_down(self):
+        """ Get the delta Y from a left direction """
+        actual_result = rules.findYCoordinateFromDirection(4)
+        expected_result = -2
+        self.assertEqual(actual_result, expected_result)
+
+    def test_findYCoordinateFromDirection_bad(self):
+        """ Handle a bad direction """
+        self.assertRaises(ValueError,
+                          rules.findYCoordinateFromDirection,
+                          80)

@@ -134,7 +134,7 @@ class HistoryNode(gamenode.GameNode):
 
     def setResult(self, value):
         """ Setter for result with type checking """
-        helper.checkIfInt(value)
+        #helper.checkIfInt(value)
         self.result = value
 
     def setGooseSearch(self, value):
