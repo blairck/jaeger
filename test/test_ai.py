@@ -10,6 +10,13 @@ from src import historynode
 class TestRules(unittest.TestCase):
     """ Tests for the AI module """
 
+    def test_evaluationFunction(self):
+        """ Correctly evaluate a game position """
+        hn_object = historynode.HistoryNode()
+        actualValue = ai.evaluationFunction(hn_object)
+        expectedValue = 0.0
+        self.assertAlmostEqual(actualValue, expectedValue)
+
     def test_transferNode(self):
         """ Correctly transfer a historynode """
         hn_object = historynode.HistoryNode()
