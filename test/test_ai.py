@@ -10,11 +10,56 @@ from src import historynode
 class TestRules(unittest.TestCase):
     """ Tests for the AI module """
 
-    def test_evaluationFunction(self):
-        """ Correctly evaluate a game position """
+    def test_evaluationFunction_default(self):
+        """ Correctly evaluate a default game position """
         hn_object = historynode.HistoryNode()
-        actualValue = ai.evaluationFunction(hn_object)
-        expectedValue = 0.0
+        ai_object = ai.AI(0.5, 0.5)
+        actualValue = ai_object.evaluationFunction(hn_object)
+        expectedValue = -1010.0
+        self.assertAlmostEqual(actualValue, expectedValue)
+
+    def test_evaluationFunction_single_goose(self):
+        """ Correctly evaluate a game with a single goose """
+        hn_object = historynode.HistoryNode()
+        hn_object.setState(coordinate.Coordinate(3, 6), types.GOOSE)
+        ai_object = ai.AI(1, 1)
+        actualValue = ai_object.evaluationFunction(hn_object)
+        expectedValue = -1019.0
+        self.assertAlmostEqual(actualValue, expectedValue)
+
+    def test_evaluationFunction_single_supergoose(self):
+        """ Correctly evaluate a supergoose """
+        hn_object = historynode.HistoryNode()
+        hn_object.setState(coordinate.Coordinate(3, 6), types.SUPERGOOSE)
+        ai_object = ai.AI(1, 1)
+        actualValue = ai_object.evaluationFunction(hn_object)
+        expectedValue = -1018.0
+        self.assertAlmostEqual(actualValue, expectedValue)
+
+    def test_evaluationFunction_supergoose_in_fox_area(self):
+        """ Correctly evaluate a supergoose in the fox starting area """
+        hn_object = historynode.HistoryNode()
+        hn_object.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
+        ai_object = ai.AI(1, 1)
+        actualValue = ai_object.evaluationFunction(hn_object)
+        expectedValue = -1015.0
+        self.assertAlmostEqual(actualValue, expectedValue)
+
+    def test_evaluationFunction_winning_goose(self):
+        """ Correctly evaluate a winning goose position """
+        hn_object = historynode.HistoryNode()
+        hn_object.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
+        hn_object.setState(coordinate.Coordinate(4, 1), types.GOOSE)
+        hn_object.setState(coordinate.Coordinate(5, 1), types.GOOSE)
+        hn_object.setState(coordinate.Coordinate(3, 2), types.GOOSE)
+        hn_object.setState(coordinate.Coordinate(4, 2), types.GOOSE)
+        hn_object.setState(coordinate.Coordinate(5, 2), types.GOOSE)
+        hn_object.setState(coordinate.Coordinate(3, 3), types.GOOSE)
+        hn_object.setState(coordinate.Coordinate(4, 3), types.GOOSE)
+        hn_object.setState(coordinate.Coordinate(5, 3), types.GOOSE)
+        ai_object = ai.AI(1, 1)
+        actualValue = ai_object.evaluationFunction(hn_object)
+        expectedValue = 993.0
         self.assertAlmostEqual(actualValue, expectedValue)
 
     def test_transferNode(self):
