@@ -243,6 +243,13 @@ class Rules(object):
             # in this direction.
             return False
 
+    def existsCaptureAtLocationP(self, theGame, location):
+        """ Returns bool if a capture exists at a location on the board """
+        for direction in range(1, 9):
+            if self.isACaptureP(theGame, location, direction):
+                return True
+        return False
+
     def existsCaptureP(self, theGame):
         """ Returns true if the foxes can make a capture, false otherwise """
         firstP = True

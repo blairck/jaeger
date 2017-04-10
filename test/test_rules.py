@@ -635,6 +635,22 @@ class TestRules(unittest.TestCase):
         expected_result = False
         self.assertEqual(actual_result, expected_result)
 
+    @patch.object(rules.Rules, "isACaptureP")
+    def test_existsCaptureAtLocationP_true(self, mock_isACaptureP):
+        mock_isACaptureP.return_value = True
+        rules_obj = rules.Rules(test_mode=True)
+        actual_result = rules_obj.existsCaptureAtLocationP("fake", "args")
+        expected_result = True
+        self.assertEqual(actual_result, expected_result)
+
+    @patch.object(rules.Rules, "isACaptureP")
+    def test_existsCaptureAtLocationP_false(self, mock_isACaptureP):
+        mock_isACaptureP.return_value = False
+        rules_obj = rules.Rules(test_mode=True)
+        actual_result = rules_obj.existsCaptureAtLocationP("fake", "args")
+        expected_result = False
+        self.assertEqual(actual_result, expected_result)
+
     def test_existsCaptureP_no_foxes(self):
         """ Raise an error if the board is missing its two foxes """
         rules_obj = rules.Rules(test_mode=True)
