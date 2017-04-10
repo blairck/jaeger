@@ -24,13 +24,13 @@ class TestHistoryNode(unittest.TestCase):
                               "Fox Search: None\n"
                               "Goose Search: None\n"
                               "Half Move: None\n"
-                              "      0 0 0      \n"
-                              "      0 0 0      \n"
+                              "    0 0 0    \n"
+                              "    0 0 0    \n"
                               "0 0 0 0 0 0 0\n"
                               "0 0 0 0 0 0 0\n"
                               "0 0 0 0 0 0 0\n"
-                              "      0 0 0      \n"
-                              "      0 0 0")
+                              "    0 0 0    \n"
+                              "    0 0 0")
             self.assertEqual(actual_print, expected_print)
 
     def test_constructor(self):
@@ -57,13 +57,13 @@ class TestHistoryNode(unittest.TestCase):
                               "Fox Search: 1\n"
                               "Goose Search: 1\n"
                               "Half Move: 1\n"
-                              "      1 1 1      \n"
-                              "      1 1 1      \n"
+                              "    1 1 1    \n"
+                              "    1 1 1    \n"
                               "1 1 1 1 1 1 1\n"
                               "1 1 1 1 1 1 1\n"
                               "1 1 0 0 0 1 1\n"
-                              "      0 0 0      \n"
-                              "      2 0 2")
+                              "    0 0 0    \n"
+                              "    2 0 2")
             self.assertEqual(actual_print, expected_print)
 
         self.assertEqual(hn_obj.gameState[3][1], 0)

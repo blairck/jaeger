@@ -28,19 +28,19 @@ class HistoryNode(gamenode.GameNode):
         print("Fox Search: {0}".format(self.foxSearch))
         print("Goose Search: {0}".format(self.gooseSearch))
         print("Half Move: {0}".format(self.halfMove))
-        print("      {0} {1} {2}      ".format(self.gameState[2][6],
-                                               self.gameState[3][6],
-                                               self.gameState[4][6]))
-        print("      {0} {1} {2}      ".format(self.gameState[2][5],
-                                               self.gameState[3][5],
-                                               self.gameState[4][5]))
+        print("    {0} {1} {2}    ".format(self.gameState[2][6],
+                                           self.gameState[3][6],
+                                           self.gameState[4][6]))
+        print("    {0} {1} {2}    ".format(self.gameState[2][5],
+                                           self.gameState[3][5],
+                                           self.gameState[4][5]))
         self.print_middle_rows(" ")
-        print("      {0} {1} {2}      ".format(self.gameState[2][1],
-                                               self.gameState[3][1],
-                                               self.gameState[4][1]))
-        print("      {0} {1} {2}      ".format(self.gameState[2][0],
-                                               self.gameState[3][0],
-                                               self.gameState[4][0]))
+        print("    {0} {1} {2}    ".format(self.gameState[2][1],
+                                           self.gameState[3][1],
+                                           self.gameState[4][1]))
+        print("    {0} {1} {2}    ".format(self.gameState[2][0],
+                                           self.gameState[3][0],
+                                           self.gameState[4][0]))
 
     def constructor(self):
         """ Sets up the internal state of the HistoryNode instance """
