@@ -21,8 +21,8 @@ class TestRules(unittest.TestCase):
         startCoordinate = coordinate.Coordinate(3, 4)
         captureCoordinate = coordinate.Coordinate(4, 4)
         endCoordinate = coordinate.Coordinate(5, 4)
-        board.setState(startCoordinate, 2) # Make a fox piece
-        board.setState(captureCoordinate, 1) # Make a goose piece
+        board.setState(startCoordinate, types.FOX)
+        board.setState(captureCoordinate, types.GOOSE)
 
         # When
         rules.makeCapture(board, startCoordinate, endCoordinate)
@@ -42,8 +42,8 @@ class TestRules(unittest.TestCase):
         startCoordinate = coordinate.Coordinate(4, 4)
         captureCoordinate = coordinate.Coordinate(4, 5)
         endCoordinate = coordinate.Coordinate(4, 6)
-        board.setState(startCoordinate, 2) # Make a fox piece
-        board.setState(captureCoordinate, 1) # Make a goose piece
+        board.setState(startCoordinate, types.FOX)
+        board.setState(captureCoordinate, types.GOOSE)
 
         # When
         rules.makeCapture(board, startCoordinate, endCoordinate)
@@ -63,8 +63,8 @@ class TestRules(unittest.TestCase):
         startCoordinate = coordinate.Coordinate(3, 4)
         captureCoordinate = coordinate.Coordinate(4, 5)
         endCoordinate = coordinate.Coordinate(5, 6)
-        board.setState(startCoordinate, 2) # Make a fox piece
-        board.setState(captureCoordinate, 1) # Make a goose piece
+        board.setState(startCoordinate, types.FOX)
+        board.setState(captureCoordinate, types.GOOSE)
 
         # When
         rules.makeCapture(board, startCoordinate, endCoordinate)
@@ -84,8 +84,8 @@ class TestRules(unittest.TestCase):
         startCoordinate = coordinate.Coordinate(3, 4)
         captureCoordinate = coordinate.Coordinate(4, 4)
         endCoordinate = coordinate.Coordinate(6, 4)
-        board.setState(startCoordinate, 2) # Make a fox piece
-        board.setState(captureCoordinate, 1) # Make a goose piece
+        board.setState(startCoordinate, types.FOX)
+        board.setState(captureCoordinate, types.GOOSE)
 
         # When/Assert
         self.assertRaises(ValueError,
@@ -101,8 +101,8 @@ class TestRules(unittest.TestCase):
         startCoordinate = coordinate.Coordinate(3, 3)
         captureCoordinate = coordinate.Coordinate(3, 5)
         endCoordinate = coordinate.Coordinate(3, 6)
-        board.setState(startCoordinate, 2) # Make a fox piece
-        board.setState(captureCoordinate, 1) # Make a goose piece
+        board.setState(startCoordinate, types.FOX)
+        board.setState(captureCoordinate, types.GOOSE)
 
         # When/Assert
         self.assertRaises(ValueError,
@@ -117,8 +117,8 @@ class TestRules(unittest.TestCase):
         board = gamenode.GameNode()
         startCoordinate = coordinate.Coordinate(3, 3)
         captureCoordinate = coordinate.Coordinate(3, 5)
-        board.setState(startCoordinate, 2) # Make a fox piece
-        board.setState(captureCoordinate, 1) # Make a goose piece
+        board.setState(startCoordinate, types.FOX)
+        board.setState(captureCoordinate, types.GOOSE)
 
         # When/Assert
         self.assertRaises(ValueError,
@@ -656,7 +656,7 @@ class TestRules(unittest.TestCase):
         actual_result = rules_obj.existsCaptureP(board)
         expected_result = False
         self.assertEqual(actual_result, expected_result)
-        direction = 7
+        direction = 8
         mock_isACaptureP.assert_called_with(board, mock.ANY, direction)
 
     @patch.object(rules.Rules, "isACaptureP")
