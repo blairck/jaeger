@@ -2,6 +2,7 @@
 
 import unittest
 
+# pylint: disable=import-error
 from res import types
 from src import ai
 from src import coordinate
@@ -9,6 +10,72 @@ from src import historynode
 
 class TestRules(unittest.TestCase):
     """ Tests for the AI module """
+    def test_getAllFoxCaptures_dir_5(self):
+        """ Correctly evaluate a simple game position """
+        hn_object = historynode.HistoryNode()
+        fox_location = coordinate.Coordinate(3, 4)
+        goose_location = coordinate.Coordinate(3, 3)
+        hn_object.setState(fox_location, types.FOX)
+        hn_object.setState(goose_location, types.GOOSE)
+        ai_object = ai.AI(0.5, 0.5)
+        actualValue = ai_object.getAllFoxCaptures(hn_object, fox_location)
+        actualValue_inital = actualValue[0].getState(fox_location)
+        actualValue_middle = actualValue[0].getState(goose_location)
+        actualValue_end = actualValue[0].getState(coordinate.Coordinate(3, 2))
+        actualValue_length = len(actualValue)
+        expectedValue_initial = types.EMPTY
+        expectedValue_middle = types.EMPTY
+        expectedValue_end = types.FOX
+        expectedValue_length = 1
+        self.assertEqual(actualValue_inital, expectedValue_initial)
+        self.assertEqual(actualValue_middle, expectedValue_middle)
+        self.assertEqual(actualValue_end, expectedValue_end)
+        self.assertEqual(actualValue_length, expectedValue_length)
+
+    def test_getAllFoxCaptures_complicated(self):
+        """ Correctly evaluate a complicated game position """
+        hn_object = historynode.HistoryNode()
+        fox_location = coordinate.Coordinate(5, 6)
+        goose_location1 = coordinate.Coordinate(5, 5)
+        goose_location2 = coordinate.Coordinate(6, 4)
+        goose_location3 = coordinate.Coordinate(4, 4)
+        goose_location4 = coordinate.Coordinate(4, 3)
+        hn_object.setState(fox_location, types.FOX)
+        hn_object.setState(goose_location1, types.GOOSE)
+        hn_object.setState(goose_location2, types.GOOSE)
+        hn_object.setState(goose_location3, types.GOOSE)
+        hn_object.setState(goose_location4, types.GOOSE)
+        ai_object = ai.AI(0.5, 0.5)
+        actualValue = ai_object.getAllFoxCaptures(hn_object, fox_location)
+        actualValue_length = len(actualValue)
+
+        actualValue_inital = actualValue[0].getState(fox_location)
+        actualValue_middle = actualValue[0].getState(goose_location1)
+        endLocation = coordinate.Coordinate(5, 4)
+        actualValue_end = actualValue[0].getState(endLocation)
+        self.assertEqual(actualValue_inital, types.EMPTY)
+        self.assertEqual(actualValue_middle, types.EMPTY)
+        self.assertEqual(actualValue_end, types.FOX)
+
+        actualValue_inital = actualValue[1].getState(fox_location)
+        actualValue_middle = actualValue[1].getState(goose_location2)
+        endLocation = coordinate.Coordinate(7, 4)
+        actualValue_end = actualValue[1].getState(endLocation)
+        self.assertEqual(actualValue_inital, types.EMPTY)
+        self.assertEqual(actualValue_middle, types.EMPTY)
+        self.assertEqual(actualValue_end, types.FOX)
+
+        actualValue_inital = actualValue[2].getState(fox_location)
+        actualValue_middle = actualValue[2].getState(goose_location3)
+        endLocation = coordinate.Coordinate(3, 4)
+        actualValue_end = actualValue[2].getState(endLocation)
+        actualValue_outside_goose = actualValue[2].getState(goose_location4)
+        self.assertEqual(actualValue_inital, types.EMPTY)
+        self.assertEqual(actualValue_middle, types.EMPTY)
+        self.assertEqual(actualValue_end, types.FOX)
+
+        self.assertEqual(actualValue_length, 3)
+        self.assertEqual(actualValue_outside_goose, types.GOOSE)
 
     def test_evaluationFunction_default(self):
         """ Correctly evaluate a default game position """
