@@ -637,6 +637,7 @@ class TestRules(unittest.TestCase):
 
     @patch.object(rules.Rules, "isACaptureP")
     def test_existsCaptureAtLocationP_true(self, mock_isACaptureP):
+        """ Check that a capture exists at a location """
         mock_isACaptureP.return_value = True
         rules_obj = rules.Rules(test_mode=True)
         actual_result = rules_obj.existsCaptureAtLocationP("fake", "args")
@@ -645,6 +646,7 @@ class TestRules(unittest.TestCase):
 
     @patch.object(rules.Rules, "isACaptureP")
     def test_existsCaptureAtLocationP_false(self, mock_isACaptureP):
+        """ Check that a capture does not exist at a location """
         mock_isACaptureP.return_value = False
         rules_obj = rules.Rules(test_mode=True)
         actual_result = rules_obj.existsCaptureAtLocationP("fake", "args")
