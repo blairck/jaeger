@@ -16,8 +16,6 @@ class AI(object):
     def getAllFoxCaptures(self, theGame, location):
         """ This recursively finds all available captures for a single fox and
         returns the list of captures"""
-        if not self.arbiter.existsCaptureAtLocationP(theGame, location):
-            return None
         captureList = []
         x_board = location.get_x_board()
         y_board = location.get_y_board()
