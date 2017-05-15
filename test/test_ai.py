@@ -1,15 +1,36 @@
 """ Tests for the AI module """
 
 import unittest
+from unittest.mock import patch
 
 # pylint: disable=import-error
 from res import types
 from src import ai
 from src import coordinate
 from src import historynode
+from src import rules
 
 class TestRules(unittest.TestCase):
     """ Tests for the AI module """
+
+    @patch.object(rules.Rules, "legalMoveP")
+    def test_getMovesForFoxPiece(self, mock_legalMoveP):
+        """ Check case when fox move exists and is legal """
+        mock_legalMoveP.return_value = True
+        hn_object = historynode.HistoryNode()
+        fox_location = coordinate.Coordinate(3, 4)
+        hn_object.setState(fox_location, types.FOX)
+        ai_object = ai.AI(0.5, 0.5)
+        expectedValue = None
+        expectedValue_initial = types.EMPTY
+        expectedValue_end = types.FOX
+        actualValue = ai_object.getMovesForFoxPiece(hn_object, fox_location)
+        actualValue_inital = actualValue[0].getState(fox_location)
+        actualValue_end = actualValue[0].getState(coordinate.Coordinate(4, 4))
+        self.assertEqual(len(actualValue), 1)
+        self.assertEqual(actualValue_inital, expectedValue_initial)
+        self.assertEqual(actualValue_end, expectedValue_end)
+
     def test_getAllFoxCaptures_dir_5(self):
         """ Correctly evaluate a simple game position """
         hn_object = historynode.HistoryNode()
