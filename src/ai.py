@@ -14,102 +14,72 @@ class AI(object):
         self.weightB = b
 
     def getMovesForFoxPiece(self, theGame, foxLocation):
-        """ Returns a GameNode for every legal move of a given fox. It must
-        know the current board position. """
+        """ Returns a GameNode for every legal move of a given fox. theGame
+        is the current board position. """
         x_board = foxLocation.get_x_board()
         y_board = foxLocation.get_y_board()
         moveList = self.getAllFoxCaptures(theGame, foxLocation)
 
+        # Direction 1
+        foxDestination = coordinate.Coordinate(x_board, y_board + 1)
+        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+            moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                           foxLocation,
+                                                           foxDestination))
+        # Direction 2
+        foxDestination = coordinate.Coordinate(x_board + 1, y_board + 1)
+        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+            moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                           foxLocation,
+                                                           foxDestination))
         # Direction 3
         foxDestination = coordinate.Coordinate(x_board + 1, y_board)
         if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
-            moveState = transferNode(theGame)
-            moveState.setState(foxDestination, types.FOX)
-            moveState.setState(foxLocation, types.EMPTY)
-            singleMove = transferNode(moveState)
-            singleMove.score = self.evaluationFunction(moveState)
-            singleMove.leafP = True
-            singleMove.rootP = False
-            moveList.append(singleMove)
-        ##############################################################
-        # if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+2 :y])
-        #    HistoryNode *singleMove = [HistoryNode new];
-        #     [self transferNode: theGame: moveState];
-        #     [moveState setState:x+1 :y-1 :2];
-        #     [moveState setState:x :y :0];
-        #     [singleMove initialize];
-        #     [self transferNode:moveState :singleMove];
-        #     [singleMove setScore:[self evaluationFunction:moveState]];
-        #     [singleMove setLeafP: TRUE];
-        #     [singleMove setRootP: FALSE];
-        #     [moveList addObject: singleMove];
-        # if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+1 :y])
-        #    HistoryNode *singleMove = [HistoryNode new];
-        #     [self transferNode: theGame: moveState];
-        #    [moveState setState:x :y-1 :2];
-        #    [moveState setState:x :y :0];
-        #     [singleMove initialize];
-        #     [self transferNode:moveState :singleMove];
-        #     [singleMove setScore:[self evaluationFunction:moveState]];
-        #     [singleMove setLeafP: TRUE];
-        #     [singleMove setRootP: FALSE];
-        #     [moveList addObject: singleMove]; 
-        # if ([arbiter legalMoveP:theGame :x+1 :y+1 :x :y])
-        #    HistoryNode *singleMove = [HistoryNode new];
-        #     [self transferNode: theGame: moveState];
-        #    [moveState setState:x-1 :y-1 :2];
-        #    [moveState setState:x :y :0];
-        #     [singleMove initialize];
-        #     [self transferNode:moveState :singleMove];
-        #     [singleMove setScore:[self evaluationFunction:moveState]];
-        #     [singleMove setLeafP: TRUE];
-        #     [singleMove setRootP: FALSE];
-        #     [moveList addObject: singleMove]; 
-        # if ([arbiter legalMoveP:theGame :x+1 :y+1 :x :y+1])
-        #     HistoryNode *singleMove = [HistoryNode new];
-        #     [self transferNode: theGame: moveState];
-        #     [moveState setState:x-1 :y :2];
-        #     [moveState setState:x :y :0];
-        #     [singleMove initialize];
-        #     [self transferNode:moveState :singleMove];
-        #     [singleMove setScore:[self evaluationFunction:moveState]];
-        #     [singleMove setLeafP: TRUE];
-        #     [singleMove setRootP: FALSE];
-        #     [moveList addObject: singleMove]; 
-        # if ([arbiter legalMoveP:theGame :x+1 :y+1 :x :y+2])
-        #    HistoryNode *singleMove = [HistoryNode new];
-        #     [self transferNode: theGame: moveState];
-        #     [moveState setState:x-1 :y+1 :2];
-        #     [moveState setState:x :y :0];
-        #     [singleMove initialize];
-        #     [self transferNode:moveState :singleMove];
-        #     [singleMove setScore:[self evaluationFunction:moveState]];
-        #     [singleMove setLeafP: TRUE];
-        #     [singleMove setRootP: FALSE];
-        #     [moveList addObject: singleMove];
-        # if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+1 :y+2])
-        #    HistoryNode *singleMove = [HistoryNode new];
-        #     [self transferNode: theGame: moveState];
-        #    [moveState setState:x :y+1 :2];
-        #    [moveState setState:x :y :0];
-        #     [singleMove initialize];
-        #     [self transferNode:moveState :singleMove];
-        #     [singleMove setScore:[self evaluationFunction:moveState]];
-        #     [singleMove setLeafP: TRUE];
-        #     [singleMove setRootP: FALSE];
-        #     [moveList addObject: singleMove]; 
-        # if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+2 :y+2])
-        #     HistoryNode *singleMove = [HistoryNode new];
-        #     [self transferNode: theGame: moveState];
-        #     [moveState setState:x+1 :y+1 :2];
-        #     [moveState setState:x :y :0];
-        #     [singleMove initialize];
-        #     [self transferNode:moveState :singleMove];
-        #     [singleMove setScore:[self evaluationFunction:moveState]];
-        #     [singleMove setLeafP: TRUE];
-        #     [singleMove setRootP: FALSE];
-        #     [moveList addObject: singleMove];
+            moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                           foxLocation,
+                                                           foxDestination))
+        # Direction 4
+        foxDestination = coordinate.Coordinate(x_board + 1, y_board - 1)
+        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+            moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                           foxLocation,
+                                                           foxDestination))
+        # Direction 5
+        foxDestination = coordinate.Coordinate(x_board, y_board - 1)
+        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+            moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                           foxLocation,
+                                                           foxDestination))
+        # Direction 6
+        foxDestination = coordinate.Coordinate(x_board - 1, y_board - 1)
+        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+            moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                           foxLocation,
+                                                           foxDestination))
+        # Direction 7
+        foxDestination = coordinate.Coordinate(x_board - 1, y_board)
+        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+            moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                           foxLocation,
+                                                           foxDestination))
+        # Direction 8
+        foxDestination = coordinate.Coordinate(x_board - 1, y_board + 1)
+        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+            moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                           foxLocation,
+                                                           foxDestination))
         return moveList
+
+    def getMovesForFoxPieceHelper(self, theGame, foxLocation, foxDestination):
+        """ Return the new GameNode based on the fox's move """
+        moveState = transferNode(theGame)
+        moveState.setState(foxDestination, types.FOX)
+        moveState.setState(foxLocation, types.EMPTY)
+        singleMove = transferNode(moveState)
+        singleMove.score = self.evaluationFunction(moveState)
+        singleMove.leafP = True
+        singleMove.rootP = False
+        return singleMove
 
     def getAllFoxCaptures(self, theGame, location):
         """ This recursively finds all available captures for a single fox and
