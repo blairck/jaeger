@@ -162,7 +162,7 @@ class Rules(object):
         """"Tests whether a start coordinate and end coordinate constitute a
         legal move"""
         if (theGame.getState(startCoordinate) == types.GOOSE and
-                endCoordinate.get_y_board() > startCoordinate.get_y_board()):
+            endCoordinate.get_y_board() > startCoordinate.get_y_board()):
             return False
         elif (theGame.getState(endCoordinate) == types.EMPTY and
               self.findConnectionP(startCoordinate, endCoordinate)):
