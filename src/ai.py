@@ -13,6 +13,116 @@ class AI(object):
         self.weightA = a
         self.weightB = b
 
+    def getMovesForGoosePiece(theGame, gooseLocation):
+        """ This returns a GameNode for every legal move of a given goose """
+        pass
+# -(NSMutableArray *) getMovesForGoosePiece: (int) x: (int) y: (HistoryNode *) theGame;
+# {
+#     //int moveState[7][7];
+#     HistoryNode *moveState = [HistoryNode new];
+#     NSMutableArray *moveList = [[NSMutableArray alloc] init];
+    
+#     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+2 :y+1])
+#         HistoryNode *singleMove = [HistoryNode new];
+#         [self transferNode: theGame: moveState];
+#         [moveState setState:x+1 :y :[arbiter resultingGoose:[moveState getState:x :y] :x+1: y]];
+#         [moveState setState:x :y :0];
+#         [singleMove initialize];
+#         [self transferNode:moveState :singleMove];
+#         [singleMove setScore:[self evaluationFunction:moveState]];
+#         [singleMove setLeafP: TRUE];
+#         [singleMove setRootP: FALSE];
+#         //[singleMove print];
+#         [moveList addObject: singleMove]; 
+#     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+2 :y])
+#         HistoryNode *singleMove = [HistoryNode new];
+#         [self transferNode: theGame: moveState];
+#         [moveState setState:x+1 :y-1 :[arbiter resultingGoose:[moveState getState:x :y] :x+1: y-1]];
+#         [moveState setState:x :y :0];
+#         [singleMove initialize];
+#         [self transferNode:moveState :singleMove];
+#         [singleMove setScore:[self evaluationFunction:moveState]];
+#         [singleMove setLeafP: TRUE];
+#         [singleMove setRootP: FALSE];
+#         //[singleMove print];
+#         [moveList addObject: singleMove]; 
+#     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+1 :y])
+#         HistoryNode *singleMove = [HistoryNode new];
+#         [self transferNode: theGame: moveState];
+#         [moveState setState:x :y-1 :[arbiter resultingGoose:[moveState getState:x :y] :x: y-1]];
+#         [moveState setState:x :y :0];
+#         [singleMove initialize];
+#         [self transferNode:moveState :singleMove];
+#         [singleMove setScore:[self evaluationFunction:moveState]];
+#         [singleMove setLeafP: TRUE];
+#         [singleMove setRootP: FALSE];
+#         //[singleMove print];
+#         [moveList addObject: singleMove]; 
+#     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x :y])
+#         HistoryNode *singleMove = [HistoryNode new];
+#         [self transferNode: theGame: moveState];
+#         [moveState setState:x-1 :y-1 :[arbiter resultingGoose:[moveState getState:x :y] :x-1: y-1]];
+#         [moveState setState:x :y :0];
+#         [singleMove initialize];
+#         [self transferNode:moveState :singleMove];
+#         [singleMove setScore:[self evaluationFunction:moveState]];
+#         [singleMove setLeafP: TRUE];
+#         [singleMove setRootP: FALSE];
+#         //[singleMove print];
+#         [moveList addObject: singleMove]; 
+#     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x :y+1])
+#         HistoryNode *singleMove = [HistoryNode new];
+#         [self transferNode: theGame: moveState];
+#         [moveState setState:x-1 :y :[arbiter resultingGoose:[moveState getState:x :y] :x-1: y]];
+#         [moveState setState:x :y :0];
+#         [singleMove initialize];
+#         [self transferNode:moveState :singleMove];
+#         [singleMove setScore:[self evaluationFunction:moveState]];
+#         [singleMove setLeafP: TRUE];
+#         [singleMove setRootP: FALSE];
+#         //[singleMove print];
+#         [moveList addObject: singleMove]; 
+
+#     //only check these following situations for supergeese (game[x][y]==3)
+#     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x :y+2] && [theGame getState:x :y]==3)
+#         HistoryNode *singleMove = [HistoryNode new];
+#         [self transferNode: theGame: moveState];
+#         [moveState setState:x-1 :y+1 :[arbiter resultingGoose:[moveState getState:x :y] :x-1: y+1]];
+#         [moveState setState:x :y :0];
+#         [singleMove initialize];
+#         [self transferNode:moveState :singleMove];
+#         [singleMove setScore:[self evaluationFunction:moveState]];
+#         [singleMove setLeafP: TRUE];
+#         [singleMove setRootP: FALSE];
+#         //[singleMove print];
+#         [moveList addObject: singleMove]; 
+#     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+1 :y+2] && [theGame getState:x :y]==3)
+#         HistoryNode *singleMove = [HistoryNode new];
+#         [self transferNode: theGame: moveState];
+#         [moveState setState:x :y+1 :[arbiter resultingGoose:[moveState getState:x :y] :x: y+1]];
+#         [moveState setState:x :y :0];
+#         [singleMove initialize];
+#         [self transferNode:moveState :singleMove];
+#         [singleMove setScore:[self evaluationFunction:moveState]];
+#         [singleMove setLeafP: TRUE];
+#         [singleMove setRootP: FALSE];
+#         //[singleMove print];
+#         [moveList addObject: singleMove]; 
+#     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+2 :y+2] && [theGame getState:x :y]==3)
+#         HistoryNode *singleMove = [HistoryNode new];
+#         [self transferNode: theGame: moveState];
+#         [moveState setState:x+1 :y+1 :[arbiter resultingGoose:[moveState getState:x :y] :x+1: y+1]];
+#         [moveState setState:x :y :0];
+#         [singleMove initialize];
+#         [self transferNode:moveState :singleMove];
+#         [singleMove setScore:[self evaluationFunction:moveState]];
+#         [singleMove setLeafP: TRUE];
+#         [singleMove setRootP: FALSE];
+#         //[singleMove print];
+#         [moveList addObject: singleMove]; 
+
+#     return moveList;
+
     def getMovesForFoxPiece(self, theGame, foxLocation):
         """ Returns a GameNode for every legal move of a given fox. theGame
         is the current board position. """
