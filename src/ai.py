@@ -20,11 +20,9 @@ class AI(object):
         y_board = foxLocation.get_y_board()
         moveList = self.getAllFoxCaptures(theGame, foxLocation)
 
-        if len(moveList) > 0:
-            # This means there is at least one capture which the fox must take
-            return moveList
-        else:
-            # These are regular non-capture moves for the fox
+        if len(moveList) == 0:
+            # These are regular non-capture moves for the fox, and no captures
+            # were found
             # Direction 1
             foxDestination = coordinate.Coordinate(x_board, y_board + 1)
             if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
@@ -73,7 +71,8 @@ class AI(object):
                 moveList.append(self.getMovesForFoxPieceHelper(theGame,
                                                                foxLocation,
                                                                foxDestination))
-            return moveList
+
+        return moveList
 
     def getMovesForFoxPieceHelper(self, theGame, foxLocation, foxDestination):
         """ Return the new GameNode based on the fox's move """
