@@ -20,55 +20,60 @@ class AI(object):
         y_board = foxLocation.get_y_board()
         moveList = self.getAllFoxCaptures(theGame, foxLocation)
 
-        # Direction 1
-        foxDestination = coordinate.Coordinate(x_board, y_board + 1)
-        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
-            moveList.append(self.getMovesForFoxPieceHelper(theGame,
-                                                           foxLocation,
-                                                           foxDestination))
-        # Direction 2
-        foxDestination = coordinate.Coordinate(x_board + 1, y_board + 1)
-        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
-            moveList.append(self.getMovesForFoxPieceHelper(theGame,
-                                                           foxLocation,
-                                                           foxDestination))
-        # Direction 3
-        foxDestination = coordinate.Coordinate(x_board + 1, y_board)
-        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
-            moveList.append(self.getMovesForFoxPieceHelper(theGame,
-                                                           foxLocation,
-                                                           foxDestination))
-        # Direction 4
-        foxDestination = coordinate.Coordinate(x_board + 1, y_board - 1)
-        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
-            moveList.append(self.getMovesForFoxPieceHelper(theGame,
-                                                           foxLocation,
-                                                           foxDestination))
-        # Direction 5
-        foxDestination = coordinate.Coordinate(x_board, y_board - 1)
-        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
-            moveList.append(self.getMovesForFoxPieceHelper(theGame,
-                                                           foxLocation,
-                                                           foxDestination))
-        # Direction 6
-        foxDestination = coordinate.Coordinate(x_board - 1, y_board - 1)
-        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
-            moveList.append(self.getMovesForFoxPieceHelper(theGame,
-                                                           foxLocation,
-                                                           foxDestination))
-        # Direction 7
-        foxDestination = coordinate.Coordinate(x_board - 1, y_board)
-        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
-            moveList.append(self.getMovesForFoxPieceHelper(theGame,
-                                                           foxLocation,
-                                                           foxDestination))
-        # Direction 8
-        foxDestination = coordinate.Coordinate(x_board - 1, y_board + 1)
-        if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
-            moveList.append(self.getMovesForFoxPieceHelper(theGame,
-                                                           foxLocation,
-                                                           foxDestination))
-        return moveList
+        if len(moveList) > 0:
+            # This means there is at least one capture which the fox must take
+            return moveList
+        else:
+            # These are regular non-capture moves for the fox
+            # Direction 1
+            foxDestination = coordinate.Coordinate(x_board, y_board + 1)
+            if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+                moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                               foxLocation,
+                                                               foxDestination))
+            # Direction 2
+            foxDestination = coordinate.Coordinate(x_board + 1, y_board + 1)
+            if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+                moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                               foxLocation,
+                                                               foxDestination))
+            # Direction 3
+            foxDestination = coordinate.Coordinate(x_board + 1, y_board)
+            if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+                moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                               foxLocation,
+                                                               foxDestination))
+            # Direction 4
+            foxDestination = coordinate.Coordinate(x_board + 1, y_board - 1)
+            if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+                moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                               foxLocation,
+                                                               foxDestination))
+            # Direction 5
+            foxDestination = coordinate.Coordinate(x_board, y_board - 1)
+            if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+                moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                               foxLocation,
+                                                               foxDestination))
+            # Direction 6
+            foxDestination = coordinate.Coordinate(x_board - 1, y_board - 1)
+            if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+                moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                               foxLocation,
+                                                               foxDestination))
+            # Direction 7
+            foxDestination = coordinate.Coordinate(x_board - 1, y_board)
+            if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+                moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                               foxLocation,
+                                                               foxDestination))
+            # Direction 8
+            foxDestination = coordinate.Coordinate(x_board - 1, y_board + 1)
+            if self.arbiter.legalMoveP(theGame, foxLocation, foxDestination):
+                moveList.append(self.getMovesForFoxPieceHelper(theGame,
+                                                               foxLocation,
+                                                               foxDestination))
+            return moveList
 
     def getMovesForFoxPieceHelper(self, theGame, foxLocation, foxDestination):
         """ Return the new GameNode based on the fox's move """

@@ -13,8 +13,21 @@ from src import rules
 class TestAI(unittest.TestCase):
     """ Tests for the AI module """
 
+    @patch.object(ai.AI, "getAllFoxCaptures")
+    def test_getMovesForFoxPiece_ExistsCapture(self, mock_getAllFoxCaptures):
+        """ Check case when there's at least one capture
+        and we return just that """
+        mock_getAllFoxCaptures.return_value = ["fake gamenode"]
+        hn_object = historynode.HistoryNode()
+        fox_location = coordinate.Coordinate(3, 4)
+        hn_object.setState(fox_location, types.FOX)
+        ai_object = ai.AI(0.5, 0.5)
+        expectedValue = ["fake gamenode"]
+        actualValue = ai_object.getMovesForFoxPiece(hn_object, fox_location)
+        self.assertEqual(actualValue, expectedValue)
+
     @patch.object(rules.Rules, "legalMoveP")
-    def test_getMovesForFoxPiece(self, mock_legalMoveP):
+    def test_getMovesForFoxPiece_Good(self, mock_legalMoveP):
         """ Check case when fox move exists and is legal """
         mock_legalMoveP.return_value = True
         hn_object = historynode.HistoryNode()
@@ -32,7 +45,7 @@ class TestAI(unittest.TestCase):
 
     @patch.object(rules.Rules, "legalMoveP")
     def test_getMovesForFoxPiece_none_legal(self, mock_legalMoveP):
-        """ Check case when fox move exists and is legal """
+        """ Check case when there is no move """
         mock_legalMoveP.return_value = False
         hn_object = historynode.HistoryNode()
         fox_location = coordinate.Coordinate(3, 4)
