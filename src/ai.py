@@ -15,13 +15,45 @@ class AI(object):
 
     def getMovesForGoosePiece(theGame, gooseLocation):
         """ This returns a GameNode for every legal move of a given goose """
-        pass
-# -(NSMutableArray *) getMovesForGoosePiece: (int) x: (int) y: (HistoryNode *) theGame;
-# {
-#     //int moveState[7][7];
-#     HistoryNode *moveState = [HistoryNode new];
-#     NSMutableArray *moveList = [[NSMutableArray alloc] init];
-    
+        xBoard = gooseLocation.get_x_board()
+        yBoard = gooseLocation.get_y_board()
+        moveList = []
+
+        # Direction 1
+        gooseDestination = coordinate.Coordinate(xBoard, yBoard + 1)
+        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
+            pass
+        # Direction 2
+        gooseDestination = coordinate.Coordinate(xBoard + 1, yBoard + 1)
+        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
+            pass
+        # Direction 3
+        gooseDestination = coordinate.Coordinate(xBoard + 1, yBoard)
+        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
+            pass
+        # Direction 4
+        gooseDestination = coordinate.Coordinate(xBoard + 1, yBoard - 1)
+        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
+            pass
+        # Direction 5
+        gooseDestination = coordinate.Coordinate(xBoard, yBoard - 1)
+        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
+            pass
+        # Direction 6
+        gooseDestination = coordinate.Coordinate(xBoard - 1, yBoard - 1)
+        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
+            pass
+        # Direction 7
+        gooseDestination = coordinate.Coordinate(xBoard - 1, yBoard)
+        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
+            pass
+        # Direction 8
+        gooseDestination = coordinate.Coordinate(xBoard - 1, yBoard + 1)
+        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
+            pass
+
+
+#   Direction 3
 #     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+2 :y+1])
 #         HistoryNode *singleMove = [HistoryNode new];
 #         [self transferNode: theGame: moveState];
@@ -32,8 +64,8 @@ class AI(object):
 #         [singleMove setScore:[self evaluationFunction:moveState]];
 #         [singleMove setLeafP: TRUE];
 #         [singleMove setRootP: FALSE];
-#         //[singleMove print];
 #         [moveList addObject: singleMove]; 
+#   Direction 4
 #     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+2 :y])
 #         HistoryNode *singleMove = [HistoryNode new];
 #         [self transferNode: theGame: moveState];
@@ -44,8 +76,8 @@ class AI(object):
 #         [singleMove setScore:[self evaluationFunction:moveState]];
 #         [singleMove setLeafP: TRUE];
 #         [singleMove setRootP: FALSE];
-#         //[singleMove print];
 #         [moveList addObject: singleMove]; 
+#   Direction 5
 #     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+1 :y])
 #         HistoryNode *singleMove = [HistoryNode new];
 #         [self transferNode: theGame: moveState];
@@ -56,8 +88,8 @@ class AI(object):
 #         [singleMove setScore:[self evaluationFunction:moveState]];
 #         [singleMove setLeafP: TRUE];
 #         [singleMove setRootP: FALSE];
-#         //[singleMove print];
 #         [moveList addObject: singleMove]; 
+#   Direction 6
 #     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x :y])
 #         HistoryNode *singleMove = [HistoryNode new];
 #         [self transferNode: theGame: moveState];
@@ -68,8 +100,8 @@ class AI(object):
 #         [singleMove setScore:[self evaluationFunction:moveState]];
 #         [singleMove setLeafP: TRUE];
 #         [singleMove setRootP: FALSE];
-#         //[singleMove print];
 #         [moveList addObject: singleMove]; 
+#   Direction 7
 #     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x :y+1])
 #         HistoryNode *singleMove = [HistoryNode new];
 #         [self transferNode: theGame: moveState];
@@ -80,10 +112,10 @@ class AI(object):
 #         [singleMove setScore:[self evaluationFunction:moveState]];
 #         [singleMove setLeafP: TRUE];
 #         [singleMove setRootP: FALSE];
-#         //[singleMove print];
 #         [moveList addObject: singleMove]; 
 
 #     //only check these following situations for supergeese (game[x][y]==3)
+#   Direction 8
 #     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x :y+2] && [theGame getState:x :y]==3)
 #         HistoryNode *singleMove = [HistoryNode new];
 #         [self transferNode: theGame: moveState];
@@ -96,6 +128,7 @@ class AI(object):
 #         [singleMove setRootP: FALSE];
 #         //[singleMove print];
 #         [moveList addObject: singleMove]; 
+#   Direction 1
 #     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+1 :y+2] && [theGame getState:x :y]==3)
 #         HistoryNode *singleMove = [HistoryNode new];
 #         [self transferNode: theGame: moveState];
@@ -108,6 +141,7 @@ class AI(object):
 #         [singleMove setRootP: FALSE];
 #         //[singleMove print];
 #         [moveList addObject: singleMove]; 
+#   Direction 2
 #     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+2 :y+2] && [theGame getState:x :y]==3)
 #         HistoryNode *singleMove = [HistoryNode new];
 #         [self transferNode: theGame: moveState];
