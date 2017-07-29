@@ -13,6 +13,33 @@ from src import rules
 class TestIntegAI(unittest.TestCase):
     """ Integration Tests for the AI module """
 
+    def test_getMovesForGoosePiece_MaxMoves(self):
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        gooseLocation = coordinate.Coordinate(6, 4)
+        hnObject.setState(gooseLocation, types.GOOSE)
+        numberOfMoves = len(aiObject.getMovesForGoosePiece(hnObject,
+                                                           gooseLocation))
+        self.assertEqual(numberOfMoves, 5)
+
+    def test_getMovesForGoosePiece_PartialMoves(self):
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        gooseLocation = coordinate.Coordinate(4, 7)
+        hnObject.setState(gooseLocation, types.GOOSE)
+        numberOfMoves = len(aiObject.getMovesForGoosePiece(hnObject,
+                                                           gooseLocation))
+        self.assertEqual(numberOfMoves, 3)
+
+    def test_getMovesForGoosePiece_SuperGoose(self):
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        gooseLocation = coordinate.Coordinate(5, 3)
+        hnObject.setState(gooseLocation, types.SUPERGOOSE)
+        numberOfMoves = len(aiObject.getMovesForGoosePiece(hnObject,
+                                                           gooseLocation))
+        self.assertEqual(numberOfMoves, 7)
+
     def test_getMovesForFoxPiece_MixedConnections(self):
         """ Check case when fox has mixed move connections """
         hn_object = historynode.HistoryNode()

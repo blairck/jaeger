@@ -13,45 +13,97 @@ class AI(object):
         self.weightA = a
         self.weightB = b
 
-    def getMovesForGoosePiece(theGame, gooseLocation):
+    def getMovesForGoosePiece(self, theGame, gooseLocation):
         """ This returns a GameNode for every legal move of a given goose """
         xBoard = gooseLocation.get_x_board()
         yBoard = gooseLocation.get_y_board()
         moveList = []
 
         # Direction 1
-        gooseDestination = coordinate.Coordinate(xBoard, yBoard + 1)
-        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
-            pass
+        gDestination = self.getMovesForGoosePieceCoordinateHelper(xBoard,
+                                                                  yBoard + 1)
+        if (gDestination and
+            self.arbiter.legalMoveP(theGame, gooseLocation, gDestination)):
+            moveList.append(self.getMovesForGoosePieceHelper(theGame,
+                                                             gooseLocation,
+                                                             gDestination))
         # Direction 2
-        gooseDestination = coordinate.Coordinate(xBoard + 1, yBoard + 1)
-        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
-            pass
+        gDestination = self.getMovesForGoosePieceCoordinateHelper(xBoard + 1,
+                                                                  yBoard + 1)
+        if (gDestination and
+            self.arbiter.legalMoveP(theGame, gooseLocation, gDestination)):
+            moveList.append(self.getMovesForGoosePieceHelper(theGame,
+                                                             gooseLocation,
+                                                             gDestination))
         # Direction 3
-        gooseDestination = coordinate.Coordinate(xBoard + 1, yBoard)
-        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
-            pass
+        gDestination = self.getMovesForGoosePieceCoordinateHelper(xBoard + 1,
+                                                                  yBoard)
+        if (gDestination and
+            self.arbiter.legalMoveP(theGame, gooseLocation, gDestination)):
+            moveList.append(self.getMovesForGoosePieceHelper(theGame,
+                                                             gooseLocation,
+                                                             gDestination))
         # Direction 4
-        gooseDestination = coordinate.Coordinate(xBoard + 1, yBoard - 1)
-        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
-            pass
+        gDestination = self.getMovesForGoosePieceCoordinateHelper(xBoard + 1,
+                                                                  yBoard - 1)
+        if (gDestination and
+            self.arbiter.legalMoveP(theGame, gooseLocation, gDestination)):
+            moveList.append(self.getMovesForGoosePieceHelper(theGame,
+                                                             gooseLocation,
+                                                             gDestination))
         # Direction 5
-        gooseDestination = coordinate.Coordinate(xBoard, yBoard - 1)
-        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
-            pass
+        gDestination = self.getMovesForGoosePieceCoordinateHelper(xBoard,
+                                                                  yBoard - 1)
+        if (gDestination and
+            self.arbiter.legalMoveP(theGame, gooseLocation, gDestination)):
+            moveList.append(self.getMovesForGoosePieceHelper(theGame,
+                                                             gooseLocation,
+                                                             gDestination))
         # Direction 6
-        gooseDestination = coordinate.Coordinate(xBoard - 1, yBoard - 1)
-        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
-            pass
+        gDestination = self.getMovesForGoosePieceCoordinateHelper(xBoard - 1,
+                                                                  yBoard - 1)
+        if (gDestination and
+            self.arbiter.legalMoveP(theGame, gooseLocation, gDestination)):
+            moveList.append(self.getMovesForGoosePieceHelper(theGame,
+                                                             gooseLocation,
+                                                             gDestination))
         # Direction 7
-        gooseDestination = coordinate.Coordinate(xBoard - 1, yBoard)
-        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
-            pass
+        gDestination = self.getMovesForGoosePieceCoordinateHelper(xBoard - 1,
+                                                                  yBoard)
+        if (gDestination and
+            self.arbiter.legalMoveP(theGame, gooseLocation, gDestination)):
+            moveList.append(self.getMovesForGoosePieceHelper(theGame,
+                                                             gooseLocation,
+                                                             gDestination))
         # Direction 8
-        gooseDestination = coordinate.Coordinate(xBoard - 1, yBoard + 1)
-        if self.arbiter.legalMoveP(theGame, gooseLocation, gooseDestination):
-            pass
+        gDestination = self.getMovesForGoosePieceCoordinateHelper(xBoard - 1,
+                                                                  yBoard + 1)
+        if (gDestination and
+            self.arbiter.legalMoveP(theGame, gooseLocation, gDestination)):
+            moveList.append(self.getMovesForGoosePieceHelper(theGame,
+                                                             gooseLocation,
+                                                             gDestination))
 
+        return moveList
+
+    def getMovesForGoosePieceHelper(self,
+                                    theGame,
+                                    gooseLocation,
+                                    gooseDestination):
+        gooseType = theGame.getState(gooseLocation)
+        newMoveNode = transferNode(theGame)
+        newMoveNode.setState(gooseDestination, gooseType)
+        newMoveNode.setState(gooseLocation, types.EMPTY)
+        newMoveNode.score = self.evaluationFunction(newMoveNode)
+        newMoveNode.leafP = True
+        newMoveNode.rootP = False
+        return newMoveNode
+
+    def getMovesForGoosePieceCoordinateHelper(self, xBoard, yBoard):
+        try:
+            return coordinate.Coordinate(xBoard, yBoard)
+        except ValueError:
+            return None
 
 #   Direction 3
 #     if ([arbiter legalMoveP:theGame :x+1 :y+1 :x+2 :y+1])
@@ -220,14 +272,13 @@ class AI(object):
 
     def getMovesForFoxPieceHelper(self, theGame, foxLocation, foxDestination):
         """ Return the new GameNode based on the fox's move """
-        moveState = transferNode(theGame)
-        moveState.setState(foxDestination, types.FOX)
-        moveState.setState(foxLocation, types.EMPTY)
-        singleMove = transferNode(moveState)
-        singleMove.score = self.evaluationFunction(moveState)
-        singleMove.leafP = True
-        singleMove.rootP = False
-        return singleMove
+        newMoveNode = transferNode(theGame)
+        newMoveNode.setState(foxDestination, types.FOX)
+        newMoveNode.setState(foxLocation, types.EMPTY)
+        newMoveNode.score = self.evaluationFunction(newMoveNode)
+        newMoveNode.leafP = True
+        newMoveNode.rootP = False
+        return newMoveNode
 
     def getAllFoxCaptures(self, theGame, location):
         """ This recursively finds all available captures for a single fox and
@@ -239,16 +290,15 @@ class AI(object):
             if self.arbiter.isACaptureP(theGame, location, direction):
                 deltaX = rules.findXCoordinateFromDirection(direction)
                 deltaY = rules.findYCoordinateFromDirection(direction)
-                moveState = transferNode(theGame)
+                newMoveNode = transferNode(theGame)
                 destination = coordinate.Coordinate(x_board + deltaX,
                                                     y_board + deltaY)
-                rules.makeCapture(moveState, location, destination)
-                singleMove = transferNode(moveState)
-                singleMove.score = self.evaluationFunction(moveState)
-                singleMove.leafP = True
-                singleMove.rootP = False
-                captureList.append(singleMove)
-                nextCapture = self.getAllFoxCaptures(moveState, destination)
+                rules.makeCapture(newMoveNode, location, destination)
+                newMoveNode.score = self.evaluationFunction(newMoveNode)
+                newMoveNode.leafP = True
+                newMoveNode.rootP = False
+                captureList.append(newMoveNode)
+                nextCapture = self.getAllFoxCaptures(newMoveNode, destination)
                 if nextCapture:
                     captureList.extend(nextCapture)
         return captureList
@@ -288,7 +338,8 @@ class AI(object):
         return totalScore
 
 def transferNode(startNode):
-    """ Copies input historynode to a new one and returns that """
+    """ Copies input historynode to a new one and returns that.
+    Basically performs a deep copy."""
     endNode = historynode.HistoryNode()
     for x in range(1, 8):
         for y in range(1, 8):
