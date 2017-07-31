@@ -13,6 +13,40 @@ from src import rules
 class TestAI(unittest.TestCase):
     """ Tests for the AI module """
 
+    @patch.object(rules.Rules, "legalMoveP")
+    def test_getMovesForGoosePiece_DetailedMoves(self, mock_legalMoveP):
+        mock_legalMoveP.return_value = True
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        gooseLocation = coordinate.Coordinate(6, 4)
+        hnObject.setState(gooseLocation, types.GOOSE)
+        numberOfMoves = len(aiObject.getMovesForGoosePiece(hnObject,
+                                                           gooseLocation))
+        self.assertEqual(numberOfMoves, 0)
+
+    @patch.object(rules.Rules, "legalMoveP")
+    def test_getMovesForGoosePiece_NoMoves(self, mock_legalMoveP):
+        mock_legalMoveP.return_value = False
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        gooseLocation = coordinate.Coordinate(6, 4)
+        hnObject.setState(gooseLocation, types.GOOSE)
+        numberOfMoves = len(aiObject.getMovesForGoosePiece(hnObject,
+                                                           gooseLocation))
+        self.assertEqual(numberOfMoves, 0)
+
+    @patch.object(ai.AI, "getAllFoxCaptures")
+    def test_getMovesForFoxPiece_OnEdge(self, mock_getAllFoxCaptures):
+        mock_getAllFoxCaptures.return_value = []
+        hn_object = historynode.HistoryNode()
+        fox_location = coordinate.Coordinate(3, 1)
+        hn_object.setState(fox_location, types.FOX)
+        ai_object = ai.AI(0.5, 0.5)
+        actualValue = len(ai_object.getMovesForFoxPiece(hn_object,
+                                                        fox_location))
+        expectedValue = 3
+        self.assertEqual(actualValue, expectedValue)
+
     @patch.object(ai.AI, "getAllFoxCaptures")
     def test_getMovesForFoxPiece_ExistsCapture(self, mock_getAllFoxCaptures):
         """ Check case when there's at least one capture

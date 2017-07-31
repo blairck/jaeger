@@ -18,14 +18,14 @@ interface for playing against the computer
 
 ### Status ###
 Functions to be ported and tested, organized by component
-* AI                            4/8
+* AI                            5/7
 * Connection                    5/5
 * FileController                0/2
 * GameInterface                 0/23
 * GameNode                      7/7
 * HistoryNode                   11/11
 * Rules                         14/14
-* TOTAL                         41/70
+* TOTAL                         42/69
 
 ### Requirements ###
 To use:
