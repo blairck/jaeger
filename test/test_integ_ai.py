@@ -54,20 +54,3 @@ class TestIntegAI(unittest.TestCase):
         self.assertEqual(len(actualValue), 4)
         self.assertEqual(actualValue_inital, expectedValue_initial)
         self.assertEqual(actualValue_end, expectedValue_end)
-
-    def test_getMovesForFoxPieceHelper(self):
-        """ Check getMovesForFoxPiece helper function """
-        hn_object = historynode.HistoryNode()
-        fox_location = coordinate.Coordinate(3, 4)
-        fox_destination = coordinate.Coordinate(2, 4)
-        hn_object.setState(fox_location, types.FOX)
-        ai_object = ai.AI(0.5, 0.5)
-        expectedValue_initial = types.EMPTY
-        expectedValue_end = types.FOX
-        actualValue = ai_object.getMovesForFoxPieceHelper(hn_object,
-                                                          fox_location,
-                                                          fox_destination)
-        actualValue_initial = actualValue.getState(fox_location)
-        actualValue_end = actualValue.getState(fox_destination)
-        self.assertEqual(actualValue_initial, expectedValue_initial)
-        self.assertEqual(actualValue_end, expectedValue_end)

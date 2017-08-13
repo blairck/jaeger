@@ -13,6 +13,18 @@ from src import rules
 class TestAI(unittest.TestCase):
     """ Tests for the AI module """
 
+    def test_getCoordinateFromDirection_good(self):
+        test_xBoard = 6
+        test_yBoard = 4
+        testLocation = coordinate.Coordinate(test_xBoard, test_yBoard)
+        aiObject = ai.AI(0.5, 0.5)
+        result = aiObject.getCoordinateFromDirection(testLocation, 1)
+        result_xBoard = result.get_x_board()
+        result_yBoard = result.get_y_board()
+        self.assertEqual(test_xBoard, result_xBoard)
+        self.assertEqual(test_yBoard + 1, result_yBoard)
+
+
     @patch.object(rules.Rules, "legalMoveP")
     def test_getMovesForGoosePiece_DetailedMoves(self, mock_legalMoveP):
         mock_legalMoveP.return_value = True
@@ -22,7 +34,7 @@ class TestAI(unittest.TestCase):
         hnObject.setState(gooseLocation, types.GOOSE)
         numberOfMoves = len(aiObject.getMovesForGoosePiece(hnObject,
                                                            gooseLocation))
-        self.assertEqual(numberOfMoves, 0)
+        self.assertEqual(numberOfMoves, 8)
 
     @patch.object(rules.Rules, "legalMoveP")
     def test_getMovesForGoosePiece_NoMoves(self, mock_legalMoveP):
