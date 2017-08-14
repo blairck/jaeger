@@ -1,10 +1,5 @@
 """ This module contains the AI search algorithm """
 
-# TODO:
-# Make a "get a direction coordinate" function
-# Simplify getMoves functions to just be a for loop + moveList.append
-# Add getMovesForGoosePiece unit tests
-
 # pylint: disable=import-error
 from res import types
 from src import coordinate
@@ -33,7 +28,9 @@ class AI(object):
                                         gooseDestination)):
                 gooseType = theGame.getState(gooseLocation)
                 moveResult = transferNode(theGame)
-                moveResult.setState(gooseDestination, gooseType)
+                finalGooseType = rules.resultingGoose(gooseType,
+                                                      gooseDestination)
+                moveResult.setState(gooseDestination, finalGooseType)
                 moveResult.setState(gooseLocation, types.EMPTY)
                 moveResult.score = self.evaluationFunction(moveResult)
                 moveResult.leafP = True

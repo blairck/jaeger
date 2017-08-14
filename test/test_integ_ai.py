@@ -13,6 +13,30 @@ from src import rules
 class TestIntegAI(unittest.TestCase):
     """ Integration Tests for the AI module """
 
+    def test_getMovesForGoosePiece_GooseToSuper(self):
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        goose_xBoard = 2
+        goose_yBoard = 3
+        gooseLocation = coordinate.Coordinate(goose_xBoard, goose_yBoard)
+        gooseDestination0 = coordinate.Coordinate(goose_xBoard + 1,
+                                                  goose_yBoard)
+        gooseDestination1 = coordinate.Coordinate(goose_xBoard - 1,
+                                                  goose_yBoard)
+        hnObject.setState(gooseLocation, types.GOOSE)
+        resultingMoves = aiObject.getMovesForGoosePiece(hnObject,
+                                                        gooseLocation)
+        numberOfMoves = len(resultingMoves)
+        self.assertEqual(numberOfMoves, 2)
+        self.assertEqual(resultingMoves[0].getState(gooseLocation),
+                         types.EMPTY)
+        self.assertEqual(resultingMoves[0].getState(gooseDestination0),
+                         types.SUPERGOOSE)
+        self.assertEqual(resultingMoves[1].getState(gooseLocation),
+                         types.EMPTY)
+        self.assertEqual(resultingMoves[1].getState(gooseDestination1),
+                         types.GOOSE)
+
     def test_getMovesForGoosePiece_MaxMoves(self):
         aiObject = ai.AI(0.5, 0.5)
         hnObject = historynode.HistoryNode()

@@ -364,7 +364,7 @@ def resultingGoose(currentType, gooseCoordinate):
     use in the AI algorithm) """
     if ((3 <= gooseCoordinate.get_x_board() <= 5) and
             (1 <= gooseCoordinate.get_y_board() <= 3)):
-        return 3
+        return types.SUPERGOOSE
     else:
         return currentType
 

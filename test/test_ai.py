@@ -32,9 +32,29 @@ class TestAI(unittest.TestCase):
         hnObject = historynode.HistoryNode()
         gooseLocation = coordinate.Coordinate(6, 4)
         hnObject.setState(gooseLocation, types.GOOSE)
-        numberOfMoves = len(aiObject.getMovesForGoosePiece(hnObject,
-                                                           gooseLocation))
+        resultingMoves = aiObject.getMovesForGoosePiece(hnObject,
+                                                        gooseLocation)
+        numberOfMoves = len(resultingMoves)
         self.assertEqual(numberOfMoves, 8)
+        for direction in range(1, 9):
+            move = resultingMoves[direction - 1]
+            self.assertEqual(move.getState(gooseLocation), types.EMPTY)
+            gooseEnd = aiObject.getCoordinateFromDirection(gooseLocation,
+                                                           direction)
+            if direction == 6:
+                errorTemplate = "\nDirection={0}\nxBoard={1}\nyBoard={2}"
+                self.assertEqual(move.getState(gooseEnd),
+                                 types.SUPERGOOSE,
+                                 errorTemplate.format(direction,
+                                                      gooseEnd.get_x_board(),
+                                                      gooseEnd.get_y_board()))
+            else:
+                errorTemplate = "\nDirection={0}\nxBoard={1}\nyBoard={2}"
+                self.assertEqual(move.getState(gooseEnd),
+                                 types.GOOSE,
+                                 errorTemplate.format(direction,
+                                                      gooseEnd.get_x_board(),
+                                                      gooseEnd.get_y_board()))
 
     @patch.object(rules.Rules, "legalMoveP")
     def test_getMovesForGoosePiece_NoMoves(self, mock_legalMoveP):

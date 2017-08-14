@@ -679,14 +679,14 @@ class TestRules(unittest.TestCase):
         """ Don't promote a goose when it's outside of the promotion area """
         goose = coordinate.Coordinate(5, 5)
         actual_result = rules.resultingGoose(types.GOOSE, goose)
-        expected_result = 1
+        expected_result = types.GOOSE
         self.assertEqual(actual_result, expected_result)
 
     def test_resultingGoose_inside(self):
         """ Promote the goose when it's inside the promotion area """
         goose = coordinate.Coordinate(4, 2)
         actual_result = rules.resultingGoose(types.GOOSE, goose)
-        expected_result = 3
+        expected_result = types.SUPERGOOSE
         self.assertEqual(actual_result, expected_result)
 
     def test_findXCoordinateFromDirection_up(self):
