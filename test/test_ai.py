@@ -13,12 +13,20 @@ from src import rules
 class TestAI(unittest.TestCase):
     """ Tests for the AI module """
 
+    def test_getCoordinateFromDirection_bad(self):
+        testLocation = coordinate.Coordinate(5, 4)
+        aiObject = ai.AI(0.5, 0.5)
+        self.assertRaises(ValueError,
+                          ai.getCoordinateFromDirection,
+                          testLocation,
+                          10)
+
     def test_getCoordinateFromDirection_good(self):
         test_xBoard = 6
         test_yBoard = 4
         testLocation = coordinate.Coordinate(test_xBoard, test_yBoard)
         aiObject = ai.AI(0.5, 0.5)
-        result = aiObject.getCoordinateFromDirection(testLocation, 1)
+        result = ai.getCoordinateFromDirection(testLocation, 1)
         result_xBoard = result.get_x_board()
         result_yBoard = result.get_y_board()
         self.assertEqual(test_xBoard, result_xBoard)
@@ -39,8 +47,7 @@ class TestAI(unittest.TestCase):
         for direction in range(1, 9):
             move = resultingMoves[direction - 1]
             self.assertEqual(move.getState(gooseLocation), types.EMPTY)
-            gooseEnd = aiObject.getCoordinateFromDirection(gooseLocation,
-                                                           direction)
+            gooseEnd = ai.getCoordinateFromDirection(gooseLocation, direction)
             if direction == 6:
                 errorTemplate = "\nDirection={0}\nxBoard={1}\nyBoard={2}"
                 self.assertEqual(move.getState(gooseEnd),

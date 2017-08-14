@@ -15,17 +15,15 @@ class AI(object):
 
     def getMovesForGoosePiece(self, theGame, gooseLocation):
         """ This returns a GameNode for every legal move of a given goose """
-        xBoard = gooseLocation.get_x_board()
-        yBoard = gooseLocation.get_y_board()
         moveList = []
 
         for direction in range(1, 9):
-            gooseDestination = self.getCoordinateFromDirection(gooseLocation,
-                                                               direction)
+            gooseDestination = getCoordinateFromDirection(gooseLocation,
+                                                          direction)
             if (gooseDestination and
-                self.arbiter.legalMoveP(theGame,
-                                        gooseLocation,
-                                        gooseDestination)):
+                    self.arbiter.legalMoveP(theGame,
+                                            gooseLocation,
+                                            gooseDestination)):
                 gooseType = theGame.getState(gooseLocation)
                 moveResult = transferNode(theGame)
                 finalGooseType = rules.resultingGoose(gooseType,
@@ -41,20 +39,18 @@ class AI(object):
     def getMovesForFoxPiece(self, theGame, foxLocation):
         """ Returns a GameNode for every legal move of a given fox. theGame
         is the current board position. """
-        x_board = foxLocation.get_x_board()
-        y_board = foxLocation.get_y_board()
         moveList = self.getAllFoxCaptures(theGame, foxLocation)
 
         if len(moveList) == 0:
             # These are regular non-capture moves for the fox, if no captures
             # were found
             for direction in range(1, 9):
-                foxDestination = self.getCoordinateFromDirection(foxLocation,
-                                                                 direction)
+                foxDestination = getCoordinateFromDirection(foxLocation,
+                                                            direction)
                 if (foxDestination and
-                    self.arbiter.legalMoveP(theGame,
-                                            foxLocation,
-                                            foxDestination)):
+                        self.arbiter.legalMoveP(theGame,
+                                                foxLocation,
+                                                foxDestination)):
                     resultMove = transferNode(theGame)
                     resultMove.setState(foxDestination, types.FOX)
                     resultMove.setState(foxLocation, types.EMPTY)
@@ -86,35 +82,6 @@ class AI(object):
                 if nextCapture:
                     captureList.extend(nextCapture)
         return captureList
-
-    def getCoordinateFromDirection(self, currentLocation, direction):
-        def getCoordinateHelper(xBoard, yBoard):
-            try:
-                return coordinate.Coordinate(xBoard, yBoard)
-            except ValueError:
-                return None
-
-        xBoard = currentLocation.get_x_board()
-        yBoard = currentLocation.get_y_board()
-
-        if direction == 1:
-            return getCoordinateHelper(xBoard, yBoard + 1)
-        elif direction == 2:
-            return getCoordinateHelper(xBoard + 1, yBoard + 1)
-        elif direction == 3:
-            return getCoordinateHelper(xBoard + 1, yBoard)
-        elif direction == 4:
-            return getCoordinateHelper(xBoard + 1, yBoard - 1)
-        elif direction == 5:
-            return getCoordinateHelper(xBoard, yBoard - 1)
-        elif direction == 6:
-            return getCoordinateHelper(xBoard - 1, yBoard - 1)
-        elif direction == 7:
-            return getCoordinateHelper(xBoard - 1, yBoard)
-        elif direction == 8:
-            return getCoordinateHelper(xBoard - 1, yBoard + 1)
-        else:
-            raise ValueError
 
     def evaluationFunction(self, theGame):
         """ This function takes a game state and returns a score for the
@@ -163,3 +130,35 @@ def transferNode(startNode):
             state = startNode.getState(location)
             endNode.setState(location, state)
     return endNode
+
+# pylint: disable=too-many-return-statements
+def getCoordinateFromDirection(currentLocation, direction):
+    """ Gets a coordinate delta from a current one & direction """
+    def getCoordinateHelper(xBoard, yBoard):
+        """ Wrap the error handling """
+        try:
+            return coordinate.Coordinate(xBoard, yBoard)
+        except ValueError:
+            return None
+
+    xBoard = currentLocation.get_x_board()
+    yBoard = currentLocation.get_y_board()
+
+    if direction == 1:
+        return getCoordinateHelper(xBoard, yBoard + 1)
+    elif direction == 2:
+        return getCoordinateHelper(xBoard + 1, yBoard + 1)
+    elif direction == 3:
+        return getCoordinateHelper(xBoard + 1, yBoard)
+    elif direction == 4:
+        return getCoordinateHelper(xBoard + 1, yBoard - 1)
+    elif direction == 5:
+        return getCoordinateHelper(xBoard, yBoard - 1)
+    elif direction == 6:
+        return getCoordinateHelper(xBoard - 1, yBoard - 1)
+    elif direction == 7:
+        return getCoordinateHelper(xBoard - 1, yBoard)
+    elif direction == 8:
+        return getCoordinateHelper(xBoard - 1, yBoard + 1)
+    else:
+        raise ValueError
