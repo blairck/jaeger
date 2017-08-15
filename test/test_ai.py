@@ -14,18 +14,18 @@ class TestAI(unittest.TestCase):
     """ Tests for the AI module """
 
     def test_getCoordinateFromDirection_bad(self):
+        """ Test error is raised for direction that doesn't exist """
         testLocation = coordinate.Coordinate(5, 4)
-        aiObject = ai.AI(0.5, 0.5)
         self.assertRaises(ValueError,
                           ai.getCoordinateFromDirection,
                           testLocation,
                           10)
 
     def test_getCoordinateFromDirection_good(self):
+        """ Test successfully getting coordinate from direction """
         test_xBoard = 6
         test_yBoard = 4
         testLocation = coordinate.Coordinate(test_xBoard, test_yBoard)
-        aiObject = ai.AI(0.5, 0.5)
         result = ai.getCoordinateFromDirection(testLocation, 1)
         result_xBoard = result.get_x_board()
         result_yBoard = result.get_y_board()
@@ -35,6 +35,7 @@ class TestAI(unittest.TestCase):
 
     @patch.object(rules.Rules, "legalMoveP")
     def test_getMovesForGoosePiece_DetailedMoves(self, mock_legalMoveP):
+        """ Test that each generated move updates board state correctly """
         mock_legalMoveP.return_value = True
         aiObject = ai.AI(0.5, 0.5)
         hnObject = historynode.HistoryNode()
@@ -65,17 +66,19 @@ class TestAI(unittest.TestCase):
 
     @patch.object(rules.Rules, "legalMoveP")
     def test_getMovesForGoosePiece_NoMoves(self, mock_legalMoveP):
+        """ Test finding goose moves when there aren't any """
         mock_legalMoveP.return_value = False
-        aiObject = ai.AI(0.5, 0.5)
         hnObject = historynode.HistoryNode()
         gooseLocation = coordinate.Coordinate(6, 4)
         hnObject.setState(gooseLocation, types.GOOSE)
+        aiObject = ai.AI(0.5, 0.5)
         numberOfMoves = len(aiObject.getMovesForGoosePiece(hnObject,
                                                            gooseLocation))
         self.assertEqual(numberOfMoves, 0)
 
     @patch.object(ai.AI, "getAllFoxCaptures")
     def test_getMovesForFoxPiece_OnEdge(self, mock_getAllFoxCaptures):
+        """ Test finding fox moves on the edge of the board """
         mock_getAllFoxCaptures.return_value = []
         hn_object = historynode.HistoryNode()
         fox_location = coordinate.Coordinate(3, 1)
@@ -104,17 +107,15 @@ class TestAI(unittest.TestCase):
         """ Check case when fox move exists and is legal """
         mock_legalMoveP.return_value = True
         hn_object = historynode.HistoryNode()
-        fox_location = coordinate.Coordinate(3, 4)
-        hn_object.setState(fox_location, types.FOX)
         ai_object = ai.AI(0.5, 0.5)
-        expectedValue_initial = types.EMPTY
-        expectedValue_end = types.FOX
+        fox_location = coordinate.Coordinate(5, 4)
+        hn_object.setState(fox_location, types.FOX)
         actualValue = ai_object.getMovesForFoxPiece(hn_object, fox_location)
         actualValue_inital = actualValue[0].getState(fox_location)
-        actualValue_end = actualValue[0].getState(coordinate.Coordinate(3, 5))
+        actualValue_end = actualValue[0].getState(coordinate.Coordinate(5, 5))
         self.assertEqual(len(actualValue), 8)
-        self.assertEqual(actualValue_inital, expectedValue_initial)
-        self.assertEqual(actualValue_end, expectedValue_end)
+        self.assertEqual(actualValue_inital, types.EMPTY)
+        self.assertEqual(actualValue_end, types.FOX)
 
     @patch.object(rules.Rules, "legalMoveP")
     def test_getMovesForFoxPiece_none_legal(self, mock_legalMoveP):

@@ -1,19 +1,19 @@
 """ Tests for the AI module """
 
 import unittest
-from unittest.mock import patch
 
 # pylint: disable=import-error
 from res import types
 from src import ai
 from src import coordinate
 from src import historynode
-from src import rules
 
 class TestIntegAI(unittest.TestCase):
     """ Integration Tests for the AI module """
 
     def test_getMovesForGoosePiece_GooseToSuper(self):
+        """ Test finding goose moves where a regular goose would be promoted
+        to supergoose """
         aiObject = ai.AI(0.5, 0.5)
         hnObject = historynode.HistoryNode()
         goose_xBoard = 2
@@ -38,6 +38,7 @@ class TestIntegAI(unittest.TestCase):
                          types.GOOSE)
 
     def test_getMovesForGoosePiece_MaxMoves(self):
+        """ Test regular goose with all possible moves """
         aiObject = ai.AI(0.5, 0.5)
         hnObject = historynode.HistoryNode()
         gooseLocation = coordinate.Coordinate(6, 4)
@@ -47,6 +48,7 @@ class TestIntegAI(unittest.TestCase):
         self.assertEqual(numberOfMoves, 5)
 
     def test_getMovesForGoosePiece_PartialMoves(self):
+        """ Test getting goose moves when only a few are available """
         aiObject = ai.AI(0.5, 0.5)
         hnObject = historynode.HistoryNode()
         gooseLocation = coordinate.Coordinate(4, 7)
@@ -56,6 +58,7 @@ class TestIntegAI(unittest.TestCase):
         self.assertEqual(numberOfMoves, 3)
 
     def test_getMovesForGoosePiece_SuperGoose(self):
+        """ Test supergoose has full range of motion"""
         aiObject = ai.AI(0.5, 0.5)
         hnObject = historynode.HistoryNode()
         gooseLocation = coordinate.Coordinate(5, 3)
