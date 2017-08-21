@@ -13,9 +13,65 @@ class AI(object):
         self.weightA = a
         self.weightB = b
 
+    # def findMinMaxValue(self, theGame, gooseP, searchPly):
+    #     allMoves = []
+    #     for i in range(1, 9):
+    #         for j in range(1, 9):
+    #             location = coordinate.Coordinate(i, j)
+    #             if (gooseP and
+    #                 (theGame.getState(location) == types.GOOSE or
+    #                  theGame.getState(location) == types.SUPERGOOSE)):
+    #                 allMoves.append(self.getMovesForGoosePiece(location,
+    #                                                            theGame))
+    #             elif theGame.getState(location) == types.FOX:
+    #                 [allMoves.append([self getMovesForFoxPiece:x :y :theGame]])
+
+#     (float)findMinMaxValue: (HistoryNode *) theGame: (bool) gooseP: (int) searchPly
+#     NSMutableArray *allMoves = [[NSMutableArray alloc] init];
+#     for (int x=0;x<7;x++)
+#         for (int y=0;y<7;y++)
+#             if (gooseP==TRUE && ([theGame getState:x :y]==1 || [theGame getState:x :y]==3))
+#                 [allMoves addObjectsFromArray: [self getMovesForGoosePiece:x :y :theGame]];
+#             else if (gooseP==FALSE && [theGame getState:x :y]==2)
+#                 [allMoves addObjectsFromArray: [self getMovesForFoxPiece:x :y :theGame]];
+#     searchPly-=1;
+#     if (searchPly > 1)
+#         NSEnumerator *enumerator = [allMoves objectEnumerator];
+#         id object;
+#         while ((object = [enumerator nextObject]))
+#             [object setScore:[self findMinMaxValue:object :!gooseP: searchPly]];
+#     if (gooseP==TRUE)
+#         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"score" ascending:FALSE];
+#         [allMoves sortUsingDescriptors:[NSArray arrayWithObject:sort]];
+#     else if (gooseP==FALSE)
+#         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"score" ascending:TRUE];
+#         [allMoves sortUsingDescriptors:[NSArray arrayWithObject:sort]];
+#     if ([allMoves count]>0)
+#         return [[allMoves objectAtIndex:0] score];
+#     else
+#         return 0.0;
+
+    def getAllMovesForPlayer(self, theGame, gooseP):
+        """GooseP == True means it's the Goose player's turn. Otherwise fox"""
+        moves = []
+        for x in range(1, 9):
+            for y in range(1, 9):
+                location = getCoordinateHelper(x, y)
+                if not location:
+                    continue
+                if gooseP:
+                    moves.extend(self.getMovesForGoosePiece(theGame, location))
+                else:
+                    moves.extend(self.getMovesForFoxPiece(theGame, location))
+        return moves
+
     def getMovesForGoosePiece(self, theGame, gooseLocation):
         """ This returns a GameNode for every legal move of a given goose """
         moveList = []
+        if (theGame.getState(gooseLocation) not in (types.GOOSE,
+                                                    types.SUPERGOOSE)):
+            """ Don't examine a piece that's not a goose or supergoose """
+            return moveList
 
         for direction in range(1, 9):
             gooseDestination = getCoordinateFromDirection(gooseLocation,
@@ -39,6 +95,10 @@ class AI(object):
     def getMovesForFoxPiece(self, theGame, foxLocation):
         """ Returns a GameNode for every legal move of a given fox. theGame
         is the current board position. """
+        moveList = []
+        if theGame.getState(foxLocation) != types.FOX:
+            """ Don't examine a piece that's not a fox """
+            return moveList
         moveList = self.getAllFoxCaptures(theGame, foxLocation)
 
         if len(moveList) == 0:
@@ -134,12 +194,6 @@ def transferNode(startNode):
 # pylint: disable=too-many-return-statements
 def getCoordinateFromDirection(currentLocation, direction):
     """ Gets a coordinate delta from a current one & direction """
-    def getCoordinateHelper(xBoard, yBoard):
-        """ Wrap the error handling """
-        try:
-            return coordinate.Coordinate(xBoard, yBoard)
-        except ValueError:
-            return None
 
     xBoard = currentLocation.get_x_board()
     yBoard = currentLocation.get_y_board()
@@ -162,3 +216,10 @@ def getCoordinateFromDirection(currentLocation, direction):
         return getCoordinateHelper(xBoard - 1, yBoard + 1)
     else:
         raise ValueError
+
+def getCoordinateHelper(xBoard, yBoard):
+    """ Wrap the error handling """
+    try:
+        return coordinate.Coordinate(xBoard, yBoard)
+    except ValueError:
+        return None

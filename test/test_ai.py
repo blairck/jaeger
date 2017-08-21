@@ -13,6 +13,28 @@ from src import rules
 class TestAI(unittest.TestCase):
     """ Tests for the AI module """
 
+    @patch.object(ai.AI, "getMovesForGoosePiece")
+    def test_getAllMovesForPlayer_goose(self, mock_getMovesForGoosePiece):
+        """ Get moves for a Goose player """
+        mock_getMovesForGoosePiece.return_value = ["fake board"]
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        gooseP = True
+        actualValue = len(aiObject.getAllMovesForPlayer(hnObject, gooseP))
+        expectedValue = 33
+        self.assertEqual(actualValue, expectedValue)
+
+    @patch.object(ai.AI, "getMovesForFoxPiece")
+    def test_getAllMovesForPlayer_fox(self, mock_getMovesForFoxPiece):
+        """ Get moves for a Fox player """
+        mock_getMovesForFoxPiece.return_value = ["fake board"]
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        gooseP = False
+        actualValue = len(aiObject.getAllMovesForPlayer(hnObject, gooseP))
+        expectedValue = 33
+        self.assertEqual(actualValue, expectedValue)
+
     def test_getCoordinateFromDirection_bad(self):
         """ Test error is raised for direction that doesn't exist """
         testLocation = coordinate.Coordinate(5, 4)
@@ -49,20 +71,30 @@ class TestAI(unittest.TestCase):
             move = resultingMoves[direction - 1]
             self.assertEqual(move.getState(gooseLocation), types.EMPTY)
             gooseEnd = ai.getCoordinateFromDirection(gooseLocation, direction)
+            errorTemplate = "\nDirection={0}\nxBoard={1}\nyBoard={2}"
             if direction == 6:
-                errorTemplate = "\nDirection={0}\nxBoard={1}\nyBoard={2}"
                 self.assertEqual(move.getState(gooseEnd),
                                  types.SUPERGOOSE,
                                  errorTemplate.format(direction,
                                                       gooseEnd.get_x_board(),
                                                       gooseEnd.get_y_board()))
             else:
-                errorTemplate = "\nDirection={0}\nxBoard={1}\nyBoard={2}"
                 self.assertEqual(move.getState(gooseEnd),
                                  types.GOOSE,
                                  errorTemplate.format(direction,
                                                       gooseEnd.get_x_board(),
                                                       gooseEnd.get_y_board()))
+
+    def test_getMovesForGoosePiece_NotValid(self):
+        """ Test finding moves when location isn't a goose. None should be
+        found """
+        hnObject = historynode.HistoryNode()
+        notGooseLocation = coordinate.Coordinate(6, 4)
+        hnObject.setState(notGooseLocation, types.FOX)
+        aiObject = ai.AI(0.5, 0.5)
+        numberOfMoves = len(aiObject.getMovesForGoosePiece(hnObject,
+                                                           notGooseLocation))
+        self.assertEqual(numberOfMoves, 0)
 
     @patch.object(rules.Rules, "legalMoveP")
     def test_getMovesForGoosePiece_NoMoves(self, mock_legalMoveP):
@@ -74,6 +106,17 @@ class TestAI(unittest.TestCase):
         aiObject = ai.AI(0.5, 0.5)
         numberOfMoves = len(aiObject.getMovesForGoosePiece(hnObject,
                                                            gooseLocation))
+        self.assertEqual(numberOfMoves, 0)
+
+    def test_getMovesForFoxPiece_NotValid(self):
+        """ Test finding moves when location isn't a fox. None should be
+        found """
+        hnObject = historynode.HistoryNode()
+        notFoxLocation = coordinate.Coordinate(6, 4)
+        hnObject.setState(notFoxLocation, types.EMPTY)
+        aiObject = ai.AI(0.5, 0.5)
+        numberOfMoves = len(aiObject.getMovesForFoxPiece(hnObject,
+                                                         notFoxLocation))
         self.assertEqual(numberOfMoves, 0)
 
     @patch.object(ai.AI, "getAllFoxCaptures")
@@ -256,3 +299,13 @@ class TestAI(unittest.TestCase):
         actualValue = result.getState(location)
         expectedValue = types.SUPERGOOSE
         self.assertEqual(actualValue, expectedValue)
+
+    def test_getCoordinateHelper_valid(self):
+        """ Correctly get a coordinate object from valid coordinates """
+        actualValue = ai.getCoordinateHelper(4, 5)
+        self.assertIsNotNone(actualValue)
+
+    def test_getCoordinateHelper_invalid(self):
+        """ Correctly get None from invalid coordinates """
+        actualValue = ai.getCoordinateHelper(7, 7)
+        self.assertIsNone(actualValue)
