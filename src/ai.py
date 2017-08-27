@@ -1,5 +1,7 @@
 """ This module contains the AI search algorithm """
 
+import operator
+
 # pylint: disable=import-error
 from res import types
 from src import coordinate
@@ -13,43 +15,24 @@ class AI(object):
         self.weightA = a
         self.weightB = b
 
-    # def findMinMaxValue(self, theGame, gooseP, searchPly):
-    #     allMoves = []
-    #     for i in range(1, 9):
-    #         for j in range(1, 9):
-    #             location = coordinate.Coordinate(i, j)
-    #             if (gooseP and
-    #                 (theGame.getState(location) == types.GOOSE or
-    #                  theGame.getState(location) == types.SUPERGOOSE)):
-    #                 allMoves.append(self.getMovesForGoosePiece(location,
-    #                                                            theGame))
-    #             elif theGame.getState(location) == types.FOX:
-    #                 [allMoves.append([self getMovesForFoxPiece:x :y :theGame]])
+    def findMinMaxValue(self, theGame, gooseP, searchPly):
+        allMoves = self.getAllMovesForPlayer(theGame, gooseP)
+        searchPly -= 1
+        if searchPly > 0:
+            for move in allMoves:
+                move.setScore(self.findMinMaxValue(not gooseP, searchPly))
+        self.sortMovesForPlayer(allMoves, gooseP)
+        if len(allMoves) > 0:
+            return allMoves[0].score
+        else
+            0.0
 
-#     (float)findMinMaxValue: (HistoryNode *) theGame: (bool) gooseP: (int) searchPly
-#     NSMutableArray *allMoves = [[NSMutableArray alloc] init];
-#     for (int x=0;x<7;x++)
-#         for (int y=0;y<7;y++)
-#             if (gooseP==TRUE && ([theGame getState:x :y]==1 || [theGame getState:x :y]==3))
-#                 [allMoves addObjectsFromArray: [self getMovesForGoosePiece:x :y :theGame]];
-#             else if (gooseP==FALSE && [theGame getState:x :y]==2)
-#                 [allMoves addObjectsFromArray: [self getMovesForFoxPiece:x :y :theGame]];
-#     searchPly-=1;
-#     if (searchPly > 1)
-#         NSEnumerator *enumerator = [allMoves objectEnumerator];
-#         id object;
-#         while ((object = [enumerator nextObject]))
-#             [object setScore:[self findMinMaxValue:object :!gooseP: searchPly]];
-#     if (gooseP==TRUE)
-#         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"score" ascending:FALSE];
-#         [allMoves sortUsingDescriptors:[NSArray arrayWithObject:sort]];
-#     else if (gooseP==FALSE)
-#         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"score" ascending:TRUE];
-#         [allMoves sortUsingDescriptors:[NSArray arrayWithObject:sort]];
-#     if ([allMoves count]>0)
-#         return [[allMoves objectAtIndex:0] score];
-#     else
-#         return 0.0;
+    def sortMovesForPlayer(self, moves, gooseP):
+        """ Sort the moves ascending/descending depending on the player """
+        if gooseP:
+            moves.sort(key=lambda x: x.score)
+        else:
+            moves.sort(key=lambda x: x.score, reverse=True)
 
     def getAllMovesForPlayer(self, theGame, gooseP):
         """GooseP == True means it's the Goose player's turn. Otherwise fox"""

@@ -13,6 +13,44 @@ from src import rules
 class TestAI(unittest.TestCase):
     """ Tests for the AI module """
 
+    def test_sortMovesForPlayer_no_moves(self):
+        """ Sort the moves of a Goose player """
+        aiObject = ai.AI(0.5, 0.5)
+        allMoves = []
+        gooseTurn = True
+        aiObject.sortMovesForPlayer(allMoves, gooseTurn)
+        self.assertEqual(len(allMoves), 0)
+
+    def test_sortMovesForPlayer_goose(self):
+        """ Sort the moves of a Goose player """
+        aiObject = ai.AI(0.5, 0.5)
+        hnObjectBigScore = historynode.HistoryNode()
+        hnObjectMediumScore = historynode.HistoryNode()
+        hnObjectSmallScore = historynode.HistoryNode()
+        hnObjectBigScore.score = 10.0
+        hnObjectMediumScore.score = 1.0
+        hnObjectSmallScore.score = -5.0
+        allMoves = [hnObjectMediumScore, hnObjectBigScore, hnObjectSmallScore]
+        gooseTurn = True
+        aiObject.sortMovesForPlayer(allMoves, gooseTurn)
+        self.assertTrue(allMoves[0].score < allMoves[1].score)
+        self.assertTrue(allMoves[1].score < allMoves[2].score)
+
+    def test_sortMovesForPlayer_fox(self):
+        """ Sort the moves of a Fox player """
+        aiObject = ai.AI(0.5, 0.5)
+        hnObjectBigScore = historynode.HistoryNode()
+        hnObjectMediumScore = historynode.HistoryNode()
+        hnObjectSmallScore = historynode.HistoryNode()
+        hnObjectBigScore.score = 10.0
+        hnObjectMediumScore.score = 1.0
+        hnObjectSmallScore.score = -5.0
+        allMoves = [hnObjectMediumScore, hnObjectBigScore, hnObjectSmallScore]
+        gooseTurn = False
+        aiObject.sortMovesForPlayer(allMoves, gooseTurn)
+        self.assertTrue(allMoves[0].score > allMoves[1].score)
+        self.assertTrue(allMoves[1].score > allMoves[2].score)
+
     @patch.object(ai.AI, "getMovesForGoosePiece")
     def test_getAllMovesForPlayer_goose(self, mock_getMovesForGoosePiece):
         """ Get moves for a Goose player """
