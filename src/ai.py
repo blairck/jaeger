@@ -15,17 +15,21 @@ class AI(object):
         self.weightA = a
         self.weightB = b
 
-    def findMinMaxValue(self, theGame, gooseP, searchPly):
+    def findBestMove(self, theGame, gooseP, searchPly):
         allMoves = self.getAllMovesForPlayer(theGame, gooseP)
         searchPly -= 1
         if searchPly > 0:
             for move in allMoves:
-                move.setScore(self.findMinMaxValue(not gooseP, searchPly))
+                result = self.findMinMaxValue(not gooseP, searchPly).score
+                move.setScore(result)
         self.sortMovesForPlayer(allMoves, gooseP)
         if len(allMoves) > 0:
-            return allMoves[0].score
-        else
-            0.0
+            for move in allMoves:
+                move.print_board()
+                print("Score is {0}".format(move.score))
+            return allMoves[0]
+        else:
+            return 0.0
 
     def sortMovesForPlayer(self, moves, gooseP):
         """ Sort the moves ascending/descending depending on the player """
