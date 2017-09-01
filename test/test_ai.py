@@ -33,8 +33,8 @@ class TestAI(unittest.TestCase):
         allMoves = [hnObjectMediumScore, hnObjectBigScore, hnObjectSmallScore]
         gooseTurn = True
         aiObject.sortMovesForPlayer(allMoves, gooseTurn)
-        self.assertTrue(allMoves[0].score < allMoves[1].score)
-        self.assertTrue(allMoves[1].score < allMoves[2].score)
+        self.assertTrue(allMoves[0].score > allMoves[1].score)
+        self.assertTrue(allMoves[1].score > allMoves[2].score)
 
     def test_sortMovesForPlayer_fox(self):
         """ Sort the moves of a Fox player """
@@ -48,8 +48,8 @@ class TestAI(unittest.TestCase):
         allMoves = [hnObjectMediumScore, hnObjectBigScore, hnObjectSmallScore]
         gooseTurn = False
         aiObject.sortMovesForPlayer(allMoves, gooseTurn)
-        self.assertTrue(allMoves[0].score > allMoves[1].score)
-        self.assertTrue(allMoves[1].score > allMoves[2].score)
+        self.assertTrue(allMoves[0].score < allMoves[1].score)
+        self.assertTrue(allMoves[1].score < allMoves[2].score)
 
     @patch.object(ai.AI, "getMovesForGoosePiece")
     def test_getAllMovesForPlayer_goose(self, mock_getMovesForGoosePiece):

@@ -30,9 +30,9 @@ class AI(object):
     def sortMovesForPlayer(self, moves, gooseP):
         """ Sort the moves ascending/descending depending on the player """
         if gooseP:
-            moves.sort(key=lambda x: x.score)
-        else:
             moves.sort(key=lambda x: x.score, reverse=True)
+        else:
+            moves.sort(key=lambda x: x.score)
 
     def getAllMovesForPlayer(self, theGame, gooseP):
         """GooseP == True means it's the Goose player's turn. Otherwise fox"""
