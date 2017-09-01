@@ -1,5 +1,6 @@
 """ Stores board state with additional game specific logic """
 
+from res import types
 from src import gamenode
 from src import helper
 
@@ -45,7 +46,7 @@ class HistoryNode(gamenode.GameNode):
     def constructor(self):
         """ Sets up the internal state of the HistoryNode instance """
         self.score = 0.0
-        self.leafP = False
+        self.winningState = False
         self.rootP = True
 
         self.result = 0
@@ -114,7 +115,8 @@ class HistoryNode(gamenode.GameNode):
         geeseRemaining = 0
         for i in range(0, 7):
             for j in range(0, 7):
-                if self.gameState[i][j] == 1 or self.gameState[i][j] == 3:
+                if (self.gameState[i][j] == types.GOOSE or
+                    self.gameState[i][j] == types.SUPERGOOSE):
                     geeseRemaining += 1
                     # Too many geese, foxes have not won yet
                     if geeseRemaining >= 9:
@@ -146,3 +148,10 @@ class HistoryNode(gamenode.GameNode):
         """ Setter for halfMove with type checking """
         helper.checkIfInt(value)
         self.halfMove = value
+
+    def determineWinningState(self):
+        """ Set winningState if this node is in one """
+        if (self.geeseWinP() or self.foxesWinP()):
+            self.winningState = True
+        else:
+            self.winningState = False

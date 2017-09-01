@@ -1,6 +1,7 @@
 """ Tests for the HistoryNode module """
 
 import unittest
+from unittest.mock import patch
 
 from src import historynode
 from test import helper
@@ -37,7 +38,7 @@ class TestHistoryNode(unittest.TestCase):
         """ Check that HistoryNode object is initialized correctly """
         hn_obj = historynode.HistoryNode()
         hn_obj.constructor()
-        self.assertEqual(hn_obj.leafP, False)
+        self.assertEqual(hn_obj.winningState, False)
         self.assertEqual(hn_obj.rootP, True)
         self.assertEqual(hn_obj.result, 0)
         self.assertEqual(hn_obj.gameType, 1)
@@ -223,3 +224,15 @@ class TestHistoryNode(unittest.TestCase):
         """ Check that halfMove is raises an error with non-int input """
         hn_obj = historynode.HistoryNode()
         self.assertRaises(TypeError, hn_obj.setHalfMove, "abc")
+
+    def test_determineWinningState_true(self):
+        hn_obj = historynode.HistoryNode()
+        hn_obj.determineWinningState()
+        self.assertEqual(hn_obj.winningState, True)
+
+    @patch.object(historynode.HistoryNode, "foxesWinP")
+    def test_determineWinningState_false(self, mock_foxesWinP):
+        mock_foxesWinP.return_value = False
+        hn_obj = historynode.HistoryNode()
+        hn_obj.determineWinningState()
+        self.assertEqual(hn_obj.winningState, False)
