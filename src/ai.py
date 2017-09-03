@@ -16,7 +16,10 @@ class AI(object):
         self.weightB = b
         self.moveCount = 0
 
-    def findBestMove(self, theGame, gooseP, searchPly):
+    def findBestMove(self,
+                     theGame,
+                     gooseP,
+                     searchPly):
         allMoves = self.getAllMovesForPlayer(theGame, gooseP)
         numberOfMoves = len(allMoves)
         self.moveCount += numberOfMoves
@@ -28,18 +31,17 @@ class AI(object):
                                                not gooseP,
                                                searchPly).score
                     move.score = result
-        self.sortMovesForPlayer(allMoves, gooseP)
         if numberOfMoves > 0:
-            return allMoves[0]
+            return self.getHighestOrLowestScoreMove(allMoves, gooseP)
         else:
             return 0.0
 
-    def sortMovesForPlayer(self, moves, gooseP):
-        """ Sort the moves ascending/descending depending on the player """
+    def getHighestOrLowestScoreMove(self, moves, gooseP):
+        """ Returns the highest/lowest scored move depending on the player """
         if gooseP:
-            moves.sort(key=lambda x: x.score, reverse=True)
+            return max(moves, key=lambda x: x.score)
         else:
-            moves.sort(key=lambda x: x.score)
+            return min(moves, key=lambda x: x.score)
 
     def getAllMovesForPlayer(self, theGame, gooseP):
         """GooseP == True means it's the Goose player's turn. Otherwise fox"""
