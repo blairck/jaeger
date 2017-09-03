@@ -14,19 +14,22 @@ class AI(object):
         self.arbiter = rules.Rules()
         self.weightA = a
         self.weightB = b
+        self.moveCount = 0
 
     def findBestMove(self, theGame, gooseP, searchPly):
         allMoves = self.getAllMovesForPlayer(theGame, gooseP)
+        numberOfMoves = len(allMoves)
+        self.moveCount += numberOfMoves
         searchPly -= 1
         if searchPly > 0:
             for move in allMoves:
-                result = self.findMinMaxValue(not gooseP, searchPly).score
-                move.setScore(result)
+                if not move.winningState:
+                    result = self.findBestMove(move,
+                                               not gooseP,
+                                               searchPly).score
+                    move.score = result
         self.sortMovesForPlayer(allMoves, gooseP)
-        if len(allMoves) > 0:
-            for move in allMoves:
-                move.print_board()
-                print("Score is {0}".format(move.score))
+        if numberOfMoves > 0:
             return allMoves[0]
         else:
             return 0.0
@@ -74,6 +77,7 @@ class AI(object):
                 moveResult.setState(gooseDestination, finalGooseType)
                 moveResult.setState(gooseLocation, types.EMPTY)
                 moveResult.score = self.evaluationFunction(moveResult)
+                moveResult.determineWinningState()
                 moveResult.leafP = True
                 moveResult.rootP = False
                 moveList.append(moveResult)
@@ -102,6 +106,7 @@ class AI(object):
                     resultMove.setState(foxDestination, types.FOX)
                     resultMove.setState(foxLocation, types.EMPTY)
                     resultMove.score = self.evaluationFunction(resultMove)
+                    resultMove.determineWinningState()
                     resultMove.leafP = True
                     resultMove.rootP = False
                     moveList.append(resultMove)
@@ -122,6 +127,7 @@ class AI(object):
                                                     y_board + deltaY)
                 rules.makeCapture(newMoveNode, location, destination)
                 newMoveNode.score = self.evaluationFunction(newMoveNode)
+                newMoveNode.determineWinningState()
                 newMoveNode.leafP = True
                 newMoveNode.rootP = False
                 captureList.append(newMoveNode)
