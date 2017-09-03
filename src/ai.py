@@ -16,13 +16,13 @@ class AI(object):
         self.weightB = b
         self.moveCount = 0
 
-    def findBestMove(self,
+    def findBestMove_DEPRECATED(self,
                      theGame,
                      gooseP,
                      searchPly):
         allMoves = self.getAllMovesForPlayer(theGame, gooseP)
         numberOfMoves = len(allMoves)
-        self.moveCount += numberOfMoves
+        self.moveCount += 1
         searchPly -= 1
         if searchPly > 0:
             for move in allMoves:
@@ -35,6 +35,44 @@ class AI(object):
             return self.getHighestOrLowestScoreMove(allMoves, gooseP)
         else:
             return 0.0
+
+    def findBestMove(self,
+                     theGame,
+                     gooseP,
+                     searchPly,
+                     minimum=-10000,
+                     maximum=10000):
+        allMoves = self.getAllMovesForPlayer(theGame, gooseP)
+        self.moveCount += 1
+        searchPly -= 1
+        if searchPly > 0 and not theGame.winningState:
+            if gooseP:
+                for move in allMoves:
+                    result = self.findBestMove(move,
+                                               not gooseP,
+                                               searchPly,
+                                               minimum,
+                                               maximum).score
+                    move.score = result
+                    if result > minimum:
+                        minimum = result
+                    if result > maximum:
+                        move.score = maximum
+                        return move
+            else:
+                for move in allMoves:
+                    result = self.findBestMove(move,
+                                               not gooseP,
+                                               searchPly,
+                                               minimum,
+                                               maximum).score
+                    move.score = result
+                    if result < maximum:
+                        maximum = result
+                    if move.score < minimum:
+                        move.score = minimum
+                        return move
+        return self.getHighestOrLowestScoreMove(allMoves, gooseP)
 
     def getHighestOrLowestScoreMove(self, moves, gooseP):
         """ Returns the highest/lowest scored move depending on the player """

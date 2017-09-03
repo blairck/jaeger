@@ -20,6 +20,7 @@ class HistoryNode(gamenode.GameNode):
         self.halfMove = None # int
         self.p1 = None # str
         self.p2 = None # str
+        self.winningState = False
 
     def print_board(self):
         print("Player 1: {0}".format(self.p1))
