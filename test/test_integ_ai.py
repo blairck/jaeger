@@ -11,6 +11,183 @@ from src import historynode
 class TestIntegAI(unittest.TestCase):
     """ Integration Tests for the AI module """
 
+    def test_findBestMove_gooseToPlay2_3Ply(self):
+        """
+        7         . - . - .    
+                  | \ | / |
+        6         . - . - .    
+                  | / | \ |
+        5 . - F - . - . - . - . - .
+          | \ | / | \ | / | \ | / |
+        4 . - F - . - . - S - . - .
+          | / | \ | / | \ | / | \ |
+        3 . - . - S - S - S - . - .
+                  | \ | / |
+        2         S - S - ~    
+                  | / | \ |
+        1         S - S - S   
+          1   2   3   4   5   6   7
+        Goose to play. Best move is S53-52
+        """
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        hnObject.setState(coordinate.Coordinate(2, 4), types.FOX)
+        hnObject.setState(coordinate.Coordinate(2, 5), types.FOX)
+        hnObject.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 4), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
+        actualValue = aiObject.findBestMove(hnObject, True, 3)
+        self.assertEqual(actualValue.score, 1080.0)
+        self.assertEqual(aiObject.moveCount, 1546)
+
+    def test_findBestMove_gooseToPlay_3Ply(self):
+        """
+        7         . - . - .    
+                  | \ | / |
+        6         . - . - .    
+                  | / | \ |
+        5 . - G - . - . - . - . - F
+          | \ | / | \ | / | \ | / |
+        4 . - . - . - . - . - . - F
+          | / | \ | / | \ | / | \ |
+        3 . - . - ~ - S - S - . - .
+                  | \ | / |
+        2         S - S - S    
+                  | / | \ |
+        1         S - S - S   
+          1   2   3   4   5   6   7
+        Goose to play. Best move is G25-G24...G24-S33#
+        """
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        hnObject.setState(coordinate.Coordinate(7, 4), types.FOX)
+        hnObject.setState(coordinate.Coordinate(7, 5), types.FOX)
+        hnObject.setState(coordinate.Coordinate(2, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
+        actualValue = aiObject.findBestMove(hnObject, True, 3)
+        self.assertEqual(actualValue.score, 1080.0)
+        self.assertEqual(aiObject.moveCount, 619)
+
+    def test_findBestMove_foxToPlay_3Ply(self):
+        """
+        7         F - . - .    
+                  | \ | / |
+        6         . - . - .    
+                  | / | \ |
+        5 . - . - . - . - F - . - .
+          | \ | / | \ | / | \ | / |
+        4 . - . - . - G - . - G - G
+          | / | \ | / | \ | / | \ |
+        3 . - . - ~ - S - S - . - .
+                  | \ | / |
+        2         S - S - S    
+                  | / | \ |
+        1         S - S - S   
+          1   2   3   4   5   6   7
+        Fox to play. Best move is F55xG44
+        """
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        hnObject.setState(coordinate.Coordinate(3, 7), types.FOX)
+        hnObject.setState(coordinate.Coordinate(5, 5), types.FOX)
+        hnObject.setState(coordinate.Coordinate(4, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(6, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(7, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
+        actualValue = aiObject.findBestMove(hnObject, False, 3)
+        self.assertEqual(actualValue.score, 67.0)
+        self.assertEqual(aiObject.moveCount, 511)
+
+    def test_findBestMove_gooseToPlay_1Ply(self):
+        """
+        7         . - . - .    
+                  | \ | / |
+        6         . - . - .    
+                  | / | \ |
+        5 . - . - F - . - . - . - F
+          | \ | / | \ | / | \ | / |
+        4 . - . - . - G - . - . - .
+          | / | \ | / | \ | / | \ |
+        3 . - . - ~ - S - S - . - .
+                  | \ | / |
+        2         S - S - S    
+                  | / | \ |
+        1         S - S - S   
+          1   2   3   4   5   6   7
+        Goose to play. Best move is G44-S33#
+        """
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        hnObject.setState(coordinate.Coordinate(3, 5), types.FOX)
+        hnObject.setState(coordinate.Coordinate(7, 5), types.FOX)
+        hnObject.setState(coordinate.Coordinate(4, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
+        actualValue = aiObject.findBestMove(hnObject, True, 1)
+        self.assertEqual(actualValue.score, 1080.0)
+
+    def test_findBestMove_foxToPlay_1Ply(self):
+        """
+        7         . - . - .    
+                  | \ | / |
+        6         . - . - G    
+                  | / | \ |
+        5 . - G - F - G - . - . - F
+          | \ | / | \ | / | \ | / |
+        4 . - . - . - . - . - . - .
+          | / | \ | / | \ | / | \ |
+        3 . - . - ~ - S - S - . - .
+                  | \ | / |
+        2         S - S - S    
+                  | / | \ |
+        1         S - S - S   
+          1   2   3   4   5   6   7
+        Fox to play. Best move is F35xG45xG56
+        """
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        hnObject.setState(coordinate.Coordinate(3, 5), types.FOX)
+        hnObject.setState(coordinate.Coordinate(7, 5), types.FOX)
+        hnObject.setState(coordinate.Coordinate(2, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 6), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
+        actualValue = aiObject.findBestMove(hnObject, False, 1)
+        self.assertEqual(actualValue.score, 66.5)
+
     def test_getMovesForGoosePiece_GooseToSuper(self):
         """ Test finding goose moves where a regular goose would be promoted
         to supergoose """
