@@ -1,5 +1,6 @@
 """ Stores board state with additional game specific logic """
 
+# pylint: disable=import-error
 from res import types
 from src import gamenode
 from src import helper
@@ -117,7 +118,7 @@ class HistoryNode(gamenode.GameNode):
         for i in range(0, 7):
             for j in range(0, 7):
                 if (self.gameState[i][j] == types.GOOSE or
-                    self.gameState[i][j] == types.SUPERGOOSE):
+                        self.gameState[i][j] == types.SUPERGOOSE):
                     geeseRemaining += 1
                     # Too many geese, foxes have not won yet
                     if geeseRemaining >= 9:
@@ -152,7 +153,4 @@ class HistoryNode(gamenode.GameNode):
 
     def determineWinningState(self):
         """ Set winningState if this node is in one """
-        if (self.geeseWinP() or self.foxesWinP()):
-            self.winningState = True
-        else:
-            self.winningState = False
+        self.winningState = bool(self.geeseWinP() or self.foxesWinP())

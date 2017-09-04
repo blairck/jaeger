@@ -8,14 +8,15 @@ from src import ai
 from src import coordinate
 from src import historynode
 
+# pylint: disable=anomalous-backslash-in-string
 class TestIntegAI(unittest.TestCase):
     """ Integration Tests for the AI module """
 
     def test_findBestMove_gooseToPlay2_3Ply(self):
         """
-        7         . - . - .    
+        7         . - . - .
                   | \ | / |
-        6         . - . - .    
+        6         . - . - .
                   | / | \ |
         5 . - F - . - . - . - . - .
           | \ | / | \ | / | \ | / |
@@ -23,9 +24,9 @@ class TestIntegAI(unittest.TestCase):
           | / | \ | / | \ | / | \ |
         3 . - . - S - S - S - . - .
                   | \ | / |
-        2         S - S - ~    
+        2         S - S - ~
                   | / | \ |
-        1         S - S - S   
+        1         S - S - S
           1   2   3   4   5   6   7
         Goose to play. Best move is S53-52
         """
@@ -48,9 +49,9 @@ class TestIntegAI(unittest.TestCase):
 
     def test_findBestMove_gooseToPlay_3Ply(self):
         """
-        7         . - . - .    
+        7         . - . - .
                   | \ | / |
-        6         . - . - .    
+        6         . - . - .
                   | / | \ |
         5 . - G - . - . - . - . - F
           | \ | / | \ | / | \ | / |
@@ -58,9 +59,9 @@ class TestIntegAI(unittest.TestCase):
           | / | \ | / | \ | / | \ |
         3 . - . - ~ - S - S - . - .
                   | \ | / |
-        2         S - S - S    
+        2         S - S - S
                   | / | \ |
-        1         S - S - S   
+        1         S - S - S
           1   2   3   4   5   6   7
         Goose to play. Best move is G25-G24...G24-S33#
         """
@@ -83,9 +84,9 @@ class TestIntegAI(unittest.TestCase):
 
     def test_findBestMove_foxToPlay_3Ply(self):
         """
-        7         F - . - .    
+        7         F - . - .
                   | \ | / |
-        6         . - . - .    
+        6         . - . - .
                   | / | \ |
         5 . - . - . - . - F - . - .
           | \ | / | \ | / | \ | / |
@@ -93,9 +94,9 @@ class TestIntegAI(unittest.TestCase):
           | / | \ | / | \ | / | \ |
         3 . - . - ~ - S - S - . - .
                   | \ | / |
-        2         S - S - S    
+        2         S - S - S
                   | / | \ |
-        1         S - S - S   
+        1         S - S - S
           1   2   3   4   5   6   7
         Fox to play. Best move is F55xG44
         """
@@ -120,9 +121,9 @@ class TestIntegAI(unittest.TestCase):
 
     def test_findBestMove_gooseToPlay_1Ply(self):
         """
-        7         . - . - .    
+        7         . - . - .
                   | \ | / |
-        6         . - . - .    
+        6         . - . - .
                   | / | \ |
         5 . - . - F - . - . - . - F
           | \ | / | \ | / | \ | / |
@@ -130,9 +131,9 @@ class TestIntegAI(unittest.TestCase):
           | / | \ | / | \ | / | \ |
         3 . - . - ~ - S - S - . - .
                   | \ | / |
-        2         S - S - S    
+        2         S - S - S
                   | / | \ |
-        1         S - S - S   
+        1         S - S - S
           1   2   3   4   5   6   7
         Goose to play. Best move is G44-S33#
         """
@@ -154,9 +155,9 @@ class TestIntegAI(unittest.TestCase):
 
     def test_findBestMove_foxToPlay_1Ply(self):
         """
-        7         . - . - .    
+        7         . - . - .
                   | \ | / |
-        6         . - . - G    
+        6         . - . - G
                   | / | \ |
         5 . - G - F - G - . - . - F
           | \ | / | \ | / | \ | / |
@@ -164,9 +165,9 @@ class TestIntegAI(unittest.TestCase):
           | / | \ | / | \ | / | \ |
         3 . - . - ~ - S - S - . - .
                   | \ | / |
-        2         S - S - S    
+        2         S - S - S
                   | / | \ |
-        1         S - S - S   
+        1         S - S - S
           1   2   3   4   5   6   7
         Fox to play. Best move is F35xG45xG56
         """

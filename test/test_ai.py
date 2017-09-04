@@ -10,12 +10,12 @@ from src import coordinate
 from src import historynode
 from src import rules
 
+# pylint: disable=too-many-public-methods
 class TestAI(unittest.TestCase):
     """ Tests for the AI module """
 
     def test_getHighestOrLowestScoreMove_goose(self):
         """ Sort the best move of a Goose player """
-        aiObject = ai.AI(0.5, 0.5)
         hnObjectBigScore = historynode.HistoryNode()
         hnObjectMediumScore = historynode.HistoryNode()
         hnObjectSmallScore = historynode.HistoryNode()
@@ -24,13 +24,11 @@ class TestAI(unittest.TestCase):
         hnObjectSmallScore.score = -5.0
         allMoves = [hnObjectMediumScore, hnObjectBigScore, hnObjectSmallScore]
         gooseTurn = True
-        actualMove = aiObject.getHighestOrLowestScoreMove(allMoves,
-                                                           gooseTurn)
+        actualMove = ai.getHighestOrLowestScoreMove(allMoves, gooseTurn)
         self.assertEqual(actualMove.score, hnObjectBigScore.score)
 
     def test_getHighestOrLowestScoreMove_fox(self):
         """ Get the best move of a Fox player """
-        aiObject = ai.AI(0.5, 0.5)
         hnObjectBigScore = historynode.HistoryNode()
         hnObjectMediumScore = historynode.HistoryNode()
         hnObjectSmallScore = historynode.HistoryNode()
@@ -39,8 +37,7 @@ class TestAI(unittest.TestCase):
         hnObjectSmallScore.score = -5.0
         allMoves = [hnObjectMediumScore, hnObjectBigScore, hnObjectSmallScore]
         gooseTurn = False
-        actualMove = aiObject.getHighestOrLowestScoreMove(allMoves,
-                                                           gooseTurn)
+        actualMove = ai.getHighestOrLowestScoreMove(allMoves, gooseTurn)
         self.assertEqual(actualMove.score, hnObjectSmallScore.score)
 
     @patch.object(ai.AI, "getMovesForGoosePiece")

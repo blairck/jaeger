@@ -1,7 +1,5 @@
 """ This module contains the AI search algorithm """
 
-import operator
-
 # pylint: disable=import-error
 from res import types
 from src import coordinate
@@ -22,6 +20,7 @@ class AI(object):
                      searchPly,
                      minimum=-10000,
                      maximum=10000):
+        """ Main alpha-beta minimax algorithm to find best move """
         allMoves = self.getAllMovesForPlayer(theGame, gooseP)
         self.moveCount += 1
         searchPly -= 1
@@ -54,14 +53,7 @@ class AI(object):
                     if move.score < minimum:
                         move.score = minimum
                         return move
-        return self.getHighestOrLowestScoreMove(allMoves, gooseP)
-
-    def getHighestOrLowestScoreMove(self, moves, gooseP):
-        """ Returns the highest/lowest scored move depending on the player """
-        if gooseP:
-            return max(moves, key=lambda x: x.score)
-        else:
-            return min(moves, key=lambda x: x.score)
+        return getHighestOrLowestScoreMove(allMoves, gooseP)
 
     def getAllMovesForPlayer(self, theGame, gooseP):
         """GooseP == True means it's the Goose player's turn. Otherwise fox"""
@@ -82,7 +74,7 @@ class AI(object):
         moveList = []
         if (theGame.getState(gooseLocation) not in (types.GOOSE,
                                                     types.SUPERGOOSE)):
-            """ Don't examine a piece that's not a goose or supergoose """
+            # Don't examine a piece that's not a goose or supergoose
             return moveList
 
         for direction in range(1, 9):
@@ -110,7 +102,7 @@ class AI(object):
         is the current board position. """
         moveList = []
         if theGame.getState(foxLocation) != types.FOX:
-            """ Don't examine a piece that's not a fox """
+            # Don't examine a piece that's not a fox
             return moveList
         moveList = self.getAllFoxCaptures(theGame, foxLocation)
 
@@ -238,3 +230,10 @@ def getCoordinateHelper(xBoard, yBoard):
         return coordinate.Coordinate(xBoard, yBoard)
     except ValueError:
         return None
+
+def getHighestOrLowestScoreMove(moves, gooseP):
+    """ Returns the highest/lowest scored move depending on the player """
+    if gooseP:
+        return max(moves, key=lambda x: x.score)
+    else:
+        return min(moves, key=lambda x: x.score)

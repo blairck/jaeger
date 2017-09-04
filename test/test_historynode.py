@@ -226,12 +226,14 @@ class TestHistoryNode(unittest.TestCase):
         self.assertRaises(TypeError, hn_obj.setHalfMove, "abc")
 
     def test_determineWinningState_true(self):
+        """ Check if the game state is winning """
         hn_obj = historynode.HistoryNode()
         hn_obj.determineWinningState()
         self.assertEqual(hn_obj.winningState, True)
 
     @patch.object(historynode.HistoryNode, "foxesWinP")
     def test_determineWinningState_false(self, mock_foxesWinP):
+        """ Check if the game state is not winning """
         mock_foxesWinP.return_value = False
         hn_obj = historynode.HistoryNode()
         hn_obj.determineWinningState()
