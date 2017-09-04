@@ -16,26 +16,6 @@ class AI(object):
         self.weightB = b
         self.moveCount = 0
 
-    def findBestMove_DEPRECATED(self,
-                     theGame,
-                     gooseP,
-                     searchPly):
-        allMoves = self.getAllMovesForPlayer(theGame, gooseP)
-        numberOfMoves = len(allMoves)
-        self.moveCount += 1
-        searchPly -= 1
-        if searchPly > 0:
-            for move in allMoves:
-                if not move.winningState:
-                    result = self.findBestMove(move,
-                                               not gooseP,
-                                               searchPly).score
-                    move.score = result
-        if numberOfMoves > 0:
-            return self.getHighestOrLowestScoreMove(allMoves, gooseP)
-        else:
-            return 0.0
-
     def findBestMove(self,
                      theGame,
                      gooseP,
@@ -47,6 +27,7 @@ class AI(object):
         searchPly -= 1
         if searchPly > 0 and not theGame.winningState:
             if gooseP:
+                allMoves.sort(key=lambda x: x.score, reverse=gooseP)
                 for move in allMoves:
                     result = self.findBestMove(move,
                                                not gooseP,
@@ -60,6 +41,7 @@ class AI(object):
                         move.score = maximum
                         return move
             else:
+                allMoves.sort(key=lambda x: x.score, reverse=gooseP)
                 for move in allMoves:
                     result = self.findBestMove(move,
                                                not gooseP,
