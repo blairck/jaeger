@@ -192,6 +192,7 @@ class Rules(object):
         end_tile_state = theGame.getState(end_coordinate)
         return bool((middle_tile_state in (types.GOOSE, types.SUPERGOOSE)) and
                     end_tile_state == 0 and
+                    self.findConnectionP(foxCoordinate, middle_coordinate) and
                     self.findConnectionP(middle_coordinate, end_coordinate))
 
     def isACaptureP(self, theGame, foxCoordinate, direction):
@@ -249,8 +250,8 @@ class Rules(object):
         foxOne = None
         foxTwo = None
 
-        for i in range(1, 8):
-            for j in range(1, 8):
+        for i in range(1, 9):
+            for j in range(1, 9):
                 try:
                     location = coordinate.Coordinate(i, j)
                 except ValueError:
@@ -268,7 +269,7 @@ class Rules(object):
                               "should never happen.")
             raise ValueError(error_template)
 
-        for direction in range(1, 8):
+        for direction in range(1, 9):
             if self.isACaptureP(theGame, foxOne, direction):
                 return True
             if self.isACaptureP(theGame, foxTwo, direction):
@@ -363,7 +364,7 @@ def resultingGoose(currentType, gooseCoordinate):
     use in the AI algorithm) """
     if ((3 <= gooseCoordinate.get_x_board() <= 5) and
             (1 <= gooseCoordinate.get_y_board() <= 3)):
-        return 3
+        return types.SUPERGOOSE
     else:
         return currentType
 

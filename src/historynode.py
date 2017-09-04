@@ -1,5 +1,7 @@
 """ Stores board state with additional game specific logic """
 
+# pylint: disable=import-error
+from res import types
 from src import gamenode
 from src import helper
 
@@ -19,6 +21,7 @@ class HistoryNode(gamenode.GameNode):
         self.halfMove = None # int
         self.p1 = None # str
         self.p2 = None # str
+        self.winningState = False
 
     def print_board(self):
         print("Player 1: {0}".format(self.p1))
@@ -28,24 +31,24 @@ class HistoryNode(gamenode.GameNode):
         print("Fox Search: {0}".format(self.foxSearch))
         print("Goose Search: {0}".format(self.gooseSearch))
         print("Half Move: {0}".format(self.halfMove))
-        print("      {0} {1} {2}      ".format(self.gameState[2][6],
-                                               self.gameState[3][6],
-                                               self.gameState[4][6]))
-        print("      {0} {1} {2}      ".format(self.gameState[2][5],
-                                               self.gameState[3][5],
-                                               self.gameState[4][5]))
+        print("    {0} {1} {2}    ".format(self.gameState[2][6],
+                                           self.gameState[3][6],
+                                           self.gameState[4][6]))
+        print("    {0} {1} {2}    ".format(self.gameState[2][5],
+                                           self.gameState[3][5],
+                                           self.gameState[4][5]))
         self.print_middle_rows(" ")
-        print("      {0} {1} {2}      ".format(self.gameState[2][1],
-                                               self.gameState[3][1],
-                                               self.gameState[4][1]))
-        print("      {0} {1} {2}      ".format(self.gameState[2][0],
-                                               self.gameState[3][0],
-                                               self.gameState[4][0]))
+        print("    {0} {1} {2}    ".format(self.gameState[2][1],
+                                           self.gameState[3][1],
+                                           self.gameState[4][1]))
+        print("    {0} {1} {2}    ".format(self.gameState[2][0],
+                                           self.gameState[3][0],
+                                           self.gameState[4][0]))
 
     def constructor(self):
         """ Sets up the internal state of the HistoryNode instance """
         self.score = 0.0
-        self.leafP = False
+        self.winningState = False
         self.rootP = True
 
         self.result = 0
@@ -114,7 +117,8 @@ class HistoryNode(gamenode.GameNode):
         geeseRemaining = 0
         for i in range(0, 7):
             for j in range(0, 7):
-                if self.gameState[i][j] == 1 or self.gameState[i][j] == 3:
+                if (self.gameState[i][j] == types.GOOSE or
+                        self.gameState[i][j] == types.SUPERGOOSE):
                     geeseRemaining += 1
                     # Too many geese, foxes have not won yet
                     if geeseRemaining >= 9:
@@ -146,3 +150,7 @@ class HistoryNode(gamenode.GameNode):
         """ Setter for halfMove with type checking """
         helper.checkIfInt(value)
         self.halfMove = value
+
+    def determineWinningState(self):
+        """ Set winningState if this node is in one """
+        self.winningState = bool(self.geeseWinP() or self.foxesWinP())

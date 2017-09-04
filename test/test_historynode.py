@@ -1,6 +1,7 @@
 """ Tests for the HistoryNode module """
 
 import unittest
+from unittest.mock import patch
 
 from src import historynode
 from test import helper
@@ -24,20 +25,20 @@ class TestHistoryNode(unittest.TestCase):
                               "Fox Search: None\n"
                               "Goose Search: None\n"
                               "Half Move: None\n"
-                              "      0 0 0      \n"
-                              "      0 0 0      \n"
+                              "    0 0 0    \n"
+                              "    0 0 0    \n"
                               "0 0 0 0 0 0 0\n"
                               "0 0 0 0 0 0 0\n"
                               "0 0 0 0 0 0 0\n"
-                              "      0 0 0      \n"
-                              "      0 0 0")
+                              "    0 0 0    \n"
+                              "    0 0 0")
             self.assertEqual(actual_print, expected_print)
 
     def test_constructor(self):
         """ Check that HistoryNode object is initialized correctly """
         hn_obj = historynode.HistoryNode()
         hn_obj.constructor()
-        self.assertEqual(hn_obj.leafP, False)
+        self.assertEqual(hn_obj.winningState, False)
         self.assertEqual(hn_obj.rootP, True)
         self.assertEqual(hn_obj.result, 0)
         self.assertEqual(hn_obj.gameType, 1)
@@ -57,13 +58,13 @@ class TestHistoryNode(unittest.TestCase):
                               "Fox Search: 1\n"
                               "Goose Search: 1\n"
                               "Half Move: 1\n"
-                              "      1 1 1      \n"
-                              "      1 1 1      \n"
+                              "    1 1 1    \n"
+                              "    1 1 1    \n"
                               "1 1 1 1 1 1 1\n"
                               "1 1 1 1 1 1 1\n"
                               "1 1 0 0 0 1 1\n"
-                              "      0 0 0      \n"
-                              "      2 0 2")
+                              "    0 0 0    \n"
+                              "    2 0 2")
             self.assertEqual(actual_print, expected_print)
 
         self.assertEqual(hn_obj.gameState[3][1], 0)
@@ -223,3 +224,17 @@ class TestHistoryNode(unittest.TestCase):
         """ Check that halfMove is raises an error with non-int input """
         hn_obj = historynode.HistoryNode()
         self.assertRaises(TypeError, hn_obj.setHalfMove, "abc")
+
+    def test_determineWinningState_true(self):
+        """ Check if the game state is winning """
+        hn_obj = historynode.HistoryNode()
+        hn_obj.determineWinningState()
+        self.assertEqual(hn_obj.winningState, True)
+
+    @patch.object(historynode.HistoryNode, "foxesWinP")
+    def test_determineWinningState_false(self, mock_foxesWinP):
+        """ Check if the game state is not winning """
+        mock_foxesWinP.return_value = False
+        hn_obj = historynode.HistoryNode()
+        hn_obj.determineWinningState()
+        self.assertEqual(hn_obj.winningState, False)

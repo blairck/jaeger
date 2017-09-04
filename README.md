@@ -1,12 +1,9 @@
 ### Description ###
-Jaeger is a game for playing and analyzing games of Foxes & Geese. This is a 
-port of a game I wrote originally in Objective-C in 2011. See:
-https://en.wikipedia.org/wiki/Fox_games
+Jaeger is a game for playing games of Foxes & Geese. This is a port of a game 
+I wrote originally in Objective-C in 2011.
+See: https://en.wikipedia.org/wiki/Fox_games
 
 Project Status: Active
-
-Note: I am unable to accept any pull requests at this time. If you would like 
-to work on Jaeger, please fork it.
 
 ### Goals ###
 * Port game playing engine from Objective-C to Python (in progress, see Status)
@@ -18,14 +15,14 @@ interface for playing against the computer
 
 ### Status ###
 Functions to be ported and tested, organized by component
-* AI                            0/11
+* AI                            6/6
 * Connection                    5/5
 * FileController                0/2
 * GameInterface                 0/23
 * GameNode                      7/7
 * HistoryNode                   11/11
 * Rules                         14/14
-* TOTAL                         37/73
+* TOTAL                         43/68
 
 ### Requirements ###
 To use:
