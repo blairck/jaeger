@@ -4,6 +4,7 @@ import unittest
 
 # pylint: disable=import-error
 from res import types
+from src import ai
 from src import coordinate
 from src import historynode
 from src import interface
@@ -83,3 +84,49 @@ class TestInterface(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         # Todo write this test
+
+    def test_getCoordinatesFromUserInput_good(self):
+        actualValue = interface.getCoordinatesFromUserInput('34')[0]
+        expectedValue = coordinate.Coordinate(3, 4)
+        self.assertEquals(actualValue.get_x_board(),
+                          expectedValue.get_x_board())
+        self.assertEquals(actualValue.get_y_board(),
+                          expectedValue.get_y_board())
+
+    def test_getCoordinatesFromUserInput_good_with_comma(self):
+        actualValue = interface.getCoordinatesFromUserInput('3,4')[0]
+        expectedValue = coordinate.Coordinate(3, 4)
+        self.assertEquals(actualValue.get_x_board(),
+                          expectedValue.get_x_board())
+        self.assertEquals(actualValue.get_y_board(),
+                          expectedValue.get_y_board())
+
+    def test_getCoordinatesFromUserInput_long(self):
+        actualValue = interface.getCoordinatesFromUserInput('3,4-5,6')
+        expectedValue0 = coordinate.Coordinate(3, 4)
+        expectedValue1 = coordinate.Coordinate(5, 6)
+        self.assertEquals(actualValue[0].get_x_board(),
+                          expectedValue0.get_x_board())
+        self.assertEquals(actualValue[1].get_y_board(),
+                          expectedValue1.get_y_board())
+
+    def test_getCoordinatesFromUserInput_long_simple(self):
+        actualValue = interface.getCoordinatesFromUserInput('3456')
+        expectedValue0 = coordinate.Coordinate(3, 4)
+        expectedValue1 = coordinate.Coordinate(5, 6)
+        self.assertEquals(actualValue[0].get_x_board(),
+                          expectedValue0.get_x_board())
+        self.assertEquals(actualValue[1].get_y_board(),
+                          expectedValue1.get_y_board())
+
+    def test_getCoordinatesFromUserInput_bad_short(self):
+        actualValue = interface.getCoordinatesFromUserInput('3')
+        self.assertEquals(len(actualValue), 0)
+
+    def test_getCoordinatesFromUserInput_bad_long(self):
+        actualValue = interface.getCoordinatesFromUserInput('345t')
+        self.assertEquals(len(actualValue), 0)
+
+    def test_getCoordinatesFromUserInput_outside_long(self):
+        actualValue = interface.getCoordinatesFromUserInput('3459')
+        self.assertEquals(len(actualValue), 0)
