@@ -12,8 +12,23 @@ class Interface(object):
         pass
 
 def getPositionFromListOfMoves(theMoves, userInput, gooseP):
-    # Todo write implementation
+    userCoordinates = getCoordinatesFromUserInput(userInput)
+    #if len(userCoordinates == 1):
     pass
+
+def matchSingleCoordinateToMoves(theMoves, userCoordinate, gooseP):
+    xCoordinate = userCoordinate.get_x_board()
+    yCoordinate = userCoordinate.get_y_board()
+    #result = filter(lambda x:, x.isMatch())
+
+def isCoordinateMatch(theMove, userCoordinate, gooseP):
+    destinationType = theMove.getState(userCoordinate)
+    if gooseP and destinationType in (types.GOOSE, types.SUPERGOOSE):
+        return True
+    if not gooseP and destinationType is types.FOX:
+        return True
+    else:
+        return False
 
 def getCoordinatesFromUserInput(userInput):
     result = []

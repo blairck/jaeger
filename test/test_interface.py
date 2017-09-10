@@ -130,3 +130,32 @@ class TestInterface(unittest.TestCase):
     def test_getCoordinatesFromUserInput_outside_long(self):
         actualValue = interface.getCoordinatesFromUserInput('3459')
         self.assertEquals(len(actualValue), 0)
+
+    def test_matchSingleCoordinateToMoves_goose(self):
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        testCoordinate = coordinate.Coordinate(3, 7)
+        gooseP = True
+        hnObject.setState(testCoordinate, types.SUPERGOOSE)
+        self.assertTrue(interface.isCoordinateMatch(hnObject,
+                                                    testCoordinate,
+                                                    gooseP))
+
+    def test_matchSingleCoordinateToMoves_fox(self):
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        testCoordinate = coordinate.Coordinate(3, 7)
+        gooseP = False
+        hnObject.setState(testCoordinate, types.FOX)
+        self.assertTrue(interface.isCoordinateMatch(hnObject,
+                                                    testCoordinate,
+                                                    gooseP))
+
+    def test_matchSingleCoordinateToMoves_empty(self):
+        aiObject = ai.AI(0.5, 0.5)
+        hnObject = historynode.HistoryNode()
+        testCoordinate = coordinate.Coordinate(3, 7)
+        gooseP = False
+        self.assertFalse(interface.isCoordinateMatch(hnObject,
+                                                    testCoordinate,
+                                                    gooseP))
