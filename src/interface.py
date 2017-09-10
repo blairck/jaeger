@@ -23,11 +23,12 @@ def matchSingleCoordinateToMoves(theMoves, userCoordinate, gooseP):
     return result
 
 def matchMultipleCoordinatesToMoves(theMoves, userCoordinates, gooseP):
+    lastCoordinate = userCoordinates.pop()
     for coordinate in userCoordinates:
         theMoves = list(filter(lambda x: x.getState(coordinate)==types.EMPTY,
                                theMoves))
-        if len(theMoves)==1:
-            return theMoves
+    theMoves = matchSingleCoordinateToMoves(theMoves, lastCoordinate, gooseP)
+    return theMoves
 
 def isCoordinateMatch(theMove, userCoordinate, gooseP):
     destinationType = theMove.getState(userCoordinate)

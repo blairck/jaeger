@@ -73,6 +73,36 @@ class TestInterface(unittest.TestCase):
                                                              gooseP)
         self.assertEquals(len(actualValue), 0)
 
+    def test_matchMultipleCoordinatesToMoves_goose_unambiguous(self):
+        aiObject = ai.AI(0.5, 0.5)
+        gooseP = True
+        listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
+        coordinates = interface.getCoordinatesFromUserInput("25-35")
+        actualValue = interface.matchMultipleCoordinatesToMoves(listOfMoves,
+                                                                coordinates,
+                                                                gooseP)
+        self.assertEquals(len(actualValue), 1)
+
+    def test_matchMultipleCoordinatesToMoves_goose_more_unambiguous(self):
+        aiObject = ai.AI(0.5, 0.5)
+        gooseP = True
+        listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
+        coordinates = interface.getCoordinatesFromUserInput("4233")
+        actualValue = interface.matchMultipleCoordinatesToMoves(listOfMoves,
+                                                                coordinates,
+                                                                gooseP)
+        self.assertEquals(len(actualValue), 1)
+
+    def test_matchMultipleCoordinatesToMoves_goose_nonexistant(self):
+        aiObject = ai.AI(0.5, 0.5)
+        gooseP = True
+        listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
+        coordinates = interface.getCoordinatesFromUserInput("54-55")
+        actualValue = interface.matchMultipleCoordinatesToMoves(listOfMoves,
+                                                                coordinates,
+                                                                gooseP)
+        self.assertEquals(len(actualValue), 0)
+
     def test_getCoordinatesFromUserInput_good(self):
         actualValue = interface.getCoordinatesFromUserInput('34')[0]
         expectedValue = coordinate.Coordinate(3, 4)
