@@ -1,6 +1,7 @@
 """ Tests for the AI module """
 
 import unittest
+from unittest.mock import patch
 
 # pylint: disable=import-error
 from res import types
@@ -42,6 +43,40 @@ class TestInterface(unittest.TestCase):
         cls.shared_game.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
         cls.shared_game.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
         cls.shared_game.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
+
+    @patch.object(interface, "matchSingleCoordinateToMoves")
+    def test_getPositionFromListOfMoves_single(self,
+                                             mock_matchSingleCoordinateTo):
+        mock_matchSingleCoordinateTo.return_value = ["fake board1"]
+        aiObject = ai.AI(0.5, 0.5)
+        gooseP = True
+        listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
+        result = interface.getPositionFromListOfMoves(listOfMoves,
+                                                      '53',
+                                                      gooseP)
+        self.assertEquals(len(result), 1)
+
+    @patch.object(interface, "matchMultipleCoordinatesToMoves")
+    def test_getPositionFromListOfMoves_multi(self,
+                                             mock_matchMultipleCoordinatesTo):
+        mock_matchMultipleCoordinatesTo.return_value = ["fake_board1",
+                                                        "fake_board2"]
+        aiObject = ai.AI(0.5, 0.5)
+        gooseP = True
+        listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
+        result = interface.getPositionFromListOfMoves(listOfMoves,
+                                                      '5363',
+                                                      gooseP)
+        self.assertEquals(len(result), 2)
+
+    def test_getPositionFromListOfMoves_none(self):
+        aiObject = ai.AI(0.5, 0.5)
+        gooseP = True
+        listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
+        result = interface.getPositionFromListOfMoves(listOfMoves,
+                                                      'z1',
+                                                      gooseP)
+        self.assertEquals(len(result), 0)
 
     def test_matchSingleCoordinateToMoves_fox_unambiguous(self):
         aiObject = ai.AI(0.5, 0.5)

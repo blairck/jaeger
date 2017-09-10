@@ -6,15 +6,18 @@ from src import ai
 from src import coordinate
 from src import historynode
 
-class Interface(object):
-    """ Class that stores UI helper functions """
-    def __init__(self):
-        pass
-
 def getPositionFromListOfMoves(theMoves, userInput, gooseP):
     userCoordinates = getCoordinatesFromUserInput(userInput)
-    #if len(userCoordinates == 1):
-    pass
+    if len(userCoordinates) == 1:
+        return matchSingleCoordinateToMoves(theMoves,
+                                            userCoordinates[0],
+                                            gooseP)
+    elif len(userCoordinates) > 1:
+        return matchMultipleCoordinatesToMoves(theMoves,
+                                               userCoordinates,
+                                               gooseP)
+    else:
+        return []
 
 def matchSingleCoordinateToMoves(theMoves, userCoordinate, gooseP):
     result = list(filter(lambda x: isCoordinateMatch(x,
