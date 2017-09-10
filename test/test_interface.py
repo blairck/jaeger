@@ -12,7 +12,8 @@ from src import interface
 class TestInterface(unittest.TestCase):
     """ Integration Tests for the Interface module """
 
-    def test_getPositionFromListOfMoves_goose(self):
+    @classmethod
+    def setUpClass(cls):
         """
         7         . - . - .
                   | \ | / |
@@ -28,62 +29,49 @@ class TestInterface(unittest.TestCase):
                   | / | \ |
         1         S - S - S
           1   2   3   4   5   6   7
-        Goose to play. Best move is G25-G24...G24-S33#
         """
-        aiObject = ai.AI(0.5, 0.5)
-        hnObject = historynode.HistoryNode()
-        hnObject.setState(coordinate.Coordinate(7, 4), types.FOX)
-        hnObject.setState(coordinate.Coordinate(7, 5), types.FOX)
-        hnObject.setState(coordinate.Coordinate(2, 5), types.GOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 1), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
-        gooseP = True
-        listOfMoves = aiObject.getAllMovesForPlayer(hnObject, gooseP)
-        actualValue = interface.getPositionFromListOfMoves(listOfMoves,
-                                                           "24",
-                                                           gooseP)
-        # Todo write more
+        cls.shared_game = historynode.HistoryNode()
+        cls.shared_game.setState(coordinate.Coordinate(7, 4), types.FOX)
+        cls.shared_game.setState(coordinate.Coordinate(7, 5), types.FOX)
+        cls.shared_game.setState(coordinate.Coordinate(2, 5), types.GOOSE)
+        cls.shared_game.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
+        cls.shared_game.setState(coordinate.Coordinate(4, 1), types.SUPERGOOSE)
+        cls.shared_game.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
+        cls.shared_game.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
+        cls.shared_game.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
+        cls.shared_game.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
+        cls.shared_game.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
+        cls.shared_game.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
 
-    def test_getPositionFromListOfMoves_fox(self):
-        """
-        7         F - . - .
-                  | \ | / |
-        6         . - . - .
-                  | / | \ |
-        5 . - . - . - . - F - . - .
-          | \ | / | \ | / | \ | / |
-        4 . - . - . - G - . - G - G
-          | / | \ | / | \ | / | \ |
-        3 . - . - ~ - S - S - . - .
-                  | \ | / |
-        2         S - S - S
-                  | / | \ |
-        1         S - S - S
-          1   2   3   4   5   6   7
-        Fox to play. Best move is F55xG44
-        """
+    def test_matchSingleCoordinateToMoves_fox_unambiguous(self):
         aiObject = ai.AI(0.5, 0.5)
-        hnObject = historynode.HistoryNode()
-        hnObject.setState(coordinate.Coordinate(3, 7), types.FOX)
-        hnObject.setState(coordinate.Coordinate(5, 5), types.FOX)
-        hnObject.setState(coordinate.Coordinate(4, 4), types.GOOSE)
-        hnObject.setState(coordinate.Coordinate(6, 4), types.GOOSE)
-        hnObject.setState(coordinate.Coordinate(7, 4), types.GOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 1), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
-        # Todo write this test
+        gooseP = False
+        listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
+        testCoordinate = coordinate.Coordinate(6, 5)
+        actualValue = interface.matchSingleCoordinateToMoves(listOfMoves,
+                                                             testCoordinate,
+                                                             gooseP)
+        self.assertEquals(len(actualValue), 1)
+
+    def test_matchSingleCoordinateToMoves_fox_ambiguous(self):
+        aiObject = ai.AI(0.5, 0.5)
+        gooseP = False
+        listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
+        testCoordinate = coordinate.Coordinate(6, 4)
+        actualValue = interface.matchSingleCoordinateToMoves(listOfMoves,
+                                                             testCoordinate,
+                                                             gooseP)
+        self.assertEquals(len(actualValue), 2)
+
+    def test_matchSingleCoordinateToMoves_fox_none(self):
+        aiObject = ai.AI(0.5, 0.5)
+        gooseP = False
+        listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
+        testCoordinate = coordinate.Coordinate(6, 3)
+        actualValue = interface.matchSingleCoordinateToMoves(listOfMoves,
+                                                             testCoordinate,
+                                                             gooseP)
+        self.assertEquals(len(actualValue), 0)
 
     def test_getCoordinatesFromUserInput_good(self):
         actualValue = interface.getCoordinatesFromUserInput('34')[0]
@@ -131,7 +119,7 @@ class TestInterface(unittest.TestCase):
         actualValue = interface.getCoordinatesFromUserInput('3459')
         self.assertEquals(len(actualValue), 0)
 
-    def test_matchSingleCoordinateToMoves_goose(self):
+    def test_isCoordinateMatch_goose(self):
         aiObject = ai.AI(0.5, 0.5)
         hnObject = historynode.HistoryNode()
         testCoordinate = coordinate.Coordinate(3, 7)
@@ -141,7 +129,7 @@ class TestInterface(unittest.TestCase):
                                                     testCoordinate,
                                                     gooseP))
 
-    def test_matchSingleCoordinateToMoves_fox(self):
+    def test_isCoordinateMatch_fox(self):
         aiObject = ai.AI(0.5, 0.5)
         hnObject = historynode.HistoryNode()
         testCoordinate = coordinate.Coordinate(3, 7)
@@ -151,7 +139,7 @@ class TestInterface(unittest.TestCase):
                                                     testCoordinate,
                                                     gooseP))
 
-    def test_matchSingleCoordinateToMoves_empty(self):
+    def test_isCoordinateMatch_empty(self):
         aiObject = ai.AI(0.5, 0.5)
         hnObject = historynode.HistoryNode()
         testCoordinate = coordinate.Coordinate(3, 7)

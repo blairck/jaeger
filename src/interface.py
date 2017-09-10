@@ -17,9 +17,17 @@ def getPositionFromListOfMoves(theMoves, userInput, gooseP):
     pass
 
 def matchSingleCoordinateToMoves(theMoves, userCoordinate, gooseP):
-    xCoordinate = userCoordinate.get_x_board()
-    yCoordinate = userCoordinate.get_y_board()
-    #result = filter(lambda x:, x.isMatch())
+    result = list(filter(lambda x: isCoordinateMatch(x,
+                                                     userCoordinate,
+                                                     gooseP), theMoves))
+    return result
+
+def matchMultipleCoordinatesToMoves(theMoves, userCoordinates, gooseP):
+    for coordinate in userCoordinates:
+        theMoves = list(filter(lambda x: x.getState(coordinate)==types.EMPTY,
+                               theMoves))
+        if len(theMoves)==1:
+            return theMoves
 
 def isCoordinateMatch(theMove, userCoordinate, gooseP):
     destinationType = theMove.getState(userCoordinate)
