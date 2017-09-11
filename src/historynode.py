@@ -24,13 +24,6 @@ class HistoryNode(gamenode.GameNode):
         self.winningState = False
 
     def print_board(self):
-        print("Player 1: {0}".format(self.p1))
-        print("Player 2: {0}".format(self.p2))
-        print("Result: {0}".format(self.result))
-        print("Game Type: {0}".format(self.gameType))
-        print("Fox Search: {0}".format(self.foxSearch))
-        print("Goose Search: {0}".format(self.gooseSearch))
-        print("Half Move: {0}".format(self.halfMove))
         print("    {0} {1} {2}    ".format(self.gameState[2][6],
                                            self.gameState[3][6],
                                            self.gameState[4][6]))
@@ -44,6 +37,55 @@ class HistoryNode(gamenode.GameNode):
         print("    {0} {1} {2}    ".format(self.gameState[2][0],
                                            self.gameState[3][0],
                                            self.gameState[4][0]))
+
+    def pretty_print_board(self):
+        print("7         {0} - {1} - {2}".format(
+              types.getPieceAbbreviation(self.gameState[2][6]),
+              types.getPieceAbbreviation(self.gameState[3][6]),
+              types.getPieceAbbreviation(self.gameState[4][6])))
+        print("          | \ | / |")
+        print("6         {0} - {1} - {2}".format(
+              types.getPieceAbbreviation(self.gameState[2][5]),
+              types.getPieceAbbreviation(self.gameState[3][5]),
+              types.getPieceAbbreviation(self.gameState[4][5])))
+        print("          | / | \ |")
+        print("5 {0} - {1} - {2} - {3} - {4} - {5} - {6}".format(
+              types.getPieceAbbreviation(self.gameState[0][4]),
+              types.getPieceAbbreviation(self.gameState[1][4]),
+              types.getPieceAbbreviation(self.gameState[2][4]),
+              types.getPieceAbbreviation(self.gameState[3][4]),
+              types.getPieceAbbreviation(self.gameState[4][4]),
+              types.getPieceAbbreviation(self.gameState[5][4]),
+              types.getPieceAbbreviation(self.gameState[6][4])))
+        print("  | \ | / | \ | / | \ | / |")
+        print("4 {0} - {1} - {2} - {3} - {4} - {5} - {6}".format(
+              types.getPieceAbbreviation(self.gameState[0][3]),
+              types.getPieceAbbreviation(self.gameState[1][3]),
+              types.getPieceAbbreviation(self.gameState[2][3]),
+              types.getPieceAbbreviation(self.gameState[3][3]),
+              types.getPieceAbbreviation(self.gameState[4][3]),
+              types.getPieceAbbreviation(self.gameState[5][3]),
+              types.getPieceAbbreviation(self.gameState[6][3])))
+        print("  | / | \ | / | \ | / | \ |")
+        print("3 {0} - {1} - {2} - {3} - {4} - {5} - {6}".format(
+              types.getPieceAbbreviation(self.gameState[0][2]),
+              types.getPieceAbbreviation(self.gameState[1][2]),
+              types.getPieceAbbreviation(self.gameState[2][2]),
+              types.getPieceAbbreviation(self.gameState[3][2]),
+              types.getPieceAbbreviation(self.gameState[4][2]),
+              types.getPieceAbbreviation(self.gameState[5][2]),
+              types.getPieceAbbreviation(self.gameState[6][2])))
+        print("          | \ | / |")
+        print("2         {0} - {1} - {2}".format(
+              types.getPieceAbbreviation(self.gameState[2][1]),
+              types.getPieceAbbreviation(self.gameState[3][1]),
+              types.getPieceAbbreviation(self.gameState[4][1])))
+        print("          | / | \ |")
+        print("1         {0} - {1} - {2}".format(
+              types.getPieceAbbreviation(self.gameState[2][0]),
+              types.getPieceAbbreviation(self.gameState[3][0]),
+              types.getPieceAbbreviation(self.gameState[4][0])))
+        print("  1   2   3   4   5   6   7")
 
     def constructor(self):
         """ Sets up the internal state of the HistoryNode instance """
