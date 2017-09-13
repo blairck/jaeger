@@ -14,6 +14,7 @@ class HistoryNode(gamenode.GameNode):
 
     def __init__(self):
         super(HistoryNode, self).__init__()
+        # Original FG settings
         self.result = None # int
         self.gameType = None # int
         self.foxSearch = None # int
@@ -21,6 +22,9 @@ class HistoryNode(gamenode.GameNode):
         self.halfMove = None # int
         self.p1 = None # str
         self.p2 = None # str
+
+        # Jaeger settings
+        self.isCapture = False
         self.winningState = False
 
     def print_board(self):

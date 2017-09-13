@@ -18,14 +18,7 @@ class TestHistoryNode(unittest.TestCase):
             hn_obj = historynode.HistoryNode()
             hn_obj.print_board()
             actual_print = out.getvalue().strip()
-            expected_print = ("Player 1: None\n"
-                              "Player 2: None\n"
-                              "Result: None\n"
-                              "Game Type: None\n"
-                              "Fox Search: None\n"
-                              "Goose Search: None\n"
-                              "Half Move: None\n"
-                              "    0 0 0    \n"
+            expected_print = ("0 0 0    \n"
                               "    0 0 0    \n"
                               "0 0 0 0 0 0 0\n"
                               "0 0 0 0 0 0 0\n"
@@ -51,14 +44,7 @@ class TestHistoryNode(unittest.TestCase):
         with helper.captured_output() as out:
             hn_obj.print_board()
             actual_print = out.getvalue().strip()
-            expected_print = ("Player 1: None\n"
-                              "Player 2: None\n"
-                              "Result: 0\n"
-                              "Game Type: 1\n"
-                              "Fox Search: 1\n"
-                              "Goose Search: 1\n"
-                              "Half Move: 1\n"
-                              "    1 1 1    \n"
+            expected_print = ("1 1 1    \n"
                               "    1 1 1    \n"
                               "1 1 1 1 1 1 1\n"
                               "1 1 1 1 1 1 1\n"
