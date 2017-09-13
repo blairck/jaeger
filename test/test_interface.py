@@ -48,7 +48,7 @@ class TestInterface(unittest.TestCase):
     def test_getPositionFromListOfMoves_single(self,
                                              mock_matchSingleCoordinateTo):
         mock_matchSingleCoordinateTo.return_value = ["fake board1"]
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         gooseP = True
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
         result = interface.getPositionFromListOfMoves(listOfMoves,
@@ -61,7 +61,7 @@ class TestInterface(unittest.TestCase):
                                              mock_matchMultipleCoordinatesTo):
         mock_matchMultipleCoordinatesTo.return_value = ["fake_board1",
                                                         "fake_board2"]
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         gooseP = True
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
         result = interface.getPositionFromListOfMoves(listOfMoves,
@@ -70,7 +70,7 @@ class TestInterface(unittest.TestCase):
         self.assertEquals(len(result), 2)
 
     def test_getPositionFromListOfMoves_none(self):
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         gooseP = True
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
         result = interface.getPositionFromListOfMoves(listOfMoves,
@@ -79,7 +79,7 @@ class TestInterface(unittest.TestCase):
         self.assertEquals(len(result), 0)
 
     def test_matchSingleCoordinateToMoves_fox_unambiguous(self):
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         gooseP = False
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
         testCoordinate = coordinate.Coordinate(6, 5)
@@ -89,7 +89,7 @@ class TestInterface(unittest.TestCase):
         self.assertEquals(len(actualValue), 1)
 
     def test_matchSingleCoordinateToMoves_fox_ambiguous(self):
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         gooseP = False
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
         testCoordinate = coordinate.Coordinate(6, 4)
@@ -99,7 +99,7 @@ class TestInterface(unittest.TestCase):
         self.assertEquals(len(actualValue), 2)
 
     def test_matchSingleCoordinateToMoves_fox_none(self):
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         gooseP = False
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
         testCoordinate = coordinate.Coordinate(6, 3)
@@ -109,7 +109,7 @@ class TestInterface(unittest.TestCase):
         self.assertEquals(len(actualValue), 0)
 
     def test_matchMultipleCoordinatesToMoves_goose_unambiguous(self):
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         gooseP = True
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
         coordinates = interface.getCoordinatesFromUserInput("25-35")
@@ -119,7 +119,7 @@ class TestInterface(unittest.TestCase):
         self.assertEquals(len(actualValue), 1)
 
     def test_matchMultipleCoordinatesToMoves_goose_more_unambiguous(self):
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         gooseP = True
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
         coordinates = interface.getCoordinatesFromUserInput("4233")
@@ -129,7 +129,7 @@ class TestInterface(unittest.TestCase):
         self.assertEquals(len(actualValue), 1)
 
     def test_matchMultipleCoordinatesToMoves_goose_nonexistant(self):
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         gooseP = True
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
         coordinates = interface.getCoordinatesFromUserInput("54-55")
@@ -185,7 +185,7 @@ class TestInterface(unittest.TestCase):
         self.assertEquals(len(actualValue), 0)
 
     def test_isCoordinateMatch_goose(self):
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         testCoordinate = coordinate.Coordinate(3, 7)
         gooseP = True
@@ -195,7 +195,7 @@ class TestInterface(unittest.TestCase):
                                                     gooseP))
 
     def test_isCoordinateMatch_fox(self):
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         testCoordinate = coordinate.Coordinate(3, 7)
         gooseP = False
@@ -205,7 +205,7 @@ class TestInterface(unittest.TestCase):
                                                     gooseP))
 
     def test_isCoordinateMatch_empty(self):
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         testCoordinate = coordinate.Coordinate(3, 7)
         gooseP = False

@@ -30,7 +30,7 @@ class TestIntegAI(unittest.TestCase):
           1   2   3   4   5   6   7
         Goose to play. Best move is S53-52
         """
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         hnObject.setState(coordinate.Coordinate(2, 4), types.FOX)
         hnObject.setState(coordinate.Coordinate(2, 5), types.FOX)
@@ -44,7 +44,7 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         actualValue = aiObject.findBestMove(hnObject, True, 3)
-        self.assertEqual(actualValue.score, 1080.0)
+        self.assertEqual(actualValue.score, 1158.8)
         self.assertEqual(aiObject.moveCount, 34)
 
     def test_findBestMove_gooseToPlay_3Ply(self):
@@ -65,7 +65,7 @@ class TestIntegAI(unittest.TestCase):
           1   2   3   4   5   6   7
         Goose to play. Best move is G25-G24...G24-S33#
         """
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         hnObject.setState(coordinate.Coordinate(7, 4), types.FOX)
         hnObject.setState(coordinate.Coordinate(7, 5), types.FOX)
@@ -79,8 +79,8 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         actualValue = aiObject.findBestMove(hnObject, True, 3)
-        self.assertEqual(actualValue.score, 1080.0)
-        self.assertEqual(aiObject.moveCount, 29)
+        self.assertEqual(actualValue.score, 1158.8)
+        self.assertEqual(aiObject.moveCount, 26)
 
     def test_findBestMove_foxToPlay_3Ply(self):
         """
@@ -100,7 +100,7 @@ class TestIntegAI(unittest.TestCase):
           1   2   3   4   5   6   7
         Fox to play. Best move is F55xG44
         """
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         hnObject.setState(coordinate.Coordinate(3, 7), types.FOX)
         hnObject.setState(coordinate.Coordinate(5, 5), types.FOX)
@@ -116,8 +116,8 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         actualValue = aiObject.findBestMove(hnObject, False, 3)
-        self.assertEqual(actualValue.score, 67.0)
-        self.assertEqual(aiObject.moveCount, 37)
+        self.assertEqual(actualValue.score, 133.7)
+        self.assertEqual(aiObject.moveCount, 28)
 
     def test_findBestMove_gooseToPlay_1Ply(self):
         """
@@ -137,7 +137,7 @@ class TestIntegAI(unittest.TestCase):
           1   2   3   4   5   6   7
         Goose to play. Best move is G44-S33#
         """
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         hnObject.setState(coordinate.Coordinate(3, 5), types.FOX)
         hnObject.setState(coordinate.Coordinate(7, 5), types.FOX)
@@ -151,7 +151,7 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         actualValue = aiObject.findBestMove(hnObject, True, 1)
-        self.assertEqual(actualValue.score, 1080.0)
+        self.assertEqual(actualValue.score, 1159.2)
 
     def test_findBestMove_foxToPlay_1Ply(self):
         """
@@ -171,7 +171,7 @@ class TestIntegAI(unittest.TestCase):
           1   2   3   4   5   6   7
         Fox to play. Best move is F35xG45xG56
         """
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         hnObject.setState(coordinate.Coordinate(3, 5), types.FOX)
         hnObject.setState(coordinate.Coordinate(7, 5), types.FOX)
@@ -187,12 +187,12 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         actualValue = aiObject.findBestMove(hnObject, False, 1)
-        self.assertEqual(actualValue.score, 66.5)
+        self.assertEqual(actualValue.score, 132.8)
 
     def test_getMovesForGoosePiece_GooseToSuper(self):
         """ Test finding goose moves where a regular goose would be promoted
         to supergoose """
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         goose_xBoard = 2
         goose_yBoard = 3
@@ -217,7 +217,7 @@ class TestIntegAI(unittest.TestCase):
 
     def test_getMovesForGoosePiece_MaxMoves(self):
         """ Test regular goose with all possible moves """
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         gooseLocation = coordinate.Coordinate(6, 4)
         hnObject.setState(gooseLocation, types.GOOSE)
@@ -227,7 +227,7 @@ class TestIntegAI(unittest.TestCase):
 
     def test_getMovesForGoosePiece_PartialMoves(self):
         """ Test getting goose moves when only a few are available """
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         gooseLocation = coordinate.Coordinate(4, 7)
         hnObject.setState(gooseLocation, types.GOOSE)
@@ -237,7 +237,7 @@ class TestIntegAI(unittest.TestCase):
 
     def test_getMovesForGoosePiece_SuperGoose(self):
         """ Test supergoose has full range of motion"""
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         gooseLocation = coordinate.Coordinate(5, 3)
         hnObject.setState(gooseLocation, types.SUPERGOOSE)
@@ -250,7 +250,7 @@ class TestIntegAI(unittest.TestCase):
         hn_object = historynode.HistoryNode()
         fox_location = coordinate.Coordinate(3, 4)
         hn_object.setState(fox_location, types.FOX)
-        ai_object = ai.AI(0.5, 0.5)
+        ai_object = ai.AI()
         expectedValue_initial = types.EMPTY
         expectedValue_end = types.FOX
         actualValue = ai_object.getMovesForFoxPiece(hn_object, fox_location)

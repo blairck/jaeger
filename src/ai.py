@@ -8,10 +8,10 @@ from src import rules
 
 class AI(object):
     """ Class that stores the AI algorithm """
-    def __init__(self, a, b):
+    def __init__(self):
         self.arbiter = rules.Rules()
-        self.weightA = a
-        self.weightB = b
+        self.weightA = 1.0
+        self.weightB = 1.0
         self.moveCount = 0
 
     def findBestMove(self,
@@ -158,18 +158,24 @@ class AI(object):
 
         for location in getTupleOfAllCoordinates():
             if theGame.getState(location) == types.GOOSE:
+                # Reward goose player for having material on the board
                 valueA += 1
+                # Reward Goose player for moving to the first row
+                valueA += (7 - location.get_y_board()) * 0.1
             elif theGame.getState(location) == types.SUPERGOOSE:
                 valueA += 2
                 if (3 <= location.get_x_board() <= 5 and
                     1 <= location.get_y_board() <= 3):
+                    # Reward Goose player for occupying victory zone
                     valueB += 4 - location.get_y_board()
                     victoryPoints += 1
+            elif theGame.getState(location) == types.FOX:
+                # Reward fox player for being near the 1st row
+                valueA -= (7 - location.get_y_board()) * 0.2
 
         valueA -= 20
         valueB *= victoryPoints
         totalScore += self.weightA * valueA + self.weightB * valueB
-        #self.evaluated += 1
         if theGame.geeseWinP():
             totalScore += 1000
         elif theGame.foxesWinP():

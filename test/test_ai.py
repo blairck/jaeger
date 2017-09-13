@@ -44,7 +44,7 @@ class TestAI(unittest.TestCase):
     def test_getAllMovesForPlayer_goose(self, mock_getMovesForGoosePiece):
         """ Get moves for a Goose player """
         mock_getMovesForGoosePiece.return_value = ["fake board"]
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         gooseP = True
         actualValue = len(aiObject.getAllMovesForPlayer(hnObject, gooseP))
@@ -55,7 +55,7 @@ class TestAI(unittest.TestCase):
     def test_getAllMovesForPlayer_fox(self, mock_getMovesForFoxPiece):
         """ Get moves for a Fox player """
         mock_getMovesForFoxPiece.return_value = ["fake board"]
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         gooseP = False
         actualValue = len(aiObject.getAllMovesForPlayer(hnObject, gooseP))
@@ -86,7 +86,7 @@ class TestAI(unittest.TestCase):
     def test_getMovesForGoosePiece_DetailedMoves(self, mock_legalMoveP):
         """ Test that each generated move updates board state correctly """
         mock_legalMoveP.return_value = True
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         gooseLocation = coordinate.Coordinate(6, 4)
         hnObject.setState(gooseLocation, types.GOOSE)
@@ -118,7 +118,7 @@ class TestAI(unittest.TestCase):
         hnObject = historynode.HistoryNode()
         notGooseLocation = coordinate.Coordinate(6, 4)
         hnObject.setState(notGooseLocation, types.FOX)
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         numberOfMoves = len(aiObject.getMovesForGoosePiece(hnObject,
                                                            notGooseLocation))
         self.assertEqual(numberOfMoves, 0)
@@ -130,7 +130,7 @@ class TestAI(unittest.TestCase):
         hnObject = historynode.HistoryNode()
         gooseLocation = coordinate.Coordinate(6, 4)
         hnObject.setState(gooseLocation, types.GOOSE)
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         numberOfMoves = len(aiObject.getMovesForGoosePiece(hnObject,
                                                            gooseLocation))
         self.assertEqual(numberOfMoves, 0)
@@ -141,7 +141,7 @@ class TestAI(unittest.TestCase):
         hnObject = historynode.HistoryNode()
         notFoxLocation = coordinate.Coordinate(6, 4)
         hnObject.setState(notFoxLocation, types.EMPTY)
-        aiObject = ai.AI(0.5, 0.5)
+        aiObject = ai.AI()
         numberOfMoves = len(aiObject.getMovesForFoxPiece(hnObject,
                                                          notFoxLocation))
         self.assertEqual(numberOfMoves, 0)
@@ -153,7 +153,7 @@ class TestAI(unittest.TestCase):
         hn_object = historynode.HistoryNode()
         fox_location = coordinate.Coordinate(3, 1)
         hn_object.setState(fox_location, types.FOX)
-        ai_object = ai.AI(0.5, 0.5)
+        ai_object = ai.AI()
         actualValue = len(ai_object.getMovesForFoxPiece(hn_object,
                                                         fox_location))
         expectedValue = 3
@@ -167,7 +167,7 @@ class TestAI(unittest.TestCase):
         hn_object = historynode.HistoryNode()
         fox_location = coordinate.Coordinate(3, 4)
         hn_object.setState(fox_location, types.FOX)
-        ai_object = ai.AI(0.5, 0.5)
+        ai_object = ai.AI()
         expectedValue = ["fake gamenode"]
         actualValue = ai_object.getMovesForFoxPiece(hn_object, fox_location)
         self.assertEqual(actualValue, expectedValue)
@@ -177,7 +177,7 @@ class TestAI(unittest.TestCase):
         """ Check case when fox move exists and is legal """
         mock_legalMoveP.return_value = True
         hn_object = historynode.HistoryNode()
-        ai_object = ai.AI(0.5, 0.5)
+        ai_object = ai.AI()
         fox_location = coordinate.Coordinate(5, 4)
         hn_object.setState(fox_location, types.FOX)
         actualValue = ai_object.getMovesForFoxPiece(hn_object, fox_location)
@@ -194,7 +194,7 @@ class TestAI(unittest.TestCase):
         hn_object = historynode.HistoryNode()
         fox_location = coordinate.Coordinate(3, 4)
         hn_object.setState(fox_location, types.FOX)
-        ai_object = ai.AI(0.5, 0.5)
+        ai_object = ai.AI()
         actualValue = ai_object.getMovesForFoxPiece(hn_object, fox_location)
         self.assertEqual(len(actualValue), 0) # No legal moves
 
@@ -205,7 +205,7 @@ class TestAI(unittest.TestCase):
         goose_location = coordinate.Coordinate(3, 3)
         hn_object.setState(fox_location, types.FOX)
         hn_object.setState(goose_location, types.GOOSE)
-        ai_object = ai.AI(0.5, 0.5)
+        ai_object = ai.AI()
         actualValue = ai_object.getAllFoxCaptures(hn_object, fox_location)
         actualValue_inital = actualValue[0].getState(fox_location)
         actualValue_middle = actualValue[0].getState(goose_location)
@@ -233,7 +233,7 @@ class TestAI(unittest.TestCase):
         hn_object.setState(goose_location2, types.GOOSE)
         hn_object.setState(goose_location3, types.GOOSE)
         hn_object.setState(goose_location4, types.GOOSE)
-        ai_object = ai.AI(0.5, 0.5)
+        ai_object = ai.AI()
         actualValue = ai_object.getAllFoxCaptures(hn_object, fox_location)
         actualValue_length = len(actualValue)
 
@@ -268,25 +268,25 @@ class TestAI(unittest.TestCase):
     def test_evaluationFunction_default(self):
         """ Correctly evaluate a default game position """
         hn_object = historynode.HistoryNode()
-        ai_object = ai.AI(0.5, 0.5)
+        ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
-        expectedValue = -1010.0
+        expectedValue = -1020.0
         self.assertAlmostEqual(actualValue, expectedValue)
 
     def test_evaluationFunction_single_goose(self):
         """ Correctly evaluate a game with a single goose """
         hn_object = historynode.HistoryNode()
         hn_object.setState(coordinate.Coordinate(3, 6), types.GOOSE)
-        ai_object = ai.AI(1, 1)
+        ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
-        expectedValue = -1019.0
+        expectedValue = -1018.9
         self.assertAlmostEqual(actualValue, expectedValue)
 
     def test_evaluationFunction_single_supergoose(self):
         """ Correctly evaluate a supergoose """
         hn_object = historynode.HistoryNode()
         hn_object.setState(coordinate.Coordinate(3, 6), types.SUPERGOOSE)
-        ai_object = ai.AI(1, 1)
+        ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
         expectedValue = -1018.0
         self.assertAlmostEqual(actualValue, expectedValue)
@@ -295,7 +295,7 @@ class TestAI(unittest.TestCase):
         """ Correctly evaluate a supergoose in the fox starting area """
         hn_object = historynode.HistoryNode()
         hn_object.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
-        ai_object = ai.AI(1, 1)
+        ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
         expectedValue = -1015.0
         self.assertAlmostEqual(actualValue, expectedValue)
@@ -312,9 +312,9 @@ class TestAI(unittest.TestCase):
         hn_object.setState(coordinate.Coordinate(3, 3), types.GOOSE)
         hn_object.setState(coordinate.Coordinate(4, 3), types.GOOSE)
         hn_object.setState(coordinate.Coordinate(5, 3), types.GOOSE)
-        ai_object = ai.AI(1, 1)
+        ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
-        expectedValue = 993.0
+        expectedValue = 996.9
         self.assertAlmostEqual(actualValue, expectedValue)
 
     def test_transferNode(self):
