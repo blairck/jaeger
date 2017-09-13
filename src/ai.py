@@ -58,15 +58,11 @@ class AI(object):
     def getAllMovesForPlayer(self, theGame, gooseP):
         """GooseP == True means it's the Goose player's turn. Otherwise fox"""
         moves = []
-        for x in range(1, 9):
-            for y in range(1, 9):
-                location = getCoordinateHelper(x, y)
-                if not location:
-                    continue
-                if gooseP:
-                    moves.extend(self.getMovesForGoosePiece(theGame, location))
-                else:
-                    moves.extend(self.getMovesForFoxPiece(theGame, location))
+        for location in getTupleOfAllCoordinates():
+            if gooseP:
+                moves.extend(self.getMovesForGoosePiece(theGame, location))
+            else:
+                moves.extend(self.getMovesForFoxPiece(theGame, location))
         return moves
 
     def getMovesForGoosePiece(self, theGame, gooseLocation):
@@ -144,6 +140,7 @@ class AI(object):
                 newMoveNode.determineWinningState()
                 newMoveNode.leafP = True
                 newMoveNode.rootP = False
+                newMoveNode.isCapture = True
                 captureList.append(newMoveNode)
                 nextCapture = self.getAllFoxCaptures(newMoveNode, destination)
                 if nextCapture:
@@ -159,19 +156,15 @@ class AI(object):
         victoryPoints = 0
         totalScore = 0.0
 
-        for x in range(1, 8):
-            for y in range(1, 8):
-                try:
-                    location = coordinate.Coordinate(x, y)
-                except ValueError:
-                    continue
-                if theGame.getState(location) == types.GOOSE:
-                    valueA += 1
-                elif theGame.getState(location) == types.SUPERGOOSE:
-                    valueA += 2
-                    if 3 <= x <= 5 and 1 <= y <= 3:
-                        valueB += 4 - y
-                        victoryPoints += 1
+        for location in getTupleOfAllCoordinates():
+            if theGame.getState(location) == types.GOOSE:
+                valueA += 1
+            elif theGame.getState(location) == types.SUPERGOOSE:
+                valueA += 2
+                if (3 <= location.get_x_board() <= 5 and
+                    1 <= location.get_y_board() <= 3):
+                    valueB += 4 - location.get_y_board()
+                    victoryPoints += 1
 
         valueA -= 20
         valueB *= victoryPoints
@@ -184,18 +177,31 @@ class AI(object):
 
         return totalScore
 
+def getTupleOfAllCoordinates():
+    return (coordinate.Coordinate(3, 7), coordinate.Coordinate(4, 7),
+            coordinate.Coordinate(5, 7), coordinate.Coordinate(3, 6),
+            coordinate.Coordinate(4, 6), coordinate.Coordinate(5, 6),
+            coordinate.Coordinate(1, 5), coordinate.Coordinate(2, 5),
+            coordinate.Coordinate(3, 5), coordinate.Coordinate(4, 5),
+            coordinate.Coordinate(5, 5), coordinate.Coordinate(6, 5),
+            coordinate.Coordinate(7, 5), coordinate.Coordinate(1, 4),
+            coordinate.Coordinate(2, 4), coordinate.Coordinate(3, 4),
+            coordinate.Coordinate(4, 4), coordinate.Coordinate(5, 4),
+            coordinate.Coordinate(6, 4), coordinate.Coordinate(7, 4),
+            coordinate.Coordinate(1, 3), coordinate.Coordinate(2, 3),
+            coordinate.Coordinate(3, 3), coordinate.Coordinate(4, 3),
+            coordinate.Coordinate(5, 3), coordinate.Coordinate(6, 3),
+            coordinate.Coordinate(7, 3), coordinate.Coordinate(3, 2),
+            coordinate.Coordinate(4, 2), coordinate.Coordinate(5, 2),
+            coordinate.Coordinate(3, 1), coordinate.Coordinate(4, 1),
+            coordinate.Coordinate(5, 1))
+
 def transferNode(startNode):
     """ Copies input historynode to a new one and returns that.
     Basically performs a deep copy."""
     endNode = historynode.HistoryNode()
-    for x in range(1, 8):
-        for y in range(1, 8):
-            try:
-                location = coordinate.Coordinate(x, y)
-            except ValueError:
-                continue
-            state = startNode.getState(location)
-            endNode.setState(location, state)
+    for location in getTupleOfAllCoordinates():
+        endNode.setState(location, startNode.getState(location))
     return endNode
 
 # pylint: disable=too-many-return-statements
