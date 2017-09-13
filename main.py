@@ -56,11 +56,18 @@ if __name__ == '__main__':
     game.setState(coordinate.Coordinate(3, 1), types.FOX)
     game.setState(coordinate.Coordinate(5, 1), types.FOX)
 
+    computerGooseP = False
+    aiObject = ai.AI(0.5, 0.5)
+    if computerGooseP:
+        computersTurn = True
+    else:
+        computersTurn = False
+
     while(True):
         game.pretty_print_board()
-        aiObject = ai.AI(0.5, 0.5)
-        computerGooseP = False
-        game = aiObject.findBestMove(game, computerGooseP, 3)
+        if computersTurn:
+            game = aiObject.findBestMove(game, computerGooseP, 3)
+            computersTurn = False
 
         print("----------------------------")
         game.pretty_print_board()
@@ -75,4 +82,5 @@ if __name__ == '__main__':
                 continue
             else:
                 game = result[0]
+                computersTurn = True
                 break
