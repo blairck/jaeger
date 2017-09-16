@@ -1,5 +1,7 @@
 """ This module contains the AI search algorithm """
 
+from random import shuffle
+
 # pylint: disable=import-error
 from res import types
 from src import coordinate
@@ -13,6 +15,7 @@ class AI(object):
         self.weightA = 1.0
         self.weightB = 1.0
         self.moveCount = 0
+        self.random = True
 
     def findBestMove(self,
                      theGame,
@@ -22,6 +25,8 @@ class AI(object):
                      maximum=10000):
         """ Main alpha-beta minimax algorithm to find best move """
         allMoves = self.getAllMovesForPlayer(theGame, gooseP)
+        if self.random:
+            shuffle(allMoves)
         self.moveCount += 1
         searchPly -= 1
         if searchPly > 0 and not theGame.winningState:
@@ -63,6 +68,10 @@ class AI(object):
                 moves.extend(self.getMovesForGoosePiece(theGame, location))
             else:
                 moves.extend(self.getMovesForFoxPiece(theGame, location))
+        if not gooseP:
+            captureMoves = list(filter(lambda x: x.isCapture, moves))
+            if len(captureMoves) > 0:
+                return captureMoves
         return moves
 
     def getMovesForGoosePiece(self, theGame, gooseLocation):
