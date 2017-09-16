@@ -164,7 +164,7 @@ class HistoryNode(gamenode.GameNode):
         for i in range(0, 7):
             for j in range(0, 7):
                 if (self.gameState[i][j] == types.GOOSE or
-                        self.gameState[i][j] == types.SUPERGOOSE):
+                    self.gameState[i][j] == types.SUPERGOOSE):
                     geeseRemaining += 1
                     # Too many geese, foxes have not won yet
                     if geeseRemaining >= 9:

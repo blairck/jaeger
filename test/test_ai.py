@@ -270,7 +270,7 @@ class TestAI(unittest.TestCase):
         hn_object = historynode.HistoryNode()
         ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
-        expectedValue = -1020.0
+        expectedValue = -1000
         self.assertAlmostEqual(actualValue, expectedValue)
 
     def test_evaluationFunction_single_goose(self):
@@ -279,7 +279,7 @@ class TestAI(unittest.TestCase):
         hn_object.setState(coordinate.Coordinate(3, 6), types.GOOSE)
         ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
-        expectedValue = -1018.9
+        expectedValue = -1000
         self.assertAlmostEqual(actualValue, expectedValue)
 
     def test_evaluationFunction_single_supergoose(self):
@@ -288,7 +288,7 @@ class TestAI(unittest.TestCase):
         hn_object.setState(coordinate.Coordinate(3, 6), types.SUPERGOOSE)
         ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
-        expectedValue = -1018.0
+        expectedValue = -1000
         self.assertAlmostEqual(actualValue, expectedValue)
 
     def test_evaluationFunction_supergoose_in_fox_area(self):
@@ -297,7 +297,7 @@ class TestAI(unittest.TestCase):
         hn_object.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
         ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
-        expectedValue = -1015.0
+        expectedValue = -1000
         self.assertAlmostEqual(actualValue, expectedValue)
 
     def test_evaluationFunction_winning_goose(self):
@@ -314,7 +314,7 @@ class TestAI(unittest.TestCase):
         hn_object.setState(coordinate.Coordinate(5, 3), types.GOOSE)
         ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
-        expectedValue = 996.9
+        expectedValue = 1000
         self.assertAlmostEqual(actualValue, expectedValue)
 
     def test_transferNode(self):

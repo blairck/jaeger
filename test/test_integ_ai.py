@@ -44,7 +44,7 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         actualValue = aiObject.findBestMove(hnObject, True, 3)
-        self.assertEqual(actualValue.score, 1158.8)
+        self.assertEqual(actualValue.score, 1000)
         self.assertEqual(aiObject.moveCount, 34)
 
     def test_findBestMove_gooseToPlay_3Ply(self):
@@ -79,7 +79,7 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         actualValue = aiObject.findBestMove(hnObject, True, 3)
-        self.assertEqual(actualValue.score, 1158.8)
+        self.assertEqual(actualValue.score, 1000)
         self.assertEqual(aiObject.moveCount, 26)
 
     def test_findBestMove_foxToPlay_3Ply(self):
@@ -101,6 +101,7 @@ class TestIntegAI(unittest.TestCase):
         Fox to play. Best move is F55xG44
         """
         aiObject = ai.AI()
+        aiObject.random = False
         hnObject = historynode.HistoryNode()
         hnObject.setState(coordinate.Coordinate(3, 7), types.FOX)
         hnObject.setState(coordinate.Coordinate(5, 5), types.FOX)
@@ -117,7 +118,7 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         actualValue = aiObject.findBestMove(hnObject, False, 3)
         self.assertEqual(actualValue.score, 133.7)
-        self.assertEqual(aiObject.moveCount, 22)
+        self.assertEqual(aiObject.moveCount, 31)
 
     def test_findBestMove_gooseToPlay_1Ply(self):
         """
@@ -151,7 +152,7 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         actualValue = aiObject.findBestMove(hnObject, True, 1)
-        self.assertEqual(actualValue.score, 1159.2)
+        self.assertEqual(actualValue.score, 1000)
 
     def test_findBestMove_foxToPlay_1Ply(self):
         """

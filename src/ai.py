@@ -165,22 +165,23 @@ class AI(object):
         victoryPoints = 0
         totalScore = 0.0
 
-        for location in getTupleOfAllCoordinates():
-            if theGame.getState(location) == types.GOOSE:
-                # Reward goose player for having material on the board
-                valueA += 1
-                # Reward Goose player for moving to the first row
-                valueA += (7 - location.get_y_board()) * 0.1
-            elif theGame.getState(location) == types.SUPERGOOSE:
-                valueA += 2
-                if (3 <= location.get_x_board() <= 5 and
-                    1 <= location.get_y_board() <= 3):
-                    # Reward Goose player for occupying victory zone
-                    valueB += 4 - location.get_y_board()
-                    victoryPoints += 1
-            elif theGame.getState(location) == types.FOX:
-                # Reward fox player for being near the 1st row
-                valueA -= (7 - location.get_y_board()) * 0.2
+        for x in range(1, 8):
+            for y in range(1, 8):
+                if theGame.gameState[x - 1][y - 1] == types.GOOSE:
+                    # Reward goose player for having material on the board
+                    valueA += 1
+                    # Reward Goose player for moving to the first row
+                    valueA += (7 - y) * 0.1
+                elif theGame.gameState[x - 1][y - 1] == types.SUPERGOOSE:
+                    valueA += 2
+                    if (3 <= x <= 5 and
+                        1 <= y <= 3):
+                        # Reward Goose player for occupying victory zone
+                        valueB += 4 - y
+                        victoryPoints += 1
+                elif theGame.gameState[x - 1][y - 1] == types.FOX:
+                    # Reward fox player for being near the 1st row
+                    valueA -= (7 - y) * 0.2
 
         valueA -= 20
         valueB *= victoryPoints
@@ -215,8 +216,9 @@ def transferNode(startNode):
     """ Copies input historynode to a new one and returns that.
     Basically performs a deep copy."""
     endNode = historynode.HistoryNode()
-    for location in getTupleOfAllCoordinates():
-        endNode.setState(location, startNode.getState(location))
+    for x in range(1, 8):
+        for y in range(1, 8):
+            endNode.gameState[x - 1][y - 1] = startNode.gameState[x - 1][y - 1]
     return endNode
 
 # pylint: disable=too-many-return-statements
