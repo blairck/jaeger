@@ -65,8 +65,16 @@ if __name__ == '__main__':
 
     while(True):
         game.pretty_print_board()
+
+        if game.geeseWinP():
+            print("Geese win!")
+            break
+        elif game.foxesWinP():
+            print("Foxes win!")
+            break
+
         if computersTurn:
-            game = aiObject.findBestMove(game, computerGooseP, 5)
+            game = aiObject.findBestMove(game, computerGooseP, 7)
             computersTurn = False
 
         print("----------------------------")
