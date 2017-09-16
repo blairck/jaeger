@@ -186,9 +186,9 @@ class AI(object):
         valueB *= victoryPoints
         totalScore += self.weightA * valueA + self.weightB * valueB
         if theGame.geeseWinP():
-            totalScore += 1000
+            totalScore = 1000
         elif theGame.foxesWinP():
-            totalScore -= 1000
+            totalScore = -1000
 
         return totalScore
 
