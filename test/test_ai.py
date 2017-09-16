@@ -54,7 +54,7 @@ class TestAI(unittest.TestCase):
     @patch.object(ai.AI, "getMovesForFoxPiece")
     def test_getAllMovesForPlayer_fox(self, mock_getMovesForFoxPiece):
         """ Get moves for a Fox player """
-        mock_getMovesForFoxPiece.return_value = ["fake board"]
+        mock_getMovesForFoxPiece.return_value = [historynode.HistoryNode()]
         aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         gooseP = False
