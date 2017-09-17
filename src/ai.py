@@ -17,6 +17,15 @@ class AI(object):
         self.moveCount = 0
         self.random = True
 
+    def iterativePlySearch(self, theGame, gooseP, searchPly):
+        bestMove = None
+        plyRange = range(1, searchPly + 2, 2)
+        for ply in plyRange:
+            bestMove = self.findBestMove(theGame, gooseP, ply)
+            if (bestMove.score < -999 or bestMove.score > 999):
+                return bestMove
+        return bestMove
+
     def findBestMove(self,
                      theGame,
                      gooseP,
@@ -172,6 +181,8 @@ class AI(object):
                     valueA += 1
                     # Reward Goose player for moving to the first row
                     valueA += (7 - y) * 0.1
+                    # Reward player slightly for moving to the center column
+                    valueA += (4 - abs(4 - x)) * 0.01
                 elif theGame.gameState[x - 1][y - 1] == types.SUPERGOOSE:
                     valueA += 2
                     if (3 <= x <= 5 and
@@ -187,9 +198,9 @@ class AI(object):
         valueB *= victoryPoints
         totalScore += self.weightA * valueA + self.weightB * valueB
         if theGame.geeseWinP():
-            totalScore = 1000
+            totalScore += 1000
         elif theGame.foxesWinP():
-            totalScore = -1000
+            totalScore -= 1000
 
         return totalScore
 
