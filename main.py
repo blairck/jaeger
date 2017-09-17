@@ -1,10 +1,35 @@
+from random import shuffle
+
 from res import types
 from src import ai
 from src import coordinate
 from src import historynode
 from src import interface
 
-if __name__ == '__main__':
+# To move to settings file
+SEARCHPLY = 5 # How far computer searches. Higher numbers are slower.
+STANDARD = False #  Standard fox positions (True) or random (False)
+COMPPLAYSGOOSE = False # Computer plays goose (True) or fox (False)
+
+def aPlayerHasWon(game):
+    if game.geeseWinP():
+        print("Geese win!")
+        return True
+    elif game.foxesWinP():
+        print("Foxes win!")
+        return True
+    return False
+
+def setTwoRandomFoxCoordinatesInVictoryArea(game):
+    possibleCoordinates = []
+    for x in range(3, 6):
+        for y in range(1, 4):
+            possibleCoordinates.append(coordinate.Coordinate(x, y))
+    shuffle(possibleCoordinates)
+    game.setState(possibleCoordinates.pop(), types.FOX)
+    game.setState(possibleCoordinates.pop(), types.FOX)
+
+def createStartingPosition(standard):
     """
     7         G - G - G
               | \ | / |
@@ -53,38 +78,47 @@ if __name__ == '__main__':
     game.setState(coordinate.Coordinate(6, 3), types.GOOSE)
     game.setState(coordinate.Coordinate(7, 3), types.GOOSE)
 
-    game.setState(coordinate.Coordinate(3, 1), types.FOX)
-    game.setState(coordinate.Coordinate(5, 1), types.FOX)
+    if standard:
+        game.setState(coordinate.Coordinate(3, 1), types.FOX)
+        game.setState(coordinate.Coordinate(5, 1), types.FOX)
+    else:
+        setTwoRandomFoxCoordinatesInVictoryArea(game)
 
-    computerGooseP = True
+    return game
+
+if __name__ == '__main__':
+    game = createStartingPosition(STANDARD)
+
     aiObject = ai.AI()
-    if computerGooseP:
+    if COMPPLAYSGOOSE:
         computersTurn = True
     else:
         computersTurn = False
 
     while(True):
         game.pretty_print_board()
-
-        if game.geeseWinP():
-            print("Geese win!")
-            break
-        elif game.foxesWinP():
-            print("Foxes win!")
+        if aPlayerHasWon(game):
             break
 
         if computersTurn:
-            game = aiObject.findBestMove(game, computerGooseP, 7)
+            game = aiObject.iterativePlySearch(game,
+                                               COMPPLAYSGOOSE,
+                                               SEARCHPLY)
             computersTurn = False
 
         print("----------------------------")
+
         game.pretty_print_board()
-        legalMoves = aiObject.getAllMovesForPlayer(game, not computerGooseP)
+        if aPlayerHasWon(game):
+            break
+
+        legalMoves = aiObject.getAllMovesForPlayer(game,
+                                                   not COMPPLAYSGOOSE)
         while(True):
             userInput = input('Enter a move: ')
             result = interface.getPositionFromListOfMoves(legalMoves,
                                                           str(userInput),
-                                                          not computerGooseP)
+                                                          not COMPPLAYSGOOSE)
             if len(result) != 1:
                 print("Unknown or invalid move, please try again")
                 continue
