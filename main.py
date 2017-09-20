@@ -111,6 +111,7 @@ if __name__ == '__main__':
         game.pretty_print_board()
         if aPlayerHasWon(game):
             break
+        print("Score: {0}".format(game.score))
 
         legalMoves = aiObject.getAllMovesForPlayer(game,
                                                    not COMPPLAYSGOOSE)
