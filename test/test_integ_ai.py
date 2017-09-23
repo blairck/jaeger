@@ -44,7 +44,7 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         actualValue = aiObject.findBestMove(hnObject, True, 3)
-        self.assertEqual(actualValue.score, 1158.8)
+        self.assertEqual(actualValue.score, 2158.8)
         self.assertEqual(aiObject.moveCount, 34)
 
     def test_findBestMove_gooseToPlay_3Ply(self):
@@ -79,7 +79,7 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         actualValue = aiObject.findBestMove(hnObject, True, 3)
-        self.assertEqual(actualValue.score, 1158.8)
+        self.assertEqual(actualValue.score, 2158.8)
         self.assertEqual(aiObject.moveCount, 26)
 
     def test_findBestMove_foxToPlay_3Ply(self):
@@ -152,7 +152,7 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         actualValue = aiObject.findBestMove(hnObject, True, 1)
-        self.assertEqual(actualValue.score, 1159.2)
+        self.assertEqual(actualValue.score, 2159.2)
 
     def test_findBestMove_foxToPlay_1Ply(self):
         """
