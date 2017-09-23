@@ -30,4 +30,6 @@ class TestTypes(unittest.TestCase):
 
     def test_getPieceAbbreviation_unknown(self):
         "Correctly convert a type to a character for display"
-        self.assertEqual(None, types.getPieceAbbreviation(4567))
+        self.assertRaises(ValueError,
+                          types.getPieceAbbreviation,
+                          'abcd')
