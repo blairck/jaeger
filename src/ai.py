@@ -34,6 +34,9 @@ class AI(object):
                      maximum=10000):
         """ Main alpha-beta minimax algorithm to find best move """
         allMoves = self.getAllMovesForPlayer(theGame, gooseP)
+        for move in allMoves:
+            move.score = self.evaluationFunction(move)
+            move.determineWinningState()
         if self.random:
             shuffle(allMoves)
         self.moveCount += 1
@@ -104,8 +107,6 @@ class AI(object):
                                                       gooseDestination)
                 moveResult.setState(gooseDestination, finalGooseType)
                 moveResult.setState(gooseLocation, types.EMPTY)
-                moveResult.score = self.evaluationFunction(moveResult)
-                moveResult.determineWinningState()
                 moveResult.leafP = True
                 moveResult.rootP = False
                 moveList.append(moveResult)
@@ -133,8 +134,6 @@ class AI(object):
                     resultMove = transferNode(theGame)
                     resultMove.setState(foxDestination, types.FOX)
                     resultMove.setState(foxLocation, types.EMPTY)
-                    resultMove.score = self.evaluationFunction(resultMove)
-                    resultMove.determineWinningState()
                     resultMove.leafP = True
                     resultMove.rootP = False
                     moveList.append(resultMove)
@@ -154,8 +153,6 @@ class AI(object):
                 destination = coordinate.Coordinate(x_board + deltaX,
                                                     y_board + deltaY)
                 rules.makeCapture(newMoveNode, location, destination)
-                newMoveNode.score = self.evaluationFunction(newMoveNode)
-                newMoveNode.determineWinningState()
                 newMoveNode.leafP = True
                 newMoveNode.rootP = False
                 newMoveNode.isCapture = True
@@ -173,6 +170,10 @@ class AI(object):
         valueB = 0.0
         victoryPoints = 0
         totalScore = 0.0
+
+        if (len(self.getAllMovesForPlayer(theGame, True)) == 0
+            or len(self.getAllMovesForPlayer(theGame, False)) == 0):
+            return 0.0
 
         for x in range(1, 8):
             for y in range(1, 8):

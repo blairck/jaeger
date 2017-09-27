@@ -292,21 +292,23 @@ class TestAI(unittest.TestCase):
         hn_object = historynode.HistoryNode()
         ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
-        expectedValue = -2020
+        expectedValue = 0
         self.assertAlmostEqual(actualValue, expectedValue)
 
     def test_evaluationFunction_single_goose(self):
         """ Correctly evaluate a game with a single goose """
         hn_object = historynode.HistoryNode()
+        hn_object.setState(coordinate.Coordinate(1, 4), types.FOX)
         hn_object.setState(coordinate.Coordinate(3, 6), types.GOOSE)
         ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
-        expectedValue = -2018.87
+        expectedValue = -2019.47
         self.assertAlmostEqual(actualValue, expectedValue)
 
     def test_evaluationFunction_single_supergoose(self):
         """ Correctly evaluate a supergoose """
         hn_object = historynode.HistoryNode()
+        hn_object.setState(coordinate.Coordinate(4, 7), types.FOX)
         hn_object.setState(coordinate.Coordinate(3, 6), types.SUPERGOOSE)
         ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
@@ -316,6 +318,7 @@ class TestAI(unittest.TestCase):
     def test_evaluationFunction_supergoose_in_fox_area(self):
         """ Correctly evaluate a supergoose in the fox starting area """
         hn_object = historynode.HistoryNode()
+        hn_object.setState(coordinate.Coordinate(4, 7), types.FOX)
         hn_object.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
         ai_object = ai.AI()
         actualValue = ai_object.evaluationFunction(hn_object)
@@ -325,6 +328,7 @@ class TestAI(unittest.TestCase):
     def test_evaluationFunction_winning_goose(self):
         """ Correctly evaluate a winning goose position """
         hn_object = historynode.HistoryNode()
+        hn_object.setState(coordinate.Coordinate(4, 7), types.FOX)
         hn_object.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
         hn_object.setState(coordinate.Coordinate(4, 1), types.GOOSE)
         hn_object.setState(coordinate.Coordinate(5, 1), types.GOOSE)
@@ -338,6 +342,43 @@ class TestAI(unittest.TestCase):
         actualValue = ai_object.evaluationFunction(hn_object)
         expectedValue = 1997.17
         self.assertAlmostEqual(actualValue, expectedValue)
+
+    def test_evaluationFunction_draw_foxes_cant_move(self):
+        """
+        7         S - . - .
+                  | \ | / |
+        6         S - . - .
+                  | / | \ |
+        5 . - . - . - . - . - . - .
+          | \ | / | \ | / | \ | / |
+        4 . - . - . - . - S - . - .
+          | / | \ | / | \ | / | \ |
+        3 . - . - S - S - S - . - .
+                  | \ | / |
+        2         S - S - ~
+                  | / | \ |
+        1         F - F - S
+          1   2   3   4   5   6   7
+        """
+        aiObject = ai.AI()
+        hnObject = historynode.HistoryNode()
+        hnObject.setState(coordinate.Coordinate(3, 1), types.FOX)
+        hnObject.setState(coordinate.Coordinate(4, 1), types.FOX)
+        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 4), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 6), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 7), types.SUPERGOOSE)
+        actualValue = aiObject.evaluationFunction(hnObject)
+        expectedValue = 0.0
+        self.assertAlmostEqual(actualValue, expectedValue)
+        # actualValue = aiObject.findBestMove(hnObject, True, 3)
+        # self.assertEqual(actualValue.score, 2158.8)
+        # self.assertEqual(aiObject.moveCount, 34)
 
     def test_transferNode(self):
         """ Correctly transfer a historynode """
