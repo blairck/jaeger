@@ -9,7 +9,7 @@ from src import interface
 # To move to settings file
 SEARCHPLY = 5 # How far computer searches. Higher numbers are slower.
 STANDARD = False #  Standard fox positions (True) or random (False)
-COMPPLAYSGOOSE = False # Computer plays goose (True) or fox (False)
+COMPPLAYSGOOSE = True # Computer plays goose (True) or fox (False)
 
 def aPlayerHasWon(game):
     if game.geeseWinP():

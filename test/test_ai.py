@@ -291,7 +291,7 @@ class TestAI(unittest.TestCase):
         """ Correctly evaluate a default game position """
         hn_object = historynode.HistoryNode()
         ai_object = ai.AI()
-        actualValue = ai_object.evaluationFunction(hn_object)
+        actualValue = ai_object.evaluationFunction(hn_object, True)
         expectedValue = 0
         self.assertAlmostEqual(actualValue, expectedValue)
 
@@ -373,12 +373,9 @@ class TestAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(3, 6), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(3, 7), types.SUPERGOOSE)
-        actualValue = aiObject.evaluationFunction(hnObject)
+        actualValue = aiObject.evaluationFunction(hnObject, True)
         expectedValue = 0.0
         self.assertAlmostEqual(actualValue, expectedValue)
-        # actualValue = aiObject.findBestMove(hnObject, True, 3)
-        # self.assertEqual(actualValue.score, 2158.8)
-        # self.assertEqual(aiObject.moveCount, 34)
 
     def test_transferNode(self):
         """ Correctly transfer a historynode """

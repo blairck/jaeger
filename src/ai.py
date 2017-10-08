@@ -31,7 +31,8 @@ class AI(object):
                      gooseP,
                      searchPly,
                      minimum=-10000,
-                     maximum=10000):
+                     maximum=10000,
+                     firstCall=True):
         """ Main alpha-beta minimax algorithm to find best move """
         allMoves = self.getAllMovesForPlayer(theGame, gooseP)
         for move in allMoves:
@@ -49,7 +50,8 @@ class AI(object):
                                                not gooseP,
                                                searchPly,
                                                minimum,
-                                               maximum).score
+                                               maximum,
+                                               False).score
                     move.score = result
                     if result > minimum:
                         minimum = result
@@ -63,11 +65,12 @@ class AI(object):
                                                not gooseP,
                                                searchPly,
                                                minimum,
-                                               maximum).score
+                                               maximum,
+                                               False).score
                     move.score = result
                     if result < maximum:
                         maximum = result
-                    if move.score < minimum:
+                    if result < minimum:
                         move.score = minimum
                         return move
         return getHighestOrLowestScoreMove(allMoves, gooseP)
@@ -162,7 +165,7 @@ class AI(object):
                     captureList.extend(nextCapture)
         return captureList
 
-    def evaluationFunction(self, theGame):
+    def evaluationFunction(self, theGame, checkForDraw=False):
         """ This function takes a game state and returns a score for the
         position. A positive score favors the geese, and a negative score
         favors the foxes. """
@@ -171,9 +174,10 @@ class AI(object):
         victoryPoints = 0
         totalScore = 0.0
 
-        if (len(self.getAllMovesForPlayer(theGame, True)) == 0
-            or len(self.getAllMovesForPlayer(theGame, False)) == 0):
-            return 0.0
+        if checkForDraw:
+            if (len(self.getAllMovesForPlayer(theGame, True)) == 0
+                or len(self.getAllMovesForPlayer(theGame, False)) == 0):
+                return 0.0
 
         for x in range(1, 8):
             for y in range(1, 8):

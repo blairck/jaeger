@@ -12,6 +12,72 @@ from src import historynode
 class TestIntegAI(unittest.TestCase):
     """ Integration Tests for the AI module """
 
+    def test_iterativePlySearch_draw_current_turn(self):
+        """
+        7         S - . - .
+                  | \ | / |
+        6         S - . - .
+                  | / | \ |
+        5 . - . - . - . - . - . - .
+          | \ | / | \ | / | \ | / |
+        4 . - . - . - . - S - . - .
+          | / | \ | / | \ | / | \ |
+        3 . - . - S - S - S - . - .
+                  | \ | / |
+        2         S - S - ~
+                  | / | \ |
+        1         F - F - S
+          1   2   3   4   5   6   7
+        """
+        aiObject = ai.AI()
+        hnObject = historynode.HistoryNode()
+        hnObject.setState(coordinate.Coordinate(3, 1), types.FOX)
+        hnObject.setState(coordinate.Coordinate(4, 1), types.FOX)
+        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 4), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 6), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 7), types.SUPERGOOSE)
+        actualValue = aiObject.iterativePlySearch(hnObject, False, 3)
+        self.assertIsNone(actualValue)
+
+    def test_iterativePlySearch_draw_next_turn(self):
+        """
+        7         S - . - .
+                  | \ | / |
+        6         S - . - .
+                  | / | \ |
+        5 . - . - . - . - . - . - .
+          | \ | / | \ | / | \ | / |
+        4 . - . - . - . - S - . - .
+          | / | \ | / | \ | / | \ |
+        3 . - . - S - S - S - . - .
+                  | \ | / |
+        2         S - S - ~
+                  | / | \ |
+        1         F - F - S
+          1   2   3   4   5   6   7
+        """
+        aiObject = ai.AI()
+        hnObject = historynode.HistoryNode()
+        hnObject.setState(coordinate.Coordinate(3, 1), types.FOX)
+        hnObject.setState(coordinate.Coordinate(4, 1), types.FOX)
+        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 4), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 6), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 7), types.SUPERGOOSE)
+        actualValue = aiObject.iterativePlySearch(hnObject, True, 3)
+        self.assertIsNotNone(actualValue)
+
     def test_findBestMove_gooseToPlay2_3Ply(self):
         """
         7         . - . - .
