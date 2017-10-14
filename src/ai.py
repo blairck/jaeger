@@ -174,7 +174,7 @@ class AI(object):
                     captureList.extend(nextCapture)
         return captureList
 
-    def evaluationFunction(self, theGame):
+    def evaluationFunction(self, theGame, checkForDraw=False):
         """ This function takes a game state and returns a score for the
         position. A positive score favors the geese, and a negative score
         favors the foxes. """
@@ -182,6 +182,11 @@ class AI(object):
         valueB = 0.0
         victoryPoints = 0
         totalScore = 0.0
+
+        if checkForDraw:
+            if (len(self.getAllMovesForPlayer(theGame, True)) == 0
+                or len(self.getAllMovesForPlayer(theGame, False)) == 0):
+                return None
 
         for x in range(1, 8):
             for y in range(1, 8):

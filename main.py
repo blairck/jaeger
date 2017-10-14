@@ -20,6 +20,12 @@ def aPlayerHasWon(game):
         return True
     return False
 
+def determineDraw(game, ai):
+    if ai.evaluationFunction(game, True) is None:
+        print("Game is a draw")
+        return True
+    return False
+
 def setTwoRandomFoxCoordinatesInVictoryArea(game):
     possibleCoordinates = []
     for x in range(3, 6):
@@ -99,6 +105,8 @@ if __name__ == '__main__':
         game.pretty_print_board()
         if aPlayerHasWon(game):
             break
+        elif determineDraw(game, aiObject):
+            break
 
         if computersTurn:
             game = aiObject.iterativePlySearch(game,
@@ -110,6 +118,8 @@ if __name__ == '__main__':
 
         game.pretty_print_board()
         if aPlayerHasWon(game):
+            break
+        elif determineDraw(game, aiObject):
             break
         print("Score: {0}".format(game.score))
 
