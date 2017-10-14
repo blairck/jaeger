@@ -22,7 +22,9 @@ class AI(object):
         plyRange = range(1, searchPly + 2, 2)
         for ply in plyRange:
             bestMove = self.findBestMove(theGame, gooseP, ply)
-            if (bestMove.score < -999 or bestMove.score > 999):
+            if (bestMove is None
+                or bestMove.score < -999
+                or bestMove.score > 999):
                 return bestMove
         return bestMove
 
@@ -35,6 +37,11 @@ class AI(object):
                      firstCall=True):
         """ Main alpha-beta minimax algorithm to find best move """
         allMoves = self.getAllMovesForPlayer(theGame, gooseP)
+        if firstCall and len(allMoves) == 0:
+            return None
+        elif not firstCall and len(allMoves) == 0:
+            return 0.0
+
         for move in allMoves:
             move.score = self.evaluationFunction(move)
             move.determineWinningState()
@@ -43,37 +50,39 @@ class AI(object):
         self.moveCount += 1
         searchPly -= 1
         if searchPly > 0 and not theGame.winningState:
+            allMoves.sort(key=lambda x: x.score, reverse=gooseP)
             if gooseP:
-                allMoves.sort(key=lambda x: x.score, reverse=gooseP)
                 for move in allMoves:
                     result = self.findBestMove(move,
                                                not gooseP,
                                                searchPly,
                                                minimum,
                                                maximum,
-                                               False).score
+                                               False)
                     move.score = result
                     if result > minimum:
                         minimum = result
                     if result > maximum:
                         move.score = maximum
-                        return move
+                        return move.score
             else:
-                allMoves.sort(key=lambda x: x.score, reverse=gooseP)
                 for move in allMoves:
                     result = self.findBestMove(move,
                                                not gooseP,
                                                searchPly,
                                                minimum,
                                                maximum,
-                                               False).score
+                                               False)
                     move.score = result
                     if result < maximum:
                         maximum = result
                     if result < minimum:
                         move.score = minimum
-                        return move
-        return getHighestOrLowestScoreMove(allMoves, gooseP)
+                        return move.score
+        if firstCall:
+            return getHighestOrLowestScoreMove(allMoves, gooseP)
+        else:
+            return getHighestOrLowestScoreMove(allMoves, gooseP).score
 
     def getAllMovesForPlayer(self, theGame, gooseP):
         """GooseP == True means it's the Goose player's turn. Otherwise fox"""
@@ -165,7 +174,7 @@ class AI(object):
                     captureList.extend(nextCapture)
         return captureList
 
-    def evaluationFunction(self, theGame, checkForDraw=False):
+    def evaluationFunction(self, theGame):
         """ This function takes a game state and returns a score for the
         position. A positive score favors the geese, and a negative score
         favors the foxes. """
@@ -173,11 +182,6 @@ class AI(object):
         valueB = 0.0
         victoryPoints = 0
         totalScore = 0.0
-
-        if checkForDraw:
-            if (len(self.getAllMovesForPlayer(theGame, True)) == 0
-                or len(self.getAllMovesForPlayer(theGame, False)) == 0):
-                return 0.0
 
         for x in range(1, 8):
             for y in range(1, 8):
