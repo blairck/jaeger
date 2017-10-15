@@ -395,3 +395,8 @@ class TestAI(unittest.TestCase):
         """ Correctly get None from invalid coordinates """
         actualValue = ai.getCoordinateHelper(7, 7)
         self.assertIsNone(actualValue)
+
+    def test_getTupleOfAllCoordinates(self):
+        """ Get every legal coordinate """
+        actualValue = ai.getTupleOfAllCoordinates()
+        self.assertEqual(len(actualValue), 33)
