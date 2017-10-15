@@ -46,7 +46,7 @@ class TestInterface(unittest.TestCase):
 
     @patch.object(interface, "matchSingleCoordinateToMoves")
     def test_getPositionFromListOfMoves_single(self,
-                                             mock_matchSingleCoordinateTo):
+                                               mock_matchSingleCoordinateTo):
         mock_matchSingleCoordinateTo.return_value = ["fake board1"]
         aiObject = ai.AI()
         gooseP = True
@@ -58,7 +58,7 @@ class TestInterface(unittest.TestCase):
 
     @patch.object(interface, "matchMultipleCoordinatesToMoves")
     def test_getPositionFromListOfMoves_multi(self,
-                                             mock_matchMultipleCoordinatesTo):
+                                              mock_matchMultipleCoordinatesTo):
         mock_matchMultipleCoordinatesTo.return_value = ["fake_board1",
                                                         "fake_board2"]
         aiObject = ai.AI()

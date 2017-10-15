@@ -7,6 +7,8 @@ from src import coordinate
 from src import historynode
 
 def getPositionFromListOfMoves(theMoves, userInput, gooseP):
+    """ Gets a position with userInput from a list of legal moves (theMoves).
+    Returns empty list if none found or ambiguous"""
     userCoordinates = getCoordinatesFromUserInput(userInput)
     if len(userCoordinates) == 1:
         return matchSingleCoordinateToMoves(theMoves,
@@ -20,20 +22,24 @@ def getPositionFromListOfMoves(theMoves, userInput, gooseP):
         return []
 
 def matchSingleCoordinateToMoves(theMoves, userCoordinate, gooseP):
+    """ Match user input when there's only one legal move """
     result = list(filter(lambda x: isCoordinateMatch(x,
                                                      userCoordinate,
                                                      gooseP), theMoves))
     return result
 
 def matchMultipleCoordinatesToMoves(theMoves, userCoordinates, gooseP):
+    """ Match user input when there are multiple legal moves """
     lastCoordinate = userCoordinates.pop()
     for coordinate in userCoordinates:
+        """ Filters moves by empty spaces in user input"""
         theMoves = list(filter(lambda x: x.getState(coordinate)==types.EMPTY,
                                theMoves))
     theMoves = matchSingleCoordinateToMoves(theMoves, lastCoordinate, gooseP)
     return theMoves
 
 def isCoordinateMatch(theMove, userCoordinate, gooseP):
+    """ Returns true or false if the user coordinate matches theMove """
     destinationType = theMove.getState(userCoordinate)
     if gooseP and destinationType in (types.GOOSE, types.SUPERGOOSE):
         return True
@@ -43,6 +49,7 @@ def isCoordinateMatch(theMove, userCoordinate, gooseP):
         return False
 
 def getCoordinatesFromUserInput(userInput):
+    """ Parses string of user input to get coordinates """
     result = []
     userInput = ''.join(c for c in userInput if c.isdigit())
     inputLength = len(userInput)
