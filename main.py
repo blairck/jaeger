@@ -6,7 +6,7 @@ from src import coordinate
 from src import historynode
 from src import interface
 
-# To move to settings file
+# Todo - move to settings file
 SEARCHPLY = 5 # How far computer searches. Higher numbers are slower.
 STANDARD = False #  Standard fox positions (True) or random (False)
 COMPPLAYSGOOSE = True # Computer plays goose (True) or fox (False)
