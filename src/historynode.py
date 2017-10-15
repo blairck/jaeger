@@ -5,24 +5,15 @@ from res import types
 from src import gamenode
 from src import helper
 
+# Todo - move to settings file
+ALPHABETNOTATION = False # Display the x-axis as 'A B...' (True) or '1 2...'
+
 class HistoryNode(gamenode.GameNode):
     """ Class that inherits from GameNode and has additional game specific
     logic """
 
-    # pylint: disable=too-many-instance-attributes
-    # Ten is reasonable for the current version
-
     def __init__(self):
         super(HistoryNode, self).__init__()
-        # Original FG settings
-        self.result = None # int
-        self.gameType = None # int
-        self.foxSearch = None # int
-        self.gooseSearch = None # int
-        self.halfMove = None # int
-        self.p1 = None # str
-        self.p2 = None # str
-
         # Jaeger settings
         self.isCapture = False
         self.winningState = False
@@ -89,7 +80,10 @@ class HistoryNode(gamenode.GameNode):
               types.getPieceAbbreviation(self.gameState[2][0]),
               types.getPieceAbbreviation(self.gameState[3][0]),
               types.getPieceAbbreviation(self.gameState[4][0])))
-        print("  1   2   3   4   5   6   7")
+        if ALPHABETNOTATION:
+            print("  A   B   C   D   E   F   G")
+        else:
+            print("  1   2   3   4   5   6   7")
 
     def constructor(self):
         """ Sets up the internal state of the HistoryNode instance """
