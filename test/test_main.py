@@ -45,3 +45,17 @@ class TestMain(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(3, 7), types.SUPERGOOSE)
         actualResult = main.aPlayerHasWon(hnObject)
         self.assertEqual(actualResult, False)
+
+    @patch.object(historynode.HistoryNode, "geeseWinP")
+    def test_aPlayerHasWon_geeseWin(self, mock_geeseWinP):
+        mock_geeseWinP.return_value = True
+        hnObject = historynode.HistoryNode()
+        actualResult = main.aPlayerHasWon(hnObject)
+        self.assertEqual(actualResult, True)
+
+    @patch.object(historynode.HistoryNode, "foxesWinP")
+    def test_aPlayerHasWon_foxesWin(self, mock_foxesWinP):
+        mock_foxesWinP.return_value = True
+        hnObject = historynode.HistoryNode()
+        actualResult = main.aPlayerHasWon(hnObject)
+        self.assertEqual(actualResult, True)
