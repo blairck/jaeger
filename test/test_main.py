@@ -59,3 +59,20 @@ class TestMain(unittest.TestCase):
         hnObject = historynode.HistoryNode()
         actualResult = main.aPlayerHasWon(hnObject)
         self.assertEqual(actualResult, True)
+
+    @patch.object(ai.AI, "evaluationFunction")
+    def test_determineDraw_not_draw(self, mock_evaluationFunction):
+        mock_evaluationFunction.return_value = True
+        aiObject = ai.AI()
+        hnObject = historynode.HistoryNode()
+        actualResult = main.determineDraw(hnObject, aiObject)
+        self.assertEqual(actualResult, False)
+
+    @patch.object(ai.AI, "evaluationFunction")
+    def test_determineDraw_draw(self, mock_evaluationFunction):
+        mock_evaluationFunction.return_value = None
+        aiObject = ai.AI()
+        hnObject = historynode.HistoryNode()
+        actualResult = main.determineDraw(hnObject, aiObject)
+        self.assertEqual(actualResult, True)
+
