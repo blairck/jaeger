@@ -76,3 +76,20 @@ class TestMain(unittest.TestCase):
         actualResult = main.determineDraw(hnObject, aiObject)
         self.assertEqual(actualResult, True)
 
+    @patch.object(historynode.HistoryNode, "setState")
+    def test_setTwoRandomFoxCoordinatesInVictoryArea(self, theMock):
+        hnObject = historynode.HistoryNode()
+        main.setTwoRandomFoxCoordinatesInVictoryArea(hnObject)
+        self.assertEqual(theMock.call_count, 2)
+
+    @patch.object(historynode.HistoryNode, "setState")
+    def test_createStartingPosition_standard_true(self, theMock):
+        hnObject = historynode.HistoryNode()
+        main.createStartingPosition(True)
+        self.assertEqual(theMock.call_count, 26)
+
+    @patch.object(main, "setTwoRandomFoxCoordinatesInVictoryArea")
+    def test_createStartingPosition_standard_false(self, theMock):
+        hnObject = historynode.HistoryNode()
+        main.createStartingPosition(False)
+        self.assertEqual(theMock.call_count, 1)
