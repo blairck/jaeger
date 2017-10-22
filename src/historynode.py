@@ -35,51 +35,51 @@ class HistoryNode(gamenode.GameNode):
 
     def pretty_print_board(self):
         print("7         {0} - {1} - {2}".format(
-              types.getPieceAbbreviation(self.gameState[2][6]),
-              types.getPieceAbbreviation(self.gameState[3][6]),
-              types.getPieceAbbreviation(self.gameState[4][6])))
-        print("          | \ | / |")
+            types.getPieceAbbreviation(self.gameState[2][6]),
+            types.getPieceAbbreviation(self.gameState[3][6]),
+            types.getPieceAbbreviation(self.gameState[4][6])))
+        print(r"          | \ | / |")
         print("6         {0} - {1} - {2}".format(
-              types.getPieceAbbreviation(self.gameState[2][5]),
-              types.getPieceAbbreviation(self.gameState[3][5]),
-              types.getPieceAbbreviation(self.gameState[4][5])))
-        print("          | / | \ |")
+            types.getPieceAbbreviation(self.gameState[2][5]),
+            types.getPieceAbbreviation(self.gameState[3][5]),
+            types.getPieceAbbreviation(self.gameState[4][5])))
+        print(r"          | / | \ |")
         print("5 {0} - {1} - {2} - {3} - {4} - {5} - {6}".format(
-              types.getPieceAbbreviation(self.gameState[0][4]),
-              types.getPieceAbbreviation(self.gameState[1][4]),
-              types.getPieceAbbreviation(self.gameState[2][4]),
-              types.getPieceAbbreviation(self.gameState[3][4]),
-              types.getPieceAbbreviation(self.gameState[4][4]),
-              types.getPieceAbbreviation(self.gameState[5][4]),
-              types.getPieceAbbreviation(self.gameState[6][4])))
-        print("  | \ | / | \ | / | \ | / |")
+            types.getPieceAbbreviation(self.gameState[0][4]),
+            types.getPieceAbbreviation(self.gameState[1][4]),
+            types.getPieceAbbreviation(self.gameState[2][4]),
+            types.getPieceAbbreviation(self.gameState[3][4]),
+            types.getPieceAbbreviation(self.gameState[4][4]),
+            types.getPieceAbbreviation(self.gameState[5][4]),
+            types.getPieceAbbreviation(self.gameState[6][4])))
+        print(r"  | \ | / | \ | / | \ | / |")
         print("4 {0} - {1} - {2} - {3} - {4} - {5} - {6}".format(
-              types.getPieceAbbreviation(self.gameState[0][3]),
-              types.getPieceAbbreviation(self.gameState[1][3]),
-              types.getPieceAbbreviation(self.gameState[2][3]),
-              types.getPieceAbbreviation(self.gameState[3][3]),
-              types.getPieceAbbreviation(self.gameState[4][3]),
-              types.getPieceAbbreviation(self.gameState[5][3]),
-              types.getPieceAbbreviation(self.gameState[6][3])))
-        print("  | / | \ | / | \ | / | \ |")
+            types.getPieceAbbreviation(self.gameState[0][3]),
+            types.getPieceAbbreviation(self.gameState[1][3]),
+            types.getPieceAbbreviation(self.gameState[2][3]),
+            types.getPieceAbbreviation(self.gameState[3][3]),
+            types.getPieceAbbreviation(self.gameState[4][3]),
+            types.getPieceAbbreviation(self.gameState[5][3]),
+            types.getPieceAbbreviation(self.gameState[6][3])))
+        print(r"  | / | \ | / | \ | / | \ |")
         print("3 {0} - {1} - {2} - {3} - {4} - {5} - {6}".format(
-              types.getPieceAbbreviation(self.gameState[0][2]),
-              types.getPieceAbbreviation(self.gameState[1][2]),
-              types.getPieceAbbreviation(self.gameState[2][2]),
-              types.getPieceAbbreviation(self.gameState[3][2]),
-              types.getPieceAbbreviation(self.gameState[4][2]),
-              types.getPieceAbbreviation(self.gameState[5][2]),
-              types.getPieceAbbreviation(self.gameState[6][2])))
-        print("          | \ | / |")
+            types.getPieceAbbreviation(self.gameState[0][2]),
+            types.getPieceAbbreviation(self.gameState[1][2]),
+            types.getPieceAbbreviation(self.gameState[2][2]),
+            types.getPieceAbbreviation(self.gameState[3][2]),
+            types.getPieceAbbreviation(self.gameState[4][2]),
+            types.getPieceAbbreviation(self.gameState[5][2]),
+            types.getPieceAbbreviation(self.gameState[6][2])))
+        print(r"          | \ | / |")
         print("2         {0} - {1} - {2}".format(
-              types.getPieceAbbreviation(self.gameState[2][1]),
-              types.getPieceAbbreviation(self.gameState[3][1]),
-              types.getPieceAbbreviation(self.gameState[4][1])))
-        print("          | / | \ |")
+            types.getPieceAbbreviation(self.gameState[2][1]),
+            types.getPieceAbbreviation(self.gameState[3][1]),
+            types.getPieceAbbreviation(self.gameState[4][1])))
+        print(r"          | / | \ |")
         print("1         {0} - {1} - {2}".format(
-              types.getPieceAbbreviation(self.gameState[2][0]),
-              types.getPieceAbbreviation(self.gameState[3][0]),
-              types.getPieceAbbreviation(self.gameState[4][0])))
+            types.getPieceAbbreviation(self.gameState[2][0]),
+            types.getPieceAbbreviation(self.gameState[3][0]),
+            types.getPieceAbbreviation(self.gameState[4][0])))
         if ALPHABETNOTATION:
             print("  A   B   C   D   E   F   G")
         else:

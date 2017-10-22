@@ -2,9 +2,7 @@
 
 # pylint: disable=import-error
 from res import types
-from src import ai
 from src import coordinate
-from src import historynode
 
 def getPositionFromListOfMoves(theMoves, userInput, gooseP):
     """ Gets a position with userInput from a list of legal moves (theMoves).
@@ -31,10 +29,11 @@ def matchSingleCoordinateToMoves(theMoves, userCoordinate, gooseP):
 def matchMultipleCoordinatesToMoves(theMoves, userCoordinates, gooseP):
     """ Match user input when there are multiple legal moves """
     lastCoordinate = userCoordinates.pop()
-    for coordinate in userCoordinates:
-        """ Filters moves by empty spaces in user input"""
-        theMoves = list(filter(lambda x: x.getState(coordinate)==types.EMPTY,
-                               theMoves))
+    for aCoordinate in userCoordinates:
+        # Filters moves by empty spaces in user input
+        theMoves = list(
+            filter(lambda x: x.getState(aCoordinate) == types.EMPTY,
+                   theMoves))
     theMoves = matchSingleCoordinateToMoves(theMoves, lastCoordinate, gooseP)
     return theMoves
 
@@ -43,10 +42,7 @@ def isCoordinateMatch(theMove, userCoordinate, gooseP):
     destinationType = theMove.getState(userCoordinate)
     if gooseP and destinationType in (types.GOOSE, types.SUPERGOOSE):
         return True
-    if not gooseP and destinationType is types.FOX:
-        return True
-    else:
-        return False
+    return bool(not gooseP and destinationType is types.FOX)
 
 def getCoordinatesFromUserInput(userInput):
     """ Parses string of user input to get coordinates """

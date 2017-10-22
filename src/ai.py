@@ -23,8 +23,8 @@ class AI(object):
         for ply in plyRange:
             bestMove = self.findBestMove(theGame, gooseP, ply)
             if (bestMove is None
-                or bestMove.score < -999
-                or bestMove.score > 999):
+                    or bestMove.score < -999
+                    or bestMove.score > 999):
                 return bestMove
         return bestMove
 
@@ -32,8 +32,8 @@ class AI(object):
                      theGame,
                      gooseP,
                      searchPly,
-                     minimum=-10000,
-                     maximum=10000,
+                     minimum=-10000.0,
+                     maximum=10000.0,
                      firstCall=True):
         """ Main alpha-beta minimax algorithm to find best move """
         allMoves = self.getAllMovesForPlayer(theGame, gooseP)
@@ -185,7 +185,7 @@ class AI(object):
 
         if checkForDraw:
             if (len(self.getAllMovesForPlayer(theGame, True)) == 0
-                or len(self.getAllMovesForPlayer(theGame, False)) == 0):
+                    or len(self.getAllMovesForPlayer(theGame, False)) == 0):
                 return None
 
         for x in range(1, 8):
@@ -199,8 +199,8 @@ class AI(object):
                     valueA += (4 - abs(4 - x)) * 0.01
                 elif theGame.gameState[x - 1][y - 1] == types.SUPERGOOSE:
                     valueA += 2
-                    if (3 <= x <= 5 and
-                        1 <= y <= 3):
+                    if (3 <= x <= 5
+                            and 1 <= y <= 3):
                         # Reward Goose player for occupying victory zone
                         valueB += 4 - y
                         victoryPoints += 1
