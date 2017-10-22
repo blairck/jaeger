@@ -344,7 +344,7 @@ class TestAI(unittest.TestCase):
         self.assertAlmostEqual(actualValue, expectedValue)
 
     def test_evaluationFunction_draw_foxes_cant_move(self):
-        """
+        r"""
         7         S - . - .
                   | \ | / |
         6         S - . - .

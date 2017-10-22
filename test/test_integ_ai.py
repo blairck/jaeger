@@ -8,12 +8,13 @@ from src import ai
 from src import coordinate
 from src import historynode
 
+# pylint: disable=no-member
 # pylint: disable=anomalous-backslash-in-string
 class TestIntegAI(unittest.TestCase):
     """ Integration Tests for the AI module """
 
     def test_iterativeDeepeningSearch_draw_current_turn(self):
-        """
+        r"""
         7         S - . - .
                   | \ | / |
         6         S - . - .
@@ -46,7 +47,7 @@ class TestIntegAI(unittest.TestCase):
         self.assertIsNone(actualValue)
 
     def test_iterativeDeepeningSearch_draw_next_turn(self):
-        """
+        r"""
         7         S - . - .
                   | \ | / |
         6         S - . - .
@@ -79,7 +80,7 @@ class TestIntegAI(unittest.TestCase):
         self.assertIsNotNone(actualValue)
 
     def test_findBestMove_gooseToPlay2_3Ply(self):
-        """
+        r"""
         7         . - . - .
                   | \ | / |
         6         . - . - .
@@ -114,7 +115,7 @@ class TestIntegAI(unittest.TestCase):
         self.assertEqual(aiObject.moveCount, 34)
 
     def test_findBestMove_gooseToPlay_3Ply(self):
-        """
+        r"""
         7         . - . - .
                   | \ | / |
         6         . - . - .
@@ -149,7 +150,7 @@ class TestIntegAI(unittest.TestCase):
         self.assertEqual(aiObject.moveCount, 26)
 
     def test_findBestMove_foxToPlay_3Ply(self):
-        """
+        r"""
         7         F - . - .
                   | \ | / |
         6         . - . - .
@@ -186,7 +187,7 @@ class TestIntegAI(unittest.TestCase):
         self.assertEqual(aiObject.moveCount, 22)
 
     def test_findBestMove_gooseToPlay_1Ply(self):
-        """
+        r"""
         7         . - . - .
                   | \ | / |
         6         . - . - .
@@ -220,7 +221,7 @@ class TestIntegAI(unittest.TestCase):
         self.assertEqual(actualValue.score, 2159.2)
 
     def test_findBestMove_foxToPlay_1Ply(self):
-        """
+        r"""
         7         . - . - .
                   | \ | / |
         6         . - . - G

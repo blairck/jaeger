@@ -14,7 +14,7 @@ class TestMain(unittest.TestCase):
     """ Tests for the Main module """
 
     def test_aPlayerHasWon_false(self):
-        """
+        r"""
         7         S - . - .
                   | \ | / |
         6         S - . - .
@@ -30,7 +30,6 @@ class TestMain(unittest.TestCase):
         1         F - F - S
           1   2   3   4   5   6   7
         """
-        aiObject = ai.AI()
         hnObject = historynode.HistoryNode()
         hnObject.setState(coordinate.Coordinate(3, 1), types.FOX)
         hnObject.setState(coordinate.Coordinate(4, 1), types.FOX)
@@ -84,12 +83,10 @@ class TestMain(unittest.TestCase):
 
     @patch.object(historynode.HistoryNode, "setState")
     def test_createStartingPosition_standard_true(self, theMock):
-        hnObject = historynode.HistoryNode()
         main.createStartingPosition(True)
         self.assertEqual(theMock.call_count, 26)
 
     @patch.object(main, "setTwoRandomFoxCoordinatesInVictoryArea")
     def test_createStartingPosition_standard_false(self, theMock):
-        hnObject = historynode.HistoryNode()
         main.createStartingPosition(False)
         self.assertEqual(theMock.call_count, 1)
