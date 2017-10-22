@@ -55,11 +55,9 @@ class TestHistoryNode(unittest.TestCase):
         hn_obj.constructor()
         self.assertEqual(hn_obj.winningState, False)
         self.assertEqual(hn_obj.rootP, True)
-        self.assertEqual(hn_obj.result, 0)
         self.assertEqual(hn_obj.gameType, 1)
         self.assertEqual(hn_obj.foxSearch, 1)
         self.assertEqual(hn_obj.gooseSearch, 1)
-        self.assertEqual(hn_obj.halfMove, 1)
         self.assertEqual(hn_obj.gameState[1][1], -1)
         self.assertEqual(hn_obj.gameState[6][0], -1)
 
@@ -205,12 +203,6 @@ class TestHistoryNode(unittest.TestCase):
         hn_obj = historynode.HistoryNode()
         self.assertRaises(TypeError, hn_obj.setFoxSearch, "abc")
 
-    def test_setResult_good(self):
-        """ Check that result is set correctly with valid input """
-        hn_obj = historynode.HistoryNode()
-        hn_obj.setResult(123)
-        self.assertEqual(hn_obj.result, 123)
-
     def test_setGooseSearch_good(self):
         """ Check that gooseSearch is set correctly with valid input """
         hn_obj = historynode.HistoryNode()
@@ -221,17 +213,6 @@ class TestHistoryNode(unittest.TestCase):
         """ Check that gooseSearch is raises an error with non-int input """
         hn_obj = historynode.HistoryNode()
         self.assertRaises(TypeError, hn_obj.setGooseSearch, "abc")
-
-    def test_setHalfMove_good(self):
-        """ Check that halfMove is set correctly with valid input """
-        hn_obj = historynode.HistoryNode()
-        hn_obj.setHalfMove(123)
-        self.assertEqual(hn_obj.halfMove, 123)
-
-    def test_setHalfMove_bad(self):
-        """ Check that halfMove is raises an error with non-int input """
-        hn_obj = historynode.HistoryNode()
-        self.assertRaises(TypeError, hn_obj.setHalfMove, "abc")
 
     def test_determineWinningState_true(self):
         """ Check if the game state is winning """

@@ -91,11 +91,9 @@ class HistoryNode(gamenode.GameNode):
         self.winningState = False
         self.rootP = True
 
-        self.result = 0
         self.gameType = 1
         self.foxSearch = 1
         self.gooseSearch = 1
-        self.halfMove = 1
 
         self.gameState[0][0] = -1
         self.gameState[0][1] = -1
@@ -176,20 +174,10 @@ class HistoryNode(gamenode.GameNode):
         helper.checkIfInt(value)
         self.foxSearch = value
 
-    def setResult(self, value):
-        """ Setter for result with type checking """
-        #helper.checkIfInt(value)
-        self.result = value
-
     def setGooseSearch(self, value):
         """ Setter for gooseSearch with type checking """
         helper.checkIfInt(value)
         self.gooseSearch = value
-
-    def setHalfMove(self, value):
-        """ Setter for halfMove with type checking """
-        helper.checkIfInt(value)
-        self.halfMove = value
 
     def determineWinningState(self):
         """ Set winningState if this node is in one """
