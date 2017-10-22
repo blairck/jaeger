@@ -12,7 +12,7 @@ from src import historynode
 class TestIntegAI(unittest.TestCase):
     """ Integration Tests for the AI module """
 
-    def test_iterativePlySearch_draw_current_turn(self):
+    def test_iterativeDeepeningSearch_draw_current_turn(self):
         """
         7         S - . - .
                   | \ | / |
@@ -42,10 +42,10 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(3, 6), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(3, 7), types.SUPERGOOSE)
-        actualValue = aiObject.iterativePlySearch(hnObject, False, 3)
+        actualValue = aiObject.iterativeDeepeningSearch(hnObject, False, 3)
         self.assertIsNone(actualValue)
 
-    def test_iterativePlySearch_draw_next_turn(self):
+    def test_iterativeDeepeningSearch_draw_next_turn(self):
         """
         7         S - . - .
                   | \ | / |
@@ -75,7 +75,7 @@ class TestIntegAI(unittest.TestCase):
         hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(3, 6), types.SUPERGOOSE)
         hnObject.setState(coordinate.Coordinate(3, 7), types.SUPERGOOSE)
-        actualValue = aiObject.iterativePlySearch(hnObject, True, 3)
+        actualValue = aiObject.iterativeDeepeningSearch(hnObject, True, 3)
         self.assertIsNotNone(actualValue)
 
     def test_findBestMove_gooseToPlay2_3Ply(self):
@@ -167,7 +167,6 @@ class TestIntegAI(unittest.TestCase):
         Fox to play. Best move is F55xG44
         """
         aiObject = ai.AI()
-        aiObject.random = False
         hnObject = historynode.HistoryNode()
         hnObject.setState(coordinate.Coordinate(3, 7), types.FOX)
         hnObject.setState(coordinate.Coordinate(5, 5), types.FOX)

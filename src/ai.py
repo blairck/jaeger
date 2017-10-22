@@ -15,9 +15,11 @@ class AI(object):
         self.weightA = 1.0
         self.weightB = 1.0
         self.moveCount = 0
-        self.random = True
 
-    def iterativePlySearch(self, theGame, gooseP, searchPly):
+    # pylint: disable=no-member
+    def iterativeDeepeningSearch(self, theGame, gooseP, searchPly):
+        """ Searches at steadily increasing ply and breaks if a draw or end
+        state is found, otherwise searches to searchPly. """
         bestMove = None
         plyRange = range(1, searchPly + 2, 2)
         for ply in plyRange:
@@ -28,6 +30,7 @@ class AI(object):
                 return bestMove
         return bestMove
 
+    # pylint: disable=too-many-arguments, too-many-branches
     def findBestMove(self,
                      theGame,
                      gooseP,
@@ -45,8 +48,8 @@ class AI(object):
         for move in allMoves:
             move.score = self.evaluationFunction(move)
             move.determineWinningState()
-        if self.random:
-            shuffle(allMoves)
+
+        shuffle(allMoves)
         self.moveCount += 1
         searchPly -= 1
         if searchPly > 0 and not theGame.winningState:
@@ -219,6 +222,7 @@ class AI(object):
         return totalScore
 
 def getTupleOfAllCoordinates():
+    """ Gets a tuple of all legal Coordinates on the board """
     return (coordinate.Coordinate(3, 7), coordinate.Coordinate(4, 7),
             coordinate.Coordinate(5, 7), coordinate.Coordinate(3, 6),
             coordinate.Coordinate(4, 6), coordinate.Coordinate(5, 6),

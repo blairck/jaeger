@@ -3,7 +3,6 @@
 # pylint: disable=import-error
 from res import types
 from src import gamenode
-from src import helper
 
 # Todo - move to settings file
 ALPHABETNOTATION = False # Display the x-axis as 'A B...' (True) or '1 2...'
@@ -19,6 +18,7 @@ class HistoryNode(gamenode.GameNode):
         self.winningState = False
 
     def print_board(self):
+        """ Prints a simplified representation of the board """
         print("    {0} {1} {2}    ".format(self.gameState[2][6],
                                            self.gameState[3][6],
                                            self.gameState[4][6]))
@@ -34,6 +34,7 @@ class HistoryNode(gamenode.GameNode):
                                            self.gameState[4][0]))
 
     def pretty_print_board(self):
+        """ Prints the board state in a way that is easier to understand """
         print("7         {0} - {1} - {2}".format(
             types.getPieceAbbreviation(self.gameState[2][6]),
             types.getPieceAbbreviation(self.gameState[3][6]),
@@ -91,10 +92,6 @@ class HistoryNode(gamenode.GameNode):
         self.winningState = False
         self.rootP = True
 
-        self.gameType = 1
-        self.foxSearch = 1
-        self.gooseSearch = 1
-
         self.gameState[0][0] = -1
         self.gameState[0][1] = -1
         self.gameState[1][0] = -1
@@ -123,20 +120,6 @@ class HistoryNode(gamenode.GameNode):
         self.gameState[2][0] = 2
         self.gameState[4][0] = 2
 
-    def setP1(self, a_string):
-        """ Setter for P1 with type checking """
-        if not isinstance(a_string, str):
-            raise TypeError(("a_string is not a string. "
-                             "a_string = {0}").format(a_string))
-        self.p1 = a_string
-
-    def setP2(self, a_string):
-        """ Setter for P2 with type checking """
-        if not isinstance(a_string, str):
-            raise TypeError(("a_string is not a string. "
-                             "a_string = {0}").format(a_string))
-        self.p2 = a_string
-
     def geeseWinP(self):
         """ Returns True if the geese have won, false otherwise """
         foxSpacesOccupied = 0
@@ -155,29 +138,14 @@ class HistoryNode(gamenode.GameNode):
         geeseRemaining = 0
         for i in range(0, 7):
             for j in range(0, 7):
-                if (self.gameState[i][j] == types.GOOSE or
-                    self.gameState[i][j] == types.SUPERGOOSE):
+                if (self.gameState[i][j] == types.GOOSE
+                        or self.gameState[i][j] == types.SUPERGOOSE):
                     geeseRemaining += 1
                     # Too many geese, foxes have not won yet
                     if geeseRemaining >= 9:
                         return False
         # Geese have insufficient material, Foxes win
         return True
-
-    def setGameType(self, value):
-        """ Setter for gameType with type checking """
-        helper.checkIfInt(value)
-        self.gameType = value
-
-    def setFoxSearch(self, value):
-        """ Setter for foxSearch with type checking """
-        helper.checkIfInt(value)
-        self.foxSearch = value
-
-    def setGooseSearch(self, value):
-        """ Setter for gooseSearch with type checking """
-        helper.checkIfInt(value)
-        self.gooseSearch = value
 
     def determineWinningState(self):
         """ Set winningState if this node is in one """

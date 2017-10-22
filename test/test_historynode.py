@@ -55,9 +55,6 @@ class TestHistoryNode(unittest.TestCase):
         hn_obj.constructor()
         self.assertEqual(hn_obj.winningState, False)
         self.assertEqual(hn_obj.rootP, True)
-        self.assertEqual(hn_obj.gameType, 1)
-        self.assertEqual(hn_obj.foxSearch, 1)
-        self.assertEqual(hn_obj.gooseSearch, 1)
         self.assertEqual(hn_obj.gameState[1][1], -1)
         self.assertEqual(hn_obj.gameState[6][0], -1)
 
@@ -75,28 +72,6 @@ class TestHistoryNode(unittest.TestCase):
 
         self.assertEqual(hn_obj.gameState[3][1], 0)
         self.assertEqual(hn_obj.gameState[4][0], 2)
-
-    def test_setP1_good(self):
-        """ Check that P1 is set correctly with valid input """
-        hn_obj = historynode.HistoryNode()
-        hn_obj.setP1("abc")
-        self.assertEqual(hn_obj.p1, "abc")
-
-    def test_setP1_bad(self):
-        """ Check that P1 is raises an error with non-string input """
-        hn_obj = historynode.HistoryNode()
-        self.assertRaises(TypeError, hn_obj.setP1, 10)
-
-    def test_setP2_good(self):
-        """ Check that P2 is set correctly with valid input """
-        hn_obj = historynode.HistoryNode()
-        hn_obj.setP2("abc")
-        self.assertEqual(hn_obj.p2, "abc")
-
-    def test_setP2_bad(self):
-        """ Check that P2 is raises an error with non-string input """
-        hn_obj = historynode.HistoryNode()
-        self.assertRaises(TypeError, hn_obj.setP2, 10)
 
     def test_geeseWinP_good(self):
         """ Check that geeseWinP can detect a clear win state """
@@ -180,39 +155,6 @@ class TestHistoryNode(unittest.TestCase):
         expected_result = False
         actual_result = hn_obj.foxesWinP()
         self.assertEqual(actual_result, expected_result)
-
-    def test_setGameType_good(self):
-        """ Check that gameType is set correctly with valid input """
-        hn_obj = historynode.HistoryNode()
-        hn_obj.setGameType(123)
-        self.assertEqual(hn_obj.gameType, 123)
-
-    def test_setGameType_bad(self):
-        """ Check that gameType is raises an error with non-int input """
-        hn_obj = historynode.HistoryNode()
-        self.assertRaises(TypeError, hn_obj.setGameType, "abc")
-
-    def test_setFoxSearch_good(self):
-        """ Check that foxSearch is set correctly with valid input """
-        hn_obj = historynode.HistoryNode()
-        hn_obj.setFoxSearch(123)
-        self.assertEqual(hn_obj.foxSearch, 123)
-
-    def test_setFoxSearch_bad(self):
-        """ Check that foxSearch is raises an error with non-int input """
-        hn_obj = historynode.HistoryNode()
-        self.assertRaises(TypeError, hn_obj.setFoxSearch, "abc")
-
-    def test_setGooseSearch_good(self):
-        """ Check that gooseSearch is set correctly with valid input """
-        hn_obj = historynode.HistoryNode()
-        hn_obj.setGooseSearch(123)
-        self.assertEqual(hn_obj.gooseSearch, 123)
-
-    def test_setGooseSearch_bad(self):
-        """ Check that gooseSearch is raises an error with non-int input """
-        hn_obj = historynode.HistoryNode()
-        self.assertRaises(TypeError, hn_obj.setGooseSearch, "abc")
 
     def test_determineWinningState_true(self):
         """ Check if the game state is winning """

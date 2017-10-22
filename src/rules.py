@@ -4,7 +4,6 @@
 from res import types
 from src import connection
 from src import coordinate
-from src import historynode
 
 # -*- coding: utf-8 -*-
 class Rules(object):

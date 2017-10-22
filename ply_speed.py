@@ -43,7 +43,7 @@ game.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
 game.pretty_print_board()
 
 start = time.time()
-actualValue = aiObject.iterativePlySearch(game, False, plyNum)
+actualValue = aiObject.iterativeDeepeningSearch(game, False, plyNum)
 end = time.time()
 # print("Running again with cProfile")
 # aiObject2 = ai.AI(0.5, 0.5)

@@ -32,7 +32,7 @@ def matchMultipleCoordinatesToMoves(theMoves, userCoordinates, gooseP):
     for aCoordinate in userCoordinates:
         # Filters moves by empty spaces in user input
         theMoves = list(
-            filter(lambda x: x.getState(aCoordinate) == types.EMPTY,
+            filter(lambda x, c=aCoordinate: x.getState(c) == types.EMPTY,
                    theMoves))
     theMoves = matchSingleCoordinateToMoves(theMoves, lastCoordinate, gooseP)
     return theMoves

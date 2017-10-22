@@ -15,25 +15,25 @@ class TestAI(unittest.TestCase):
     """ Tests for the AI module """
 
     @patch.object(ai.AI, "findBestMove")
-    def test_iterativePlySearch_no_endstate(self, theMock):
+    def test_iterativeDeepeningSearch_no_endstate(self, theMock):
         """ Test searching when there is no discoverable winning/losing move"""
         mockBestMove = historynode.HistoryNode()
         mockBestMove.score = 0
         theMock.return_value = mockBestMove
         testBoard = historynode.HistoryNode()
         aiObject = ai.AI()
-        aiObject.iterativePlySearch(testBoard, True, 5)
+        aiObject.iterativeDeepeningSearch(testBoard, True, 5)
         self.assertEqual(theMock.call_count, 3)
 
     @patch.object(ai.AI, "findBestMove")
-    def test_iterativePlySearch_winning(self, theMock):
+    def test_iterativeDeepeningSearch_winning(self, theMock):
         """ Test searching when there is a winning move on the 1st ply"""
         mockBestMove = historynode.HistoryNode()
         mockBestMove.score = 1000
         theMock.return_value = mockBestMove
         testBoard = historynode.HistoryNode()
         aiObject = ai.AI()
-        aiObject.iterativePlySearch(testBoard, True, 5)
+        aiObject.iterativeDeepeningSearch(testBoard, True, 5)
         self.assertEqual(theMock.call_count, 1)
 
     def test_getHighestOrLowestScoreMove_goose(self):

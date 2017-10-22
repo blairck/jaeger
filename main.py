@@ -109,9 +109,9 @@ if __name__ == '__main__':
             break
 
         if computersTurn:
-            game = aiObject.iterativePlySearch(game,
-                                               COMPPLAYSGOOSE,
-                                               SEARCHPLY)
+            game = aiObject.iterativeDeepeningSearch(game,
+                                                     COMPPLAYSGOOSE,
+                                                     SEARCHPLY)
             computersTurn = False
 
         print("----------------------------")
