@@ -4,44 +4,16 @@ import unittest
 from unittest.mock import patch
 
 # pylint: disable=import-error
-from res import types
 from src import ai
 from src import historynode
-from src import coordinate
+from test import helper
 import main
 
 class TestMain(unittest.TestCase):
     """ Tests for the Main module """
 
     def test_aPlayerHasWon_false(self):
-        r"""
-        7         S - . - .
-                  | \ | / |
-        6         S - . - .
-                  | / | \ |
-        5 . - . - . - . - . - . - .
-          | \ | / | \ | / | \ | / |
-        4 . - . - . - . - S - . - .
-          | / | \ | / | \ | / | \ |
-        3 . - . - S - S - S - . - .
-                  | \ | / |
-        2         S - S - ~
-                  | / | \ |
-        1         F - F - S
-          1   2   3   4   5   6   7
-        """
-        hnObject = historynode.HistoryNode()
-        hnObject.setState(coordinate.Coordinate(3, 1), types.FOX)
-        hnObject.setState(coordinate.Coordinate(4, 1), types.FOX)
-        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 4), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 3), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 6), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 7), types.SUPERGOOSE)
+        hnObject = helper.nearlyDrawnGame
         actualResult = main.aPlayerHasWon(hnObject)
         self.assertEqual(actualResult, False)
 

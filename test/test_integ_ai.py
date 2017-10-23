@@ -2,80 +2,25 @@
 
 import unittest
 
-# pylint: disable=import-error
 from res import types
 from src import ai
 from src import coordinate
 from src import historynode
+from test import helper
 
-# pylint: disable=no-member
-# pylint: disable=anomalous-backslash-in-string
+# pylint: disable=import-error, no-member, anomalous-backslash-in-string
 class TestIntegAI(unittest.TestCase):
     """ Integration Tests for the AI module """
 
     def test_iterativeDeepeningSearch_draw_current_turn(self):
-        r"""
-        7         S - . - .
-                  | \ | / |
-        6         S - . - .
-                  | / | \ |
-        5 . - . - . - . - . - . - .
-          | \ | / | \ | / | \ | / |
-        4 . - . - . - . - S - . - .
-          | / | \ | / | \ | / | \ |
-        3 . - . - S - S - S - . - .
-                  | \ | / |
-        2         S - S - ~
-                  | / | \ |
-        1         F - F - S
-          1   2   3   4   5   6   7
-        """
         aiObject = ai.AI()
-        hnObject = historynode.HistoryNode()
-        hnObject.setState(coordinate.Coordinate(3, 1), types.FOX)
-        hnObject.setState(coordinate.Coordinate(4, 1), types.FOX)
-        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 4), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 3), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 6), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 7), types.SUPERGOOSE)
+        hnObject = helper.nearlyDrawnGame
         actualValue = aiObject.iterativeDeepeningSearch(hnObject, False, 3)
         self.assertIsNone(actualValue)
 
     def test_iterativeDeepeningSearch_draw_next_turn(self):
-        r"""
-        7         S - . - .
-                  | \ | / |
-        6         S - . - .
-                  | / | \ |
-        5 . - . - . - . - . - . - .
-          | \ | / | \ | / | \ | / |
-        4 . - . - . - . - S - . - .
-          | / | \ | / | \ | / | \ |
-        3 . - . - S - S - S - . - .
-                  | \ | / |
-        2         S - S - ~
-                  | / | \ |
-        1         F - F - S
-          1   2   3   4   5   6   7
-        """
         aiObject = ai.AI()
-        hnObject = historynode.HistoryNode()
-        hnObject.setState(coordinate.Coordinate(3, 1), types.FOX)
-        hnObject.setState(coordinate.Coordinate(4, 1), types.FOX)
-        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 4), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 3), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 6), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 7), types.SUPERGOOSE)
+        hnObject = helper.nearlyWonGooseGame
         actualValue = aiObject.iterativeDeepeningSearch(hnObject, True, 3)
         self.assertIsNotNone(actualValue)
 
@@ -115,36 +60,8 @@ class TestIntegAI(unittest.TestCase):
         self.assertEqual(aiObject.moveCount, 34)
 
     def test_findBestMove_gooseToPlay_3Ply(self):
-        r"""
-        7         . - . - .
-                  | \ | / |
-        6         . - . - .
-                  | / | \ |
-        5 . - G - . - . - . - . - F
-          | \ | / | \ | / | \ | / |
-        4 . - . - . - . - . - . - F
-          | / | \ | / | \ | / | \ |
-        3 . - . - ~ - S - S - . - .
-                  | \ | / |
-        2         S - S - S
-                  | / | \ |
-        1         S - S - S
-          1   2   3   4   5   6   7
-        Goose to play. Best move is G25-G24...G24-S33#
-        """
+        hnObject = helper.nearlyWonGooseGame
         aiObject = ai.AI()
-        hnObject = historynode.HistoryNode()
-        hnObject.setState(coordinate.Coordinate(7, 4), types.FOX)
-        hnObject.setState(coordinate.Coordinate(7, 5), types.FOX)
-        hnObject.setState(coordinate.Coordinate(2, 5), types.GOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 1), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
-        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
         actualValue = aiObject.findBestMove(hnObject, True, 3)
         self.assertEqual(actualValue.score, 2158.8)
         self.assertEqual(aiObject.moveCount, 26)

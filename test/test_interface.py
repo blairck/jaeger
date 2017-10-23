@@ -9,40 +9,14 @@ from src import ai
 from src import coordinate
 from src import historynode
 from src import interface
+from test import helper
 
 class TestInterface(unittest.TestCase):
     """ Integration Tests for the Interface module """
 
     @classmethod
     def setUpClass(cls):
-        r"""
-        7         . - . - .
-                  | \ | / |
-        6         . - . - .
-                  | / | \ |
-        5 . - G - . - . - . - . - F
-          | \ | / | \ | / | \ | / |
-        4 . - . - . - . - . - . - F
-          | / | \ | / | \ | / | \ |
-        3 . - . - ~ - S - S - . - .
-                  | \ | / |
-        2         S - S - S
-                  | / | \ |
-        1         S - S - S
-          1   2   3   4   5   6   7
-        """
-        cls.shared_game = historynode.HistoryNode()
-        cls.shared_game.setState(coordinate.Coordinate(7, 4), types.FOX)
-        cls.shared_game.setState(coordinate.Coordinate(7, 5), types.FOX)
-        cls.shared_game.setState(coordinate.Coordinate(2, 5), types.GOOSE)
-        cls.shared_game.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
-        cls.shared_game.setState(coordinate.Coordinate(4, 1), types.SUPERGOOSE)
-        cls.shared_game.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
-        cls.shared_game.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
-        cls.shared_game.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
-        cls.shared_game.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
-        cls.shared_game.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
-        cls.shared_game.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
+        cls.shared_game = helper.nearlyWonGooseGame
 
     @patch.object(interface, "matchSingleCoordinateToMoves")
     def test_getPositionFromListOfMoves_single(self,
