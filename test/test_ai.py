@@ -345,6 +345,7 @@ class TestAI(unittest.TestCase):
         self.assertAlmostEqual(actualValue, expectedValue)
 
     def test_evaluationFunction_draw_foxes_cant_move(self):
+        """ Evaluate a drawn position where foxes can't move """
         aiObject = ai.AI()
         hnObject = helper.nearlyDrawnGame
         actualValue = aiObject.evaluationFunction(hnObject, True)

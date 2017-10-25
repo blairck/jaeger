@@ -13,12 +13,14 @@ class TestIntegAI(unittest.TestCase):
     """ Integration Tests for the AI module """
 
     def test_iterativeDeepeningSearch_draw_current_turn(self):
+        """ Check iterative search where draw is the current turn """
         aiObject = ai.AI()
         hnObject = helper.nearlyDrawnGame
         actualValue = aiObject.iterativeDeepeningSearch(hnObject, False, 3)
         self.assertIsNone(actualValue)
 
     def test_iterativeDeepeningSearch_draw_next_turn(self):
+        """ Check iterative search where draw is the next turn """
         aiObject = ai.AI()
         hnObject = helper.nearlyWonGooseGame
         actualValue = aiObject.iterativeDeepeningSearch(hnObject, True, 3)
@@ -60,6 +62,7 @@ class TestIntegAI(unittest.TestCase):
         self.assertEqual(aiObject.moveCount, 34)
 
     def test_findBestMove_gooseToPlay_3Ply(self):
+        """ Find the best move to a depth of 3 ply """
         hnObject = helper.nearlyWonGooseGame
         aiObject = ai.AI()
         actualValue = aiObject.findBestMove(hnObject, True, 3)
