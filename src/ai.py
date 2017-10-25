@@ -1,5 +1,7 @@
 """ This module contains the AI search algorithm """
 
+from random import shuffle
+
 # pylint: disable=import-error
 from res import types
 from src import coordinate
@@ -8,65 +10,95 @@ from src import rules
 
 class AI(object):
     """ Class that stores the AI algorithm """
-    def __init__(self, a, b):
+    def __init__(self):
         self.arbiter = rules.Rules()
-        self.weightA = a
-        self.weightB = b
+        self.weightA = 1.0
+        self.weightB = 1.0
         self.moveCount = 0
 
+    # pylint: disable=no-member
+    def iterativeDeepeningSearch(self, theGame, gooseP, searchPly):
+        """ Searches at steadily increasing ply and breaks if a draw or end
+        state is found, otherwise searches to searchPly. """
+        bestMove = None
+        plyRange = range(1, searchPly + 2, 2)
+        for ply in plyRange:
+            bestMove = self.findBestMove(theGame, gooseP, ply)
+            if (bestMove is None
+                    or bestMove.score < -999
+                    or bestMove.score > 999):
+                return bestMove
+        return bestMove
+
+    # pylint: disable=too-many-arguments, too-many-branches
     def findBestMove(self,
                      theGame,
                      gooseP,
                      searchPly,
-                     minimum=-10000,
-                     maximum=10000):
+                     minimum=-10000.0,
+                     maximum=10000.0,
+                     firstCall=True):
         """ Main alpha-beta minimax algorithm to find best move """
         allMoves = self.getAllMovesForPlayer(theGame, gooseP)
+        if firstCall and len(allMoves) == 0:
+            return None
+        elif not firstCall and len(allMoves) == 0:
+            return 0.0
+
+        for move in allMoves:
+            move.score = self.evaluationFunction(move)
+            move.determineWinningState()
+
+        shuffle(allMoves)
         self.moveCount += 1
         searchPly -= 1
         if searchPly > 0 and not theGame.winningState:
+            allMoves.sort(key=lambda x: x.score, reverse=gooseP)
             if gooseP:
-                allMoves.sort(key=lambda x: x.score, reverse=gooseP)
                 for move in allMoves:
                     result = self.findBestMove(move,
                                                not gooseP,
                                                searchPly,
                                                minimum,
-                                               maximum).score
+                                               maximum,
+                                               False)
                     move.score = result
                     if result > minimum:
                         minimum = result
                     if result > maximum:
                         move.score = maximum
-                        return move
+                        return move.score
             else:
-                allMoves.sort(key=lambda x: x.score, reverse=gooseP)
                 for move in allMoves:
                     result = self.findBestMove(move,
                                                not gooseP,
                                                searchPly,
                                                minimum,
-                                               maximum).score
+                                               maximum,
+                                               False)
                     move.score = result
                     if result < maximum:
                         maximum = result
-                    if move.score < minimum:
+                    if result < minimum:
                         move.score = minimum
-                        return move
-        return getHighestOrLowestScoreMove(allMoves, gooseP)
+                        return move.score
+        if firstCall:
+            return getHighestOrLowestScoreMove(allMoves, gooseP)
+        else:
+            return getHighestOrLowestScoreMove(allMoves, gooseP).score
 
     def getAllMovesForPlayer(self, theGame, gooseP):
         """GooseP == True means it's the Goose player's turn. Otherwise fox"""
         moves = []
-        for x in range(1, 9):
-            for y in range(1, 9):
-                location = getCoordinateHelper(x, y)
-                if not location:
-                    continue
-                if gooseP:
-                    moves.extend(self.getMovesForGoosePiece(theGame, location))
-                else:
-                    moves.extend(self.getMovesForFoxPiece(theGame, location))
+        for location in getTupleOfAllCoordinates():
+            if gooseP:
+                moves.extend(self.getMovesForGoosePiece(theGame, location))
+            else:
+                moves.extend(self.getMovesForFoxPiece(theGame, location))
+        if not gooseP:
+            captureMoves = list(filter(lambda x: x.isCapture, moves))
+            if len(captureMoves) > 0:
+                return captureMoves
         return moves
 
     def getMovesForGoosePiece(self, theGame, gooseLocation):
@@ -90,8 +122,6 @@ class AI(object):
                                                       gooseDestination)
                 moveResult.setState(gooseDestination, finalGooseType)
                 moveResult.setState(gooseLocation, types.EMPTY)
-                moveResult.score = self.evaluationFunction(moveResult)
-                moveResult.determineWinningState()
                 moveResult.leafP = True
                 moveResult.rootP = False
                 moveList.append(moveResult)
@@ -119,8 +149,6 @@ class AI(object):
                     resultMove = transferNode(theGame)
                     resultMove.setState(foxDestination, types.FOX)
                     resultMove.setState(foxLocation, types.EMPTY)
-                    resultMove.score = self.evaluationFunction(resultMove)
-                    resultMove.determineWinningState()
                     resultMove.leafP = True
                     resultMove.rootP = False
                     moveList.append(resultMove)
@@ -140,17 +168,16 @@ class AI(object):
                 destination = coordinate.Coordinate(x_board + deltaX,
                                                     y_board + deltaY)
                 rules.makeCapture(newMoveNode, location, destination)
-                newMoveNode.score = self.evaluationFunction(newMoveNode)
-                newMoveNode.determineWinningState()
                 newMoveNode.leafP = True
                 newMoveNode.rootP = False
+                newMoveNode.isCapture = True
                 captureList.append(newMoveNode)
                 nextCapture = self.getAllFoxCaptures(newMoveNode, destination)
                 if nextCapture:
                     captureList.extend(nextCapture)
         return captureList
 
-    def evaluationFunction(self, theGame):
+    def evaluationFunction(self, theGame, checkForDraw=False):
         """ This function takes a game state and returns a score for the
         position. A positive score favors the geese, and a negative score
         favors the foxes. """
@@ -159,30 +186,60 @@ class AI(object):
         victoryPoints = 0
         totalScore = 0.0
 
+        if checkForDraw:
+            if (len(self.getAllMovesForPlayer(theGame, True)) == 0
+                    or len(self.getAllMovesForPlayer(theGame, False)) == 0):
+                return None
+
         for x in range(1, 8):
             for y in range(1, 8):
-                try:
-                    location = coordinate.Coordinate(x, y)
-                except ValueError:
-                    continue
-                if theGame.getState(location) == types.GOOSE:
+                if theGame.gameState[x - 1][y - 1] == types.GOOSE:
+                    # Reward goose player for having material on the board
                     valueA += 1
-                elif theGame.getState(location) == types.SUPERGOOSE:
+                    # Reward Goose player for moving to the first row
+                    valueA += (7 - y) * 0.1
+                    # Reward player slightly for moving to the center column
+                    valueA += (4 - abs(4 - x)) * 0.01
+                elif theGame.gameState[x - 1][y - 1] == types.SUPERGOOSE:
                     valueA += 2
-                    if 3 <= x <= 5 and 1 <= y <= 3:
+                    if (3 <= x <= 5
+                            and 1 <= y <= 3):
+                        # Reward Goose player for occupying victory zone
                         valueB += 4 - y
                         victoryPoints += 1
+                elif theGame.gameState[x - 1][y - 1] == types.FOX:
+                    # Reward fox player for being near the 1st row
+                    valueA -= (7 - y) * 0.2
 
         valueA -= 20
         valueB *= victoryPoints
         totalScore += self.weightA * valueA + self.weightB * valueB
-        #self.evaluated += 1
         if theGame.geeseWinP():
-            totalScore += 1000
+            totalScore += 2000
         elif theGame.foxesWinP():
-            totalScore -= 1000
+            totalScore -= 2000
 
         return totalScore
+
+def getTupleOfAllCoordinates():
+    """ Gets a tuple of all legal Coordinates on the board """
+    return (coordinate.Coordinate(3, 7), coordinate.Coordinate(4, 7),
+            coordinate.Coordinate(5, 7), coordinate.Coordinate(3, 6),
+            coordinate.Coordinate(4, 6), coordinate.Coordinate(5, 6),
+            coordinate.Coordinate(1, 5), coordinate.Coordinate(2, 5),
+            coordinate.Coordinate(3, 5), coordinate.Coordinate(4, 5),
+            coordinate.Coordinate(5, 5), coordinate.Coordinate(6, 5),
+            coordinate.Coordinate(7, 5), coordinate.Coordinate(1, 4),
+            coordinate.Coordinate(2, 4), coordinate.Coordinate(3, 4),
+            coordinate.Coordinate(4, 4), coordinate.Coordinate(5, 4),
+            coordinate.Coordinate(6, 4), coordinate.Coordinate(7, 4),
+            coordinate.Coordinate(1, 3), coordinate.Coordinate(2, 3),
+            coordinate.Coordinate(3, 3), coordinate.Coordinate(4, 3),
+            coordinate.Coordinate(5, 3), coordinate.Coordinate(6, 3),
+            coordinate.Coordinate(7, 3), coordinate.Coordinate(3, 2),
+            coordinate.Coordinate(4, 2), coordinate.Coordinate(5, 2),
+            coordinate.Coordinate(3, 1), coordinate.Coordinate(4, 1),
+            coordinate.Coordinate(5, 1))
 
 def transferNode(startNode):
     """ Copies input historynode to a new one and returns that.
@@ -190,12 +247,7 @@ def transferNode(startNode):
     endNode = historynode.HistoryNode()
     for x in range(1, 8):
         for y in range(1, 8):
-            try:
-                location = coordinate.Coordinate(x, y)
-            except ValueError:
-                continue
-            state = startNode.getState(location)
-            endNode.setState(location, state)
+            endNode.gameState[x - 1][y - 1] = startNode.gameState[x - 1][y - 1]
     return endNode
 
 # pylint: disable=too-many-return-statements

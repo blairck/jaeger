@@ -4,7 +4,6 @@
 from res import types
 from src import connection
 from src import coordinate
-from src import historynode
 
 # -*- coding: utf-8 -*-
 class Rules(object):
@@ -24,124 +23,6 @@ class Rules(object):
             for line in f:
                 result.append(parseConnectionLine(line))
         return result
-
-    def readGameFile(self, file_path, test_data=None):
-        """ Reads in saved game file """
-        result = []
-        with open(file_path) as f:
-            if test_data and self.test_mode:
-                f = test_data
-            for line in f:
-                result.append(line)
-        return result
-
-    # pylint: disable=too-many-locals, too-many-statements
-    def readSavedFile(self, path_string, test_data=None):
-        """ Reads a saved game file and processes the contents into metadata
-        and game nodes """
-        savedGameMoveStates = []
-        allLinedStrings = None
-        metadata = None
-        if test_data:
-            allLinedStrings = test_data
-            metadata = allLinedStrings.pop(0)
-        else:
-            allLinedStrings = self.readGameFile(path_string)
-            metadata = makeMetadata(allLinedStrings)
-            allLinedStrings = allLinedStrings[7:]
-        savedGameMoveStates.append(metadata)
-        allLinedStrings = list(zip(*(iter(allLinedStrings),)*8))
-        p1Name = "{0}".format(metadata['p1'])
-        p2Name = "{0}".format(metadata['p2'])
-        result = "{0}".format(metadata['re'])
-        gameType = "{0}".format(metadata['gt'])
-        gooseSearch = "{0}".format(metadata['gs'])
-        foxSearch = "{0}".format(metadata['fs'])
-        for turn in allLinedStrings:
-            nextNode = historynode.HistoryNode()
-            nextNode.setP1(p1Name)
-            nextNode.setP2(p2Name)
-            nextNode.setResult(result)
-            nextNode.setGameType(int(gameType))
-            nextNode.setGooseSearch(int(gooseSearch))
-            nextNode.setFoxSearch(int(foxSearch))
-            nextNode.setHalfMove(int(turn[0][4]))
-
-            coordinate_3 = coordinate.Coordinate(3, 7)
-            coordinate_4 = coordinate.Coordinate(4, 7)
-            coordinate_5 = coordinate.Coordinate(5, 7)
-            nextNode.setState(coordinate_3, int(turn[1][4]))
-            nextNode.setState(coordinate_4, int(turn[1][6]))
-            nextNode.setState(coordinate_5, int(turn[1][8]))
-
-            coordinate_3 = coordinate.Coordinate(3, 6)
-            coordinate_4 = coordinate.Coordinate(4, 6)
-            coordinate_5 = coordinate.Coordinate(5, 6)
-            nextNode.setState(coordinate_3, int(turn[2][4]))
-            nextNode.setState(coordinate_4, int(turn[2][6]))
-            nextNode.setState(coordinate_5, int(turn[2][8]))
-
-            coordinate_1 = coordinate.Coordinate(1, 5)
-            coordinate_2 = coordinate.Coordinate(2, 5)
-            coordinate_3 = coordinate.Coordinate(3, 5)
-            coordinate_4 = coordinate.Coordinate(4, 5)
-            coordinate_5 = coordinate.Coordinate(5, 5)
-            coordinate_6 = coordinate.Coordinate(6, 5)
-            coordinate_7 = coordinate.Coordinate(7, 5)
-            nextNode.setState(coordinate_1, int(turn[3][0]))
-            nextNode.setState(coordinate_2, int(turn[3][2]))
-            nextNode.setState(coordinate_3, int(turn[3][4]))
-            nextNode.setState(coordinate_4, int(turn[3][6]))
-            nextNode.setState(coordinate_5, int(turn[3][8]))
-            nextNode.setState(coordinate_6, int(turn[3][10]))
-            nextNode.setState(coordinate_7, int(turn[3][12]))
-
-            coordinate_1 = coordinate.Coordinate(1, 4)
-            coordinate_2 = coordinate.Coordinate(2, 4)
-            coordinate_3 = coordinate.Coordinate(3, 4)
-            coordinate_4 = coordinate.Coordinate(4, 4)
-            coordinate_5 = coordinate.Coordinate(5, 4)
-            coordinate_6 = coordinate.Coordinate(6, 4)
-            coordinate_7 = coordinate.Coordinate(7, 4)
-            nextNode.setState(coordinate_1, int(turn[4][0]))
-            nextNode.setState(coordinate_2, int(turn[4][2]))
-            nextNode.setState(coordinate_3, int(turn[4][4]))
-            nextNode.setState(coordinate_4, int(turn[4][6]))
-            nextNode.setState(coordinate_5, int(turn[4][8]))
-            nextNode.setState(coordinate_6, int(turn[4][10]))
-            nextNode.setState(coordinate_7, int(turn[4][12]))
-
-            coordinate_1 = coordinate.Coordinate(1, 3)
-            coordinate_2 = coordinate.Coordinate(2, 3)
-            coordinate_3 = coordinate.Coordinate(3, 3)
-            coordinate_4 = coordinate.Coordinate(4, 3)
-            coordinate_5 = coordinate.Coordinate(5, 3)
-            coordinate_6 = coordinate.Coordinate(6, 3)
-            coordinate_7 = coordinate.Coordinate(7, 3)
-            nextNode.setState(coordinate_1, int(turn[5][0]))
-            nextNode.setState(coordinate_2, int(turn[5][2]))
-            nextNode.setState(coordinate_3, int(turn[5][4]))
-            nextNode.setState(coordinate_4, int(turn[5][6]))
-            nextNode.setState(coordinate_5, int(turn[5][8]))
-            nextNode.setState(coordinate_6, int(turn[5][10]))
-            nextNode.setState(coordinate_7, int(turn[5][12]))
-
-            coordinate_3 = coordinate.Coordinate(3, 2)
-            coordinate_4 = coordinate.Coordinate(4, 2)
-            coordinate_5 = coordinate.Coordinate(5, 2)
-            nextNode.setState(coordinate_3, int(turn[6][4]))
-            nextNode.setState(coordinate_4, int(turn[6][6]))
-            nextNode.setState(coordinate_5, int(turn[6][8]))
-
-            coordinate_3 = coordinate.Coordinate(3, 1)
-            coordinate_4 = coordinate.Coordinate(4, 1)
-            coordinate_5 = coordinate.Coordinate(5, 1)
-            nextNode.setState(coordinate_3, int(turn[7][4]))
-            nextNode.setState(coordinate_4, int(turn[7][6]))
-            nextNode.setState(coordinate_5, int(turn[7][8]))
-
-            savedGameMoveStates.append(nextNode)
-        return savedGameMoveStates
 
     def findConnectionP(self, startCoordinate, endCoordinate):
         """Finds connection between start coordinate and end coordinate.
