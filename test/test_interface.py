@@ -14,6 +14,9 @@ from test import helper
 class TestInterface(unittest.TestCase):
     """ Integration Tests for the Interface module """
 
+    # pylint: disable=too-many-public-methods
+    # Never too many tests
+
     @classmethod
     def setUpClass(cls):
         cls.shared_game = helper.nearlyWonGooseGame

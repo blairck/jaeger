@@ -45,6 +45,7 @@ def isCoordinateMatch(theMove, userCoordinate, gooseP):
     return bool(not gooseP and destinationType is types.FOX)
 
 def parseAlphabetNotation(userInput):
+    """ Replaces any valid coordinate character with a number """
     userInput = userInput.lower()
     userInput = userInput.replace("a", "1")
     userInput = userInput.replace("b", "2")
