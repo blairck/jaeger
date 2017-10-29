@@ -204,3 +204,13 @@ class TestInterface(unittest.TestCase):
         self.assertFalse(interface.isCoordinateMatch(hnObject,
                                                      testCoordinate,
                                                      gooseP))
+
+    def test_parseAlphabetNotation_simple(self):
+        """ Parse a simple valid alphabetnotation input """
+        actualValue = interface.parseAlphabetNotation("a3b3")
+        self.assertEqual(actualValue, "1323")
+
+    def test_parseAlphabetNotation_mixed(self):
+        """ Parse a simple valid alphabetnotation input """
+        actualValue = interface.parseAlphabetNotation("a323")
+        self.assertEqual(actualValue, "1323")
