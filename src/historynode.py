@@ -4,8 +4,7 @@
 from res import types
 from src import gamenode
 
-# Todo - move to settings file
-ALPHABETNOTATION = False # Display the x-axis as 'A B...' (True) or '1 2...'
+from settings import ALPHABETNOTATION
 
 class HistoryNode(gamenode.GameNode):
     """ Class that inherits from GameNode and has additional game specific

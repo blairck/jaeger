@@ -6,10 +6,9 @@ from src import coordinate
 from src import historynode
 from src import interface
 
-# Todo - move to settings file
-SEARCHPLY = 5 # How far computer searches. Higher numbers are slower.
-STANDARD = False #  Standard fox positions (True) or random (False)
-COMPPLAYSGOOSE = True # Computer plays goose (True) or fox (False)
+from settings import (SEARCHPLY,
+                      STANDARD,
+                      COMPPLAYSGOOSE)
 
 def aPlayerHasWon(game):
     if game.geeseWinP():
