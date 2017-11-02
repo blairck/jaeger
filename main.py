@@ -126,7 +126,8 @@ if __name__ == '__main__':
                                                    not COMPPLAYSGOOSE)
         while(True):
             userInput = input('Enter a move: ')
-            result = interface.getPositionFromListOfMoves(legalMoves,
+            result = interface.getPositionFromListOfMoves(game,
+                                                          legalMoves,
                                                           str(userInput),
                                                           not COMPPLAYSGOOSE)
             if len(result) != 1:

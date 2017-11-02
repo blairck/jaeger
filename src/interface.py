@@ -4,7 +4,7 @@
 from res import types
 from src import coordinate
 
-def getPositionFromListOfMoves(theMoves, userInput, gooseP):
+def getPositionFromListOfMoves(theGame, theMoves, userInput, gooseP):
     """ Gets a position with userInput from a list of legal moves (theMoves).
     Returns empty list if none found or ambiguous"""
     userCoordinates = getCoordinatesFromUserInput(userInput)
@@ -12,7 +12,8 @@ def getPositionFromListOfMoves(theMoves, userInput, gooseP):
         return matchSingleCoordinateToMoves(theMoves,
                                             userCoordinates[0],
                                             gooseP)
-    elif len(userCoordinates) > 1:
+    elif (len(userCoordinates) > 1 and
+          theGame.getState(userCoordinates[0]) != types.EMPTY):
         return matchMultipleCoordinatesToMoves(theMoves,
                                                userCoordinates,
                                                gooseP)
@@ -26,14 +27,14 @@ def matchSingleCoordinateToMoves(theMoves, userCoordinate, gooseP):
                                                      gooseP), theMoves))
     return result
 
-def matchMultipleCoordinatesToMoves(theMoves, userCoordinates, gooseP):
+def matchMultipleCoordinatesToMoves(theMoves,
+                                    userCoordinates,
+                                    gooseP):
     """ Match user input when there are multiple legal moves """
     lastCoordinate = userCoordinates.pop()
-    for aCoordinate in userCoordinates:
-        # Filters moves by empty spaces in user input
-        theMoves = list(
-            filter(lambda x, c=aCoordinate: x.getState(c) == types.EMPTY,
-                   theMoves))
+    theMoves = list(filter(
+                    lambda x: x.getState(userCoordinates[0]) == types.EMPTY,
+                    theMoves))
     theMoves = matchSingleCoordinateToMoves(theMoves, lastCoordinate, gooseP)
     return theMoves
 

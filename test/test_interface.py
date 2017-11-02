@@ -30,7 +30,8 @@ class TestInterface(unittest.TestCase):
         aiObject = ai.AI()
         gooseP = True
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
-        result = interface.getPositionFromListOfMoves(listOfMoves,
+        result = interface.getPositionFromListOfMoves(self.shared_game,
+                                                      listOfMoves,
                                                       '53',
                                                       gooseP)
         self.assertEqual(len(result), 1)
@@ -45,7 +46,8 @@ class TestInterface(unittest.TestCase):
         aiObject = ai.AI()
         gooseP = True
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
-        result = interface.getPositionFromListOfMoves(listOfMoves,
+        result = interface.getPositionFromListOfMoves(self.shared_game,
+                                                      listOfMoves,
                                                       '5363',
                                                       gooseP)
         self.assertEqual(len(result), 2)
@@ -55,8 +57,55 @@ class TestInterface(unittest.TestCase):
         aiObject = ai.AI()
         gooseP = True
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
-        result = interface.getPositionFromListOfMoves(listOfMoves,
+        result = interface.getPositionFromListOfMoves(self.shared_game,
+                                                      listOfMoves,
                                                       'z1',
+                                                      gooseP)
+        self.assertEqual(len(result), 0)
+
+    def test_getPositionFromListOfMoves_ambiguous(self):
+        r""" Gets a move from an ambiguous board state
+        7         G - . - .
+                  | \ | / |
+        6         . - G - G
+                  | / | \ |
+        5 G - G - G - . - . - G - G
+          | \ | / | \ | / | \ | / |
+        4 . - G - . - . - . - G - G
+          | / | \ | / | \ | / | \ |
+        3 G - . - . - . - . - G - G
+                  | \ | / |
+        2         F - . - F
+                  | / | \ |
+        1         S - S - S
+          1   2   3   4   5   6   7
+        """
+        hnObject = historynode.HistoryNode()
+        hnObject.setState(coordinate.Coordinate(3, 2), types.FOX)
+        hnObject.setState(coordinate.Coordinate(5, 2), types.FOX)
+        hnObject.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(1, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(2, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(2, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(1, 3), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 7), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 6), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 6), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(6, 3), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(6, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(6, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(7, 3), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(7, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(7, 5), types.GOOSE)
+        aiObject = ai.AI()
+        gooseP = True
+        listOfMoves = aiObject.getAllMovesForPlayer(hnObject, gooseP)
+        result = interface.getPositionFromListOfMoves(hnObject,
+                                                      listOfMoves,
+                                                      "4544",
                                                       gooseP)
         self.assertEqual(len(result), 0)
 
