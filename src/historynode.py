@@ -16,6 +16,13 @@ class HistoryNode(gamenode.GameNode):
         self.isCapture = False
         self.winningState = False
 
+    def __eq__(self, other):
+        for i in range(0, 7):
+            for j in range(0, 7):
+                if self.gameState[i][j] != other.gameState[i][j]:
+                    return False
+        return True
+
     def print_board(self):
         """ Prints a simplified representation of the board """
         print("    {0} {1} {2}    ".format(self.gameState[2][6],

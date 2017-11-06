@@ -12,6 +12,10 @@ from test import helper
 class TestIntegAI(unittest.TestCase):
     """ Integration Tests for the AI module """
 
+    @classmethod
+    def setUpClass(cls):
+        cls.looped_capture = helper.loopedFoxCapture
+
     def test_iterativeDeepeningSearch_draw_current_turn(self):
         """ Check iterative search where draw is the current turn """
         aiObject = ai.AI()
@@ -246,3 +250,12 @@ class TestIntegAI(unittest.TestCase):
         self.assertEqual(len(actualValue), 4)
         self.assertEqual(actualValue_inital, expectedValue_initial)
         self.assertEqual(actualValue_end, expectedValue_end)
+
+    def test_getAllFoxCaptures_loop_dedupe_moves(self):
+        """ Fox to play. The best sequence results in Fox at starting
+        location """
+        aiObject = ai.AI()
+        foxCoordinate = coordinate.Coordinate(4, 2)
+        actualValue = aiObject.getAllFoxCaptures(self.looped_capture,
+                                                 foxCoordinate)
+        self.assertEqual(len(actualValue), 7)

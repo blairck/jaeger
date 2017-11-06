@@ -169,3 +169,16 @@ class TestHistoryNode(unittest.TestCase):
         hn_obj = historynode.HistoryNode()
         hn_obj.determineWinningState()
         self.assertEqual(hn_obj.winningState, False)
+
+    def test_eq_same(self):
+        """ Check equality function compares boards as equal """
+        hn_obj_1 = historynode.HistoryNode()
+        hn_obj_2 = historynode.HistoryNode()
+        self.assertTrue(hn_obj_1 == hn_obj_2)
+
+    def test_eq_not_same(self):
+        """ Check equality function compares boards as not equal """
+        hn_obj_1 = historynode.HistoryNode()
+        hn_obj_1.gameState[4][1] = 3
+        hn_obj_2 = historynode.HistoryNode()
+        self.assertTrue(hn_obj_1 != hn_obj_2)

@@ -3,6 +3,7 @@
 # pylint: disable=import-error
 from res import types
 from src import coordinate
+from src import rules
 
 def getPositionFromListOfMoves(theGame, theMoves, userInput, gooseP):
     """ Gets a position with userInput from a list of legal moves (theMoves).
@@ -30,11 +31,33 @@ def matchSingleCoordinateToMoves(theMoves, userCoordinate, gooseP):
 def matchMultipleCoordinatesToMoves(theMoves,
                                     userCoordinates,
                                     gooseP):
-    """ Match user input when there are multiple legal moves """
+    """ Match user input when there are multiple legal moves. This function
+    iterates over each coordinate that the user inputted. It filters theMoves
+    list with the cooridinates. If it is a Fox turn, then it will also filter
+    based on captured spaces"""
+    userCordinatesLen = len(userCoordinates)
+    for i in range(userCordinatesLen - 1):
+        theMoves = list(filter(
+                        lambda x:
+                            x.getState(userCoordinates[i]) == types.EMPTY,
+                            theMoves))
+        # connected = rules.Rules().findConnectionP(userCoordinates[i],
+        #                                           userCoordinates[i+1])
+        # if not gooseP and not connected:
+        if not gooseP:
+            startX = userCoordinates[i].get_x_board()
+            startY = userCoordinates[i].get_y_board()
+            endX = userCoordinates[i+1].get_x_board()
+            endY = userCoordinates[i+1].get_y_board()
+            captureStartX = int(startX + (endX - startX)/2)
+            captureStartY = int(startY + (endY - startY)/2)
+            captureCoordinate = coordinate.Coordinate(captureStartX,
+                                                      captureStartY)
+            theMoves = list(filter(
+                            lambda x:
+                                x.getState(captureCoordinate) == types.EMPTY,
+                                theMoves))
     lastCoordinate = userCoordinates.pop()
-    theMoves = list(filter(
-                    lambda x: x.getState(userCoordinates[0]) == types.EMPTY,
-                    theMoves))
     theMoves = matchSingleCoordinateToMoves(theMoves, lastCoordinate, gooseP)
     return theMoves
 

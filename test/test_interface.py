@@ -20,6 +20,7 @@ class TestInterface(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.shared_game = helper.nearlyWonGooseGame
+        cls.looped_capture = helper.loopedFoxCapture
 
     @patch.object(interface, "matchSingleCoordinateToMoves")
     def test_getPositionFromListOfMoves_single(self,
@@ -109,6 +110,17 @@ class TestInterface(unittest.TestCase):
                                                       gooseP)
         self.assertEqual(len(result), 0)
 
+    def test_getPositionFromListOfMoves_loop(self):
+        aiObject = ai.AI()
+        gooseP = False
+        listOfMoves = aiObject.getAllMovesForPlayer(self.looped_capture,
+                                                    gooseP)
+        result = interface.getPositionFromListOfMoves(self.looped_capture,
+                                                      listOfMoves,
+                                                      '42',
+                                                      gooseP)
+        self.assertEqual(len(result), 1)
+
     def test_matchSingleCoordinateToMoves_fox_unambiguous(self):
         """ Match coordinate where there is exactly one match """
         aiObject = ai.AI()
@@ -162,6 +174,8 @@ class TestInterface(unittest.TestCase):
         actualValue = interface.matchMultipleCoordinatesToMoves(listOfMoves,
                                                                 coordinates,
                                                                 gooseP)
+        for item in listOfMoves:
+            item.pretty_print_board()
         self.assertEqual(len(actualValue), 1)
 
     def test_matchMultipleCoordinatesToMoves_goose_nonexistant(self):
@@ -174,6 +188,31 @@ class TestInterface(unittest.TestCase):
                                                                 coordinates,
                                                                 gooseP)
         self.assertEqual(len(actualValue), 0)
+
+    def test_matchMultipleCoordinatesToMoves_fox_ambiguous_short(self):
+        aiObject = ai.AI()
+        gooseP = False
+        listOfMoves = aiObject.getAllMovesForPlayer(self.looped_capture,
+                                                    gooseP)
+        coordinates = interface.getCoordinatesFromUserInput("42-64")
+        actualValue = interface.matchMultipleCoordinatesToMoves(listOfMoves,
+                                                                coordinates,
+                                                                gooseP)
+        for item in actualValue:
+            item.pretty_print_board()
+        self.assertEqual(len(actualValue), 1)
+
+    def test_matchMultipleCoordinatesToMoves_fox_ambiguous_long(self):
+        aiObject = ai.AI()
+        gooseP = False
+        listOfMoves = aiObject.getAllMovesForPlayer(self.looped_capture,
+                                                    gooseP)
+        coordinates = interface.getCoordinatesFromUserInput("42-24-46-64")
+        actualValue = interface.matchMultipleCoordinatesToMoves(listOfMoves,
+                                                                coordinates,
+                                                                gooseP)
+        self.assertEqual(len(actualValue), 1)
+
 
     def test_getCoordinatesFromUserInput_good(self):
         """ Get coordinates from good input """
@@ -212,6 +251,11 @@ class TestInterface(unittest.TestCase):
                          expectedValue0.get_x_board())
         self.assertEqual(actualValue[1].get_y_board(),
                          expectedValue1.get_y_board())
+
+    def test_getCoordinatesFromUserInput_very_long(self):
+        """ Get coordinates from a long input without extra notation """
+        actualValue = interface.getCoordinatesFromUserInput("42-24-46-64")
+        self.assertEqual(len(actualValue), 4)
 
     def test_getCoordinatesFromUserInput_bad_short(self):
         """ Parse a short bad input string """
