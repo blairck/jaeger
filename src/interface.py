@@ -33,18 +33,16 @@ def matchMultipleCoordinatesToMoves(theMoves,
                                     gooseP):
     """ Match user input when there are multiple legal moves. This function
     iterates over each coordinate that the user inputted. It filters theMoves
-    list with the cooridinates. If it is a Fox turn, then it will also filter
+    list with the coordinates. If it is a Fox turn, then it will also filter
     based on captured spaces"""
-    userCordinatesLen = len(userCoordinates)
-    for i in range(userCordinatesLen - 1):
+    for i in range(len(userCoordinates) - 1):
         theMoves = list(filter(
                         lambda x:
                             x.getState(userCoordinates[i]) == types.EMPTY,
                             theMoves))
-        # connected = rules.Rules().findConnectionP(userCoordinates[i],
-        #                                           userCoordinates[i+1])
-        # if not gooseP and not connected:
-        if not gooseP:
+        connected = rules.Rules().findConnectionP(userCoordinates[i],
+                                                  userCoordinates[i+1])
+        if not gooseP and not connected:
             startX = userCoordinates[i].get_x_board()
             startY = userCoordinates[i].get_y_board()
             endX = userCoordinates[i+1].get_x_board()

@@ -46,7 +46,7 @@ class TestHistoryNode(unittest.TestCase):
                               "2         . - . - .\n"
                               "          | / | \\ |\n"
                               "1         . - . - .\n"
-                              "  A   B   C   D   E   F   G")
+                              "  1   2   3   4   5   6   7")
             self.assertEqual(actual_print, expected_print)
 
     def test_constructor(self):

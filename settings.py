@@ -1,7 +1,7 @@
 """Settings used for running the game in main.py"""
 
 # Display the x-axis as 'A B C...' (True) or '1 2 3...' (False)
-ALPHABETNOTATION = True
+ALPHABETNOTATION = False
 
 # How far computer searches. Higher numbers are slower
 # Recommended values: Easy - 1, Medium - 3, Hard - 5, Very Hard - 7
@@ -9,7 +9,7 @@ ALPHABETNOTATION = True
 SEARCHPLY = 5
 
 #  Standard fox positions (True) or random (False)
-STANDARD = False
+STANDARD = True
 
 # Computer plays Goose (True) or Fox (False)
-COMPPLAYSGOOSE = True
+COMPPLAYSGOOSE = False

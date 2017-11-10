@@ -110,6 +110,51 @@ class TestInterface(unittest.TestCase):
                                                       gooseP)
         self.assertEqual(len(result), 0)
 
+    def test_getPositionFromListOfMoves_bugged(self):
+        r""" Gets a move from an ambiguous board state
+        7         . - . - .
+                  | \ | / |
+        6         . - . - .
+                  | / | \ |
+        5 . - . - . - . - . - . - G
+          | \ | / | \ | / | \ | / |
+        4 . - F - . - . - F - . - G
+          | / | \ | / | \ | / | \ |
+        3 G - . - . - . - S - . - G
+                  | \ | / |
+        2         S - S - S
+                  | / | \ |
+        1         . - . - S
+          A   B   C   D   E   F   G
+        Fox to play. Test based on a bug:
+        'Enter a move: e4d4
+        Unknown or invalid move, please try again'
+        """
+        hnObject = historynode.HistoryNode()
+        hnObject.setState(coordinate.Coordinate(7, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(2, 4), types.FOX)
+        hnObject.setState(coordinate.Coordinate(5, 4), types.FOX)
+        hnObject.setState(coordinate.Coordinate(7, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(1, 3), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(7, 3), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
+        aiObject = ai.AI()
+        gooseP = False
+        listOfMoves = aiObject.getAllMovesForPlayer(hnObject, gooseP)
+        result = interface.getPositionFromListOfMoves(hnObject,
+                                                      listOfMoves,
+                                                      "e4d4",
+                                                      gooseP)
+        self.assertEqual(len(result), 1)
+        start = coordinate.Coordinate(5, 4)
+        end = coordinate.Coordinate(4, 4)
+        self.assertEqual(result[0].getState(start), types.EMPTY)
+        self.assertEqual(result[0].getState(end), types.FOX)
+
     def test_getPositionFromListOfMoves_loop(self):
         aiObject = ai.AI()
         gooseP = False

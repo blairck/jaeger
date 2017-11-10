@@ -259,3 +259,48 @@ class TestIntegAI(unittest.TestCase):
         actualValue = aiObject.getAllFoxCaptures(self.looped_capture,
                                                  foxCoordinate)
         self.assertEqual(len(actualValue), 7)
+
+    def test_getAllFoxCaptures_really_complicated(self):
+        r"""
+        7         G - G - G
+                  | \ | / |
+        6         G - G - G
+                  | / | \ |
+        5 G - G - G - F - . - . - .
+          | \ | / | \ | / | \ | / |
+        4 G - G - G - . - G - G - G
+          | / | \ | / | \ | / | \ |
+        3 G - . - . - . - . - G - .
+                  | \ | / |
+        2         . - S - S
+                  | / | \ |
+        1         S - . - F
+          1   2   3   4   5   6   7
+        """
+        aiObject = ai.AI()
+        hnObject = historynode.HistoryNode()
+        hnObject.setState(coordinate.Coordinate(3, 7), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 7), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 7), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 6), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 6), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 6), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(1, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(2, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 5), types.FOX)
+        hnObject.setState(coordinate.Coordinate(1, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(2, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(6, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(7, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(1, 3), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(6, 3), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 1), types.FOX)
+        foxCoordinate = coordinate.Coordinate(5, 1)
+        actualValue = aiObject.getAllFoxCaptures(hnObject, foxCoordinate)
+        self.assertEqual(len(actualValue), 13)
