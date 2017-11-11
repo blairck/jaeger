@@ -8,7 +8,7 @@ from src import interface
 
 from settings import (SEARCHPLY,
                       STANDARD,
-                      COMPPLAYSGOOSE)
+                      USERPLAYSFOX)
 
 def aPlayerHasWon(game):
     if game.geeseWinP():
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     game = createStartingPosition(STANDARD)
 
     aiObject = ai.AI()
-    if COMPPLAYSGOOSE:
+    if USERPLAYSFOX:
         computersTurn = True
     else:
         computersTurn = False
@@ -109,7 +109,7 @@ if __name__ == '__main__':
 
         if computersTurn:
             game = aiObject.iterativeDeepeningSearch(game,
-                                                     COMPPLAYSGOOSE,
+                                                     USERPLAYSFOX,
                                                      SEARCHPLY)
             computersTurn = False
 
@@ -123,13 +123,13 @@ if __name__ == '__main__':
         print("Score: {0}".format(game.score))
 
         legalMoves = aiObject.getAllMovesForPlayer(game,
-                                                   not COMPPLAYSGOOSE)
+                                                   not USERPLAYSFOX)
         while(True):
             userInput = input('Enter a move: ')
             result = interface.getPositionFromListOfMoves(game,
                                                           legalMoves,
                                                           str(userInput),
-                                                          not COMPPLAYSGOOSE)
+                                                          not USERPLAYSFOX)
             if len(result) != 1:
                 print("Unknown or invalid move, please try again")
                 continue

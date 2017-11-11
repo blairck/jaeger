@@ -11,5 +11,5 @@ SEARCHPLY = 5
 #  Standard fox positions (True) or random (False)
 STANDARD = True
 
-# Computer plays Goose (True) or Fox (False)
-COMPPLAYSGOOSE = False
+# User plays Fox (True) or Goose (False)
+USERPLAYSFOX = True
