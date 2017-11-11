@@ -37,9 +37,9 @@ def matchMultipleCoordinatesToMoves(theMoves,
     based on captured spaces"""
     for i in range(len(userCoordinates) - 1):
         theMoves = list(filter(
-                        lambda x:
-                            x.getState(userCoordinates[i]) == types.EMPTY,
-                            theMoves))
+            lambda x, inputCoordinate=i:
+            x.getState(userCoordinates[inputCoordinate]) == types.EMPTY,
+            theMoves))
         connected = rules.Rules().findConnectionP(userCoordinates[i],
                                                   userCoordinates[i+1])
         if not gooseP and not connected:
@@ -52,9 +52,9 @@ def matchMultipleCoordinatesToMoves(theMoves,
             captureCoordinate = coordinate.Coordinate(captureStartX,
                                                       captureStartY)
             theMoves = list(filter(
-                            lambda x:
-                                x.getState(captureCoordinate) == types.EMPTY,
-                                theMoves))
+                lambda x, capture=captureCoordinate:
+                x.getState(capture) == types.EMPTY,
+                theMoves))
     lastCoordinate = userCoordinates.pop()
     theMoves = matchSingleCoordinateToMoves(theMoves, lastCoordinate, gooseP)
     return theMoves

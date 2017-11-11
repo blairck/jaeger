@@ -156,6 +156,7 @@ class TestInterface(unittest.TestCase):
         self.assertEqual(result[0].getState(end), types.FOX)
 
     def test_getPositionFromListOfMoves_loop(self):
+        """ Test getting position from user input when fox captures loop """
         aiObject = ai.AI()
         gooseP = False
         listOfMoves = aiObject.getAllMovesForPlayer(self.looped_capture,
@@ -235,6 +236,7 @@ class TestInterface(unittest.TestCase):
         self.assertEqual(len(actualValue), 0)
 
     def test_matchMultipleCoordinatesToMoves_fox_ambiguous_short(self):
+        """ Test for single result from multiple coordinates """
         aiObject = ai.AI()
         gooseP = False
         listOfMoves = aiObject.getAllMovesForPlayer(self.looped_capture,
@@ -248,6 +250,7 @@ class TestInterface(unittest.TestCase):
         self.assertEqual(len(actualValue), 1)
 
     def test_matchMultipleCoordinatesToMoves_fox_ambiguous_long(self):
+        """ Test for single result from a long series of coordinates """
         aiObject = ai.AI()
         gooseP = False
         listOfMoves = aiObject.getAllMovesForPlayer(self.looped_capture,
