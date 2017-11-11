@@ -37,6 +37,20 @@ class TestAI(unittest.TestCase):
         aiObject.iterativeDeepeningSearch(testBoard, True, 5)
         self.assertEqual(theMock.call_count, 1)
 
+    @patch.object(ai.AI, "getAllMovesForPlayer")
+    def test_findBestMove_drawn_state(self, theMock):
+        """ Test correct evaluation is returned in drawn state """
+        theMock.return_value = []
+        aiObject = ai.AI()
+        hnObject = historynode.HistoryNode()
+        actualValue = aiObject.findBestMove(hnObject,
+                                            True,
+                                            5,
+                                            -10000.0,
+                                            10000.0,
+                                            False)
+        self.assertEqual(actualValue, 0.0)
+
     def test_getHighestOrLowestScoreMove_goose(self):
         """ Sort the best move of a Goose player """
         hnObjectBigScore = historynode.HistoryNode()
