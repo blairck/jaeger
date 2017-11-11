@@ -49,6 +49,29 @@ class TestHistoryNode(unittest.TestCase):
                               "  1   2   3   4   5   6   7")
             self.assertEqual(actual_print, expected_print)
 
+    @patch('src.historynode.ALPHABETNOTATION', True)
+    def test_pretty_print_board_alphabet_notation(self):
+        """ Check that pretty_print_board works with alphabet notation """
+        with helper.captured_output() as out:
+            hn_obj = historynode.HistoryNode()
+            hn_obj.pretty_print_board()
+            actual_print = out.getvalue().strip()
+            expected_print = ("7         . - . - .\n"
+                              "          | \\ | / |\n"
+                              "6         . - . - .\n"
+                              "          | / | \\ |\n"
+                              "5 . - . - . - . - . - . - .\n"
+                              "  | \\ | / | \\ | / | \\ | / |\n"
+                              "4 . - . - . - . - . - . - .\n"
+                              "  | / | \\ | / | \\ | / | \\ |\n"
+                              "3 . - . - . - . - . - . - .\n"
+                              "          | \\ | / |\n"
+                              "2         . - . - .\n"
+                              "          | / | \\ |\n"
+                              "1         . - . - .\n"
+                              "  A   B   C   D   E   F   G")
+            self.assertEqual(actual_print, expected_print)
+
     def test_constructor(self):
         """ Check that HistoryNode object is initialized correctly """
         hn_obj = historynode.HistoryNode()
