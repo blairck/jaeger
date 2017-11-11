@@ -12,4 +12,4 @@ SEARCHPLY = 5
 STANDARD = True
 
 # User plays Fox (True) or Goose (False)
-USERPLAYSFOX = True
+USERPLAYSFOX = False
