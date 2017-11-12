@@ -6,7 +6,8 @@ from src import coordinate
 from src import historynode
 from src import interface
 
-from settings import (SEARCHPLY,
+from settings import (DISPLAYEVALUATION,
+                      SEARCHPLY,
                       STANDARD,
                       USERPLAYSFOX)
 
@@ -93,6 +94,7 @@ def createStartingPosition(standard):
 
 if __name__ == '__main__':
     game = createStartingPosition(STANDARD)
+    firstTurn = True
 
     aiObject = ai.AI()
     if USERPLAYSFOX:
@@ -101,7 +103,13 @@ if __name__ == '__main__':
         computersTurn = False
 
     while(True):
-        game.pretty_print_board()
+        if not firstTurn:
+            game.pretty_print_board()
+            print("----------------------------")
+        elif firstTurn and USERPLAYSFOX:
+            game.pretty_print_board()
+            print("----------------------------")
+
         if aPlayerHasWon(game):
             break
         elif determineDraw(game, aiObject):
@@ -113,14 +121,17 @@ if __name__ == '__main__':
                                                      SEARCHPLY)
             computersTurn = False
 
-        print("----------------------------")
-
         game.pretty_print_board()
         if aPlayerHasWon(game):
             break
         elif determineDraw(game, aiObject):
             break
-        print("Score: {0}".format(game.score))
+
+        if not game.score:
+            game.score = aiObject.evaluationFunction(game)
+
+        if DISPLAYEVALUATION:
+            print("Score: {0:.2f}".format(game.score))
 
         legalMoves = aiObject.getAllMovesForPlayer(game,
                                                    not USERPLAYSFOX)
@@ -137,3 +148,5 @@ if __name__ == '__main__':
                 game = result[0]
                 computersTurn = True
                 break
+
+        firstTurn = False
