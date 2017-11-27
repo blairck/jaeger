@@ -1,4 +1,4 @@
-﻿### Description ###
+### Description ###
 Jaeger is a game for playing Foxes & Geese. This is a port of a game I wrote
 originally in Objective-C in 2011. See: https://en.wikipedia.org/wiki/Fox_games
 
@@ -18,14 +18,72 @@ Setting up:
 Install extra requirements:
 * Install Git
 * Clone this repo
-* Install Make to run the makefile
-In the root folder of the project do the following:
-```
-virtualenv env
-pip install -r requirements.txt
-. env/bin/activate
-make status
-```
-The status command will run PyLint over code in the src folder and then (if no
-lint issues are found) execute all unittest files in the test folder.
+* Install Make to run the makefile commands
 
+### Game Overview ###
+The goal of the game is to move 9 goose pieces into the Victory area:
+7         . - . - .
+          | \ | / |
+6         . - . - .
+          | / | \ |
+5 . - . - . - . - . - . - .
+  | \ | / | \ | / | \ | / |
+4 . - . - . - . - . - . - .
+  | / | \ | / | \ | / | \ |
+3 . - . - x - x - x - . - .
+          | \ | / |
+2         x - x - x
+          | / | \ |
+1         x - x - x
+  1   2   3   4   5   6   7
+
+### Examples Moves:
+
+Goose can move towards the victory area or to the side. Example move:
+7         . - . - .
+          | \ | / |
+6         . - . - .
+          | / | \ |
+5 . - . - . - . - . - . - .
+  | \ | / | \ | / | \ | / |
+4 . - . - x - G - x - . - .
+  | / | \ | / | \ | / | \ |
+3 . - . - x - x - x - . - .
+          | \ | / |
+2         . - . - .
+          | / | \ |
+1         . - . - .
+  1   2   3   4   5   6   7
+
+Super goose move:
+7         . - . - .
+          | \ | / |
+6         . - . - .
+          | / | \ |
+5 . - . - x - x - x - . - .
+  | \ | / | \ | / | \ | / |
+4 . - . - x - S - x - . - .
+  | / | \ | / | \ | / | \ |
+3 . - . - x - x - x - . - .
+          | \ | / |
+2         . - . - .
+          | / | \ |
+1         . - . - .
+  1   2   3   4   5   6   7
+
+
+Fox move:
+7         . - . - .
+          | \ | / |
+6         . - . - .
+          | / | \ |
+5 . - . - x - x - x - . - .
+  | \ | / | \ | / | \ | / |
+4 . - . - x - F - x - . - .
+  | / | \ | / | \ | / | \ |
+3 . - . - x - x - x - . - .
+          | \ | / |
+2         . - . - .
+          | / | \ |
+1         . - . - .
+  1   2   3   4   5   6   7
