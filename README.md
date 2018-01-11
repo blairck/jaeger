@@ -33,7 +33,6 @@ rest on the spaces and can only move between them along the solid lines. Notice
 that some spaces have only 4 connecting lines, such as (4,3). Other spaces have
 8 connecting lines, such as (4,4). This makes some spaces more valuable than
 others.
-
 ```
 7         G - G - G
           | \ | / |
@@ -53,6 +52,7 @@ others.
 
 ### Goal ###
 The goal of the game is to move 9 goose pieces into the Victory area:
+```
 7         . - . - .
           | \ | / |
 6         . - . - .
@@ -67,6 +67,7 @@ The goal of the game is to move 9 goose pieces into the Victory area:
           | / | \ |
 1         G - G - G
   1   2   3   4   5   6   7
+```
 
 When this happens, the Geese will have won the game. If the Geese have 8 or
 fewer pieces left, then the Foxes win because the Geese are incapable of
@@ -79,6 +80,7 @@ the game.
 
 ### Fox Movement ###
 Fox move:
+```
 7         . - . - .
           | \ | / |
 6         . - . - .
@@ -93,8 +95,10 @@ Fox move:
           | / | \ |
 1         . - . - .
   1   2   3   4   5   6   7
+```
 
 Fox capture:
+```
 7         . - . - .
           | \ | / |
 6         . - . - .
@@ -109,9 +113,11 @@ Fox capture:
           | / | \ |
 1         . - . - .
   1   2   3   4   5   6   7
+```
 
 ### Goose Movement ###
 Goose can move towards the victory area or to the side. Example move:
+```
 7         . - . - .
           | \ | / |
 6         . - . - .
@@ -126,8 +132,10 @@ Goose can move towards the victory area or to the side. Example move:
           | / | \ |
 1         . - . - .
   1   2   3   4   5   6   7
+```
 
 Super goose move:
+```
 7         . - . - .
           | \ | / |
 6         . - . - .
@@ -142,3 +150,4 @@ Super goose move:
           | / | \ |
 1         . - . - .
   1   2   3   4   5   6   7
+```
