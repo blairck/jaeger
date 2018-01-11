@@ -34,7 +34,7 @@ that some spaces have only 4 connecting lines, such as (4,3). Other spaces have
 8 connecting lines, such as (4,4). This makes some spaces more valuable than
 others.
 
-'''
+```
 7         G - G - G
           | \ | / |
 6         G - G - G
@@ -49,7 +49,7 @@ others.
           | / | \ |
 1         F - . - F
   1   2   3   4   5   6   7
-'''
+```
 
 ### Goal ###
 The goal of the game is to move 9 goose pieces into the Victory area:
