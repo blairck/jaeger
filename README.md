@@ -21,6 +21,19 @@ Install extra requirements:
 * Install Git
 * Clone this repo
 * Install Make to run the makefile commands
+* Make a virtualenv for dependencies:
+```
+virtualenv env --python=python3
+```
+* Activate the virtualenv
+* Install development requirements:
+```
+pip install -r requirements.txt
+```
+* Run the unit tests to make sure everything is set up:
+```
+make tests
+```
 
 ### Quick start ###
 Here is how to quickly get into a game:
