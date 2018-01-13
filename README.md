@@ -3,7 +3,8 @@
 Jaeger is a console-based implementation of the board game Foxes & Geese. Foxes
 & Geese is a 2-player turn-based game where one player plays as the Foxes and
 the other plays as the Geese. Foxes and Geese pieces move differently and have
-different goals so the gameplay is asymmetric.
+different goals so the gameplay is asymmetric. Jaeger has a fully developed and
+skilled AI opponent to provide a challenge!
 
 Project Status: Version 1.0.0 is released. This project is now in maintenance.
 
