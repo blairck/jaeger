@@ -1,3 +1,4 @@
+## Jaeger ##
 ### Description ###
 Jaeger is a console-based implementation of the board game Foxes & Geese. Foxes
 & Geese is a 2-player turn-based game where one player plays as the Foxes and
@@ -15,30 +16,12 @@ To use:
 Setting up:
 * Install Python 3
 * Download this repo (Green download button, upper right corner)
-
-### Setting Up For Developers ###
-Install extra requirements:
-* Install Git
-* Clone this repo
-* Install Make to run the makefile commands
-* Make a virtualenv for dependencies:
-```
-virtualenv env --python=python3
-```
-* Activate the virtualenv
-* Install development requirements:
-```
-pip install -r requirements.txt
-```
-* Run the unit tests to make sure everything is set up:
-```
-make tests
-```
+* Setup instructions for development are at the end of this document
 
 ### Quick start ###
 Here is how to quickly get into a game:
 * Follow the 'Setting Up For Players' instructions
-* In the jaeger directory, run the command "python main.py"
+* In the Jaeger directory, run the command "python main.py"
 * This what you'll see:
 ```
 7         G - G - G
@@ -97,6 +80,7 @@ type that. For example, you could type "43" which would make this move:
 * To quit, type "quit()" or Ctrl-D.
 * Feel free to change game settings in the settings.py file and play again.
 
+## Game Rules ##
 ### Setup ###
 This is the default setup of the board. The letter 'G' represents Goose pieces,
 and the letter 'F'  represents Fox pieces. Dots '.' are empty spaces. Pieces
@@ -248,4 +232,23 @@ Supergoose can move in any direction, like a Fox.
           | / | \ |
 1         . - . - .
   1   2   3   4   5   6   7
+```
+
+## Setting Up For Development ##
+Install extra requirements:
+* Install Git
+* Clone this repo
+* Install Make to run the makefile commands
+* Make a virtualenv for dependencies:
+```
+virtualenv env --python=python3
+```
+* Activate the virtualenv
+* Install development requirements:
+```
+pip install -r requirements.txt
+```
+* Run the unit tests to make sure everything is set up:
+```
+make tests
 ```
