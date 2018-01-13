@@ -106,7 +106,8 @@ others.
 ```
 
 ### Goal ###
-The goal of the game is to move 9 goose pieces into the Victory area:
+The goal of the game is to move 9 goose pieces into the Victory Area. This is
+the Victory Area:
 ```
 7         . - . - .
           | \ | / |
@@ -116,11 +117,11 @@ The goal of the game is to move 9 goose pieces into the Victory area:
   | \ | / | \ | / | \ | / |
 4 . - . - . - . - . - . - .
   | / | \ | / | \ | / | \ |
-3 . - . - G - G - G - . - .
+3 . - . - x - x - x - . - .
           | \ | / |
-2         G - G - G
+2         x - x - x
           | / | \ |
-1         G - G - G
+1         x - x - x
   1   2   3   4   5   6   7
 ```
 
