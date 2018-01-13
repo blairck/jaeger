@@ -8,7 +8,7 @@ Project Status: Version 1.0.0 is released. This project is now in maintenance.
 
 ### Requirements ###
 To use:
-* Python 3.5 or later required
+* Python 3.6 or later required
 * Python 2 is not supported
 
 ### Setting Up For Players ###
