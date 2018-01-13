@@ -156,8 +156,8 @@ class AI(object):
 
     def getAllFoxCaptures(self, theGame, location):
         """ This recursively finds all available captures for a single fox and
-        returns the list of captures"""
-        captureList = []
+        returns the list of captures. Check for duplicates from loops"""
+        tempCaptureList = []
         x_board = location.get_x_board()
         y_board = location.get_y_board()
         for direction in range(1, 9):
@@ -171,10 +171,14 @@ class AI(object):
                 newMoveNode.leafP = True
                 newMoveNode.rootP = False
                 newMoveNode.isCapture = True
-                captureList.append(newMoveNode)
+                tempCaptureList.append(newMoveNode)
                 nextCapture = self.getAllFoxCaptures(newMoveNode, destination)
                 if nextCapture:
-                    captureList.extend(nextCapture)
+                    tempCaptureList.extend(nextCapture)
+        captureList = []
+        for board in tempCaptureList:
+            if board not in captureList:
+                captureList.append(board)
         return captureList
 
     def evaluationFunction(self, theGame, checkForDraw=False):
@@ -245,9 +249,9 @@ def transferNode(startNode):
     """ Copies input historynode to a new one and returns that.
     Basically performs a deep copy."""
     endNode = historynode.HistoryNode()
-    for x in range(1, 8):
-        for y in range(1, 8):
-            endNode.gameState[x - 1][y - 1] = startNode.gameState[x - 1][y - 1]
+    for x in range(0, 7):
+        for y in range(0, 7):
+            endNode.gameState[x][y] = startNode.gameState[x][y]
     return endNode
 
 # pylint: disable=too-many-return-statements

@@ -3,8 +3,9 @@
 # pylint: disable=import-error
 from res import types
 from src import coordinate
+from src import rules
 
-def getPositionFromListOfMoves(theMoves, userInput, gooseP):
+def getPositionFromListOfMoves(theGame, theMoves, userInput, gooseP):
     """ Gets a position with userInput from a list of legal moves (theMoves).
     Returns empty list if none found or ambiguous"""
     userCoordinates = getCoordinatesFromUserInput(userInput)
@@ -12,7 +13,8 @@ def getPositionFromListOfMoves(theMoves, userInput, gooseP):
         return matchSingleCoordinateToMoves(theMoves,
                                             userCoordinates[0],
                                             gooseP)
-    elif len(userCoordinates) > 1:
+    elif (len(userCoordinates) > 1 and
+          theGame.getState(userCoordinates[0]) != types.EMPTY):
         return matchMultipleCoordinatesToMoves(theMoves,
                                                userCoordinates,
                                                gooseP)
@@ -26,14 +28,34 @@ def matchSingleCoordinateToMoves(theMoves, userCoordinate, gooseP):
                                                      gooseP), theMoves))
     return result
 
-def matchMultipleCoordinatesToMoves(theMoves, userCoordinates, gooseP):
-    """ Match user input when there are multiple legal moves """
+def matchMultipleCoordinatesToMoves(theMoves,
+                                    userCoordinates,
+                                    gooseP):
+    """ Match user input when there are multiple legal moves. This function
+    iterates over each coordinate that the user inputted. It filters theMoves
+    list with the coordinates. If it is a Fox turn, then it will also filter
+    based on captured spaces"""
+    for i in range(len(userCoordinates) - 1):
+        theMoves = list(filter(
+            lambda x, inputCoordinate=i:
+            x.getState(userCoordinates[inputCoordinate]) == types.EMPTY,
+            theMoves))
+        connected = rules.Rules().findConnectionP(userCoordinates[i],
+                                                  userCoordinates[i+1])
+        if not gooseP and not connected:
+            startX = userCoordinates[i].get_x_board()
+            startY = userCoordinates[i].get_y_board()
+            endX = userCoordinates[i+1].get_x_board()
+            endY = userCoordinates[i+1].get_y_board()
+            captureStartX = int(startX + (endX - startX)/2)
+            captureStartY = int(startY + (endY - startY)/2)
+            captureCoordinate = coordinate.Coordinate(captureStartX,
+                                                      captureStartY)
+            theMoves = list(filter(
+                lambda x, capture=captureCoordinate:
+                x.getState(capture) == types.EMPTY,
+                theMoves))
     lastCoordinate = userCoordinates.pop()
-    for aCoordinate in userCoordinates:
-        # Filters moves by empty spaces in user input
-        theMoves = list(
-            filter(lambda x, c=aCoordinate: x.getState(c) == types.EMPTY,
-                   theMoves))
     theMoves = matchSingleCoordinateToMoves(theMoves, lastCoordinate, gooseP)
     return theMoves
 
@@ -44,9 +66,22 @@ def isCoordinateMatch(theMove, userCoordinate, gooseP):
         return True
     return bool(not gooseP and destinationType is types.FOX)
 
+def parseAlphabetNotation(userInput):
+    """ Replaces any valid coordinate character with a number """
+    userInput = userInput.lower()
+    userInput = userInput.replace("a", "1")
+    userInput = userInput.replace("b", "2")
+    userInput = userInput.replace("c", "3")
+    userInput = userInput.replace("d", "4")
+    userInput = userInput.replace("e", "5")
+    userInput = userInput.replace("f", "6")
+    userInput = userInput.replace("g", "7")
+    return userInput
+
 def getCoordinatesFromUserInput(userInput):
     """ Parses string of user input to get coordinates """
     result = []
+    userInput = parseAlphabetNotation(userInput)
     userInput = ''.join(c for c in userInput if c.isdigit())
     inputLength = len(userInput)
     if inputLength < 2 or inputLength % 2 == 1:

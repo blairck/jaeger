@@ -10,7 +10,7 @@ lint:
 
 run:
 	#Run the program
-	$(ENVIRONMENT)/bin/python src/main.py
+	$(ENVIRONMENT)/bin/python main.py
 
 status: tests lint
 	#Overall project status with lint and tests

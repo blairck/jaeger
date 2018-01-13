@@ -14,9 +14,13 @@ from test import helper
 class TestInterface(unittest.TestCase):
     """ Integration Tests for the Interface module """
 
+    # pylint: disable=too-many-public-methods
+    # Never too many tests
+
     @classmethod
     def setUpClass(cls):
         cls.shared_game = helper.nearlyWonGooseGame
+        cls.looped_capture = helper.loopedFoxCapture
 
     @patch.object(interface, "matchSingleCoordinateToMoves")
     def test_getPositionFromListOfMoves_single(self,
@@ -27,7 +31,8 @@ class TestInterface(unittest.TestCase):
         aiObject = ai.AI()
         gooseP = True
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
-        result = interface.getPositionFromListOfMoves(listOfMoves,
+        result = interface.getPositionFromListOfMoves(self.shared_game,
+                                                      listOfMoves,
                                                       '53',
                                                       gooseP)
         self.assertEqual(len(result), 1)
@@ -42,7 +47,8 @@ class TestInterface(unittest.TestCase):
         aiObject = ai.AI()
         gooseP = True
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
-        result = interface.getPositionFromListOfMoves(listOfMoves,
+        result = interface.getPositionFromListOfMoves(self.shared_game,
+                                                      listOfMoves,
                                                       '5363',
                                                       gooseP)
         self.assertEqual(len(result), 2)
@@ -52,10 +58,114 @@ class TestInterface(unittest.TestCase):
         aiObject = ai.AI()
         gooseP = True
         listOfMoves = aiObject.getAllMovesForPlayer(self.shared_game, gooseP)
-        result = interface.getPositionFromListOfMoves(listOfMoves,
+        result = interface.getPositionFromListOfMoves(self.shared_game,
+                                                      listOfMoves,
                                                       'z1',
                                                       gooseP)
         self.assertEqual(len(result), 0)
+
+    def test_getPositionFromListOfMoves_ambiguous(self):
+        r""" Gets a move from an ambiguous board state
+        7         G - . - .
+                  | \ | / |
+        6         . - G - G
+                  | / | \ |
+        5 G - G - G - . - . - G - G
+          | \ | / | \ | / | \ | / |
+        4 . - G - . - . - . - G - G
+          | / | \ | / | \ | / | \ |
+        3 G - . - . - . - . - G - G
+                  | \ | / |
+        2         F - . - F
+                  | / | \ |
+        1         S - S - S
+          1   2   3   4   5   6   7
+        """
+        hnObject = historynode.HistoryNode()
+        hnObject.setState(coordinate.Coordinate(3, 2), types.FOX)
+        hnObject.setState(coordinate.Coordinate(5, 2), types.FOX)
+        hnObject.setState(coordinate.Coordinate(3, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(1, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(2, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(2, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(1, 3), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 7), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 6), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 6), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(6, 3), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(6, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(6, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(7, 3), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(7, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(7, 5), types.GOOSE)
+        aiObject = ai.AI()
+        gooseP = True
+        listOfMoves = aiObject.getAllMovesForPlayer(hnObject, gooseP)
+        result = interface.getPositionFromListOfMoves(hnObject,
+                                                      listOfMoves,
+                                                      "4544",
+                                                      gooseP)
+        self.assertEqual(len(result), 0)
+
+    def test_getPositionFromListOfMoves_bugged(self):
+        r""" Gets a move from an ambiguous board state
+        7         . - . - .
+                  | \ | / |
+        6         . - . - .
+                  | / | \ |
+        5 . - . - . - . - . - . - G
+          | \ | / | \ | / | \ | / |
+        4 . - F - . - . - F - . - G
+          | / | \ | / | \ | / | \ |
+        3 G - . - . - . - S - . - G
+                  | \ | / |
+        2         S - S - S
+                  | / | \ |
+        1         . - . - S
+          A   B   C   D   E   F   G
+        Fox to play. Test based on a bug:
+        'Enter a move: e4d4
+        Unknown or invalid move, please try again'
+        """
+        hnObject = historynode.HistoryNode()
+        hnObject.setState(coordinate.Coordinate(7, 5), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(2, 4), types.FOX)
+        hnObject.setState(coordinate.Coordinate(5, 4), types.FOX)
+        hnObject.setState(coordinate.Coordinate(7, 4), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(1, 3), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(7, 3), types.GOOSE)
+        hnObject.setState(coordinate.Coordinate(3, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(4, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
+        hnObject.setState(coordinate.Coordinate(5, 1), types.SUPERGOOSE)
+        aiObject = ai.AI()
+        gooseP = False
+        listOfMoves = aiObject.getAllMovesForPlayer(hnObject, gooseP)
+        result = interface.getPositionFromListOfMoves(hnObject,
+                                                      listOfMoves,
+                                                      "e4d4",
+                                                      gooseP)
+        self.assertEqual(len(result), 1)
+        start = coordinate.Coordinate(5, 4)
+        end = coordinate.Coordinate(4, 4)
+        self.assertEqual(result[0].getState(start), types.EMPTY)
+        self.assertEqual(result[0].getState(end), types.FOX)
+
+    def test_getPositionFromListOfMoves_loop(self):
+        """ Test getting position from user input when fox captures loop """
+        aiObject = ai.AI()
+        gooseP = False
+        listOfMoves = aiObject.getAllMovesForPlayer(self.looped_capture,
+                                                    gooseP)
+        result = interface.getPositionFromListOfMoves(self.looped_capture,
+                                                      listOfMoves,
+                                                      '42',
+                                                      gooseP)
+        self.assertEqual(len(result), 1)
 
     def test_matchSingleCoordinateToMoves_fox_unambiguous(self):
         """ Match coordinate where there is exactly one match """
@@ -110,6 +220,8 @@ class TestInterface(unittest.TestCase):
         actualValue = interface.matchMultipleCoordinatesToMoves(listOfMoves,
                                                                 coordinates,
                                                                 gooseP)
+        for item in listOfMoves:
+            item.pretty_print_board()
         self.assertEqual(len(actualValue), 1)
 
     def test_matchMultipleCoordinatesToMoves_goose_nonexistant(self):
@@ -122,6 +234,33 @@ class TestInterface(unittest.TestCase):
                                                                 coordinates,
                                                                 gooseP)
         self.assertEqual(len(actualValue), 0)
+
+    def test_matchMultipleCoordinatesToMoves_fox_ambiguous_short(self):
+        """ Test for single result from multiple coordinates """
+        aiObject = ai.AI()
+        gooseP = False
+        listOfMoves = aiObject.getAllMovesForPlayer(self.looped_capture,
+                                                    gooseP)
+        coordinates = interface.getCoordinatesFromUserInput("42-64")
+        actualValue = interface.matchMultipleCoordinatesToMoves(listOfMoves,
+                                                                coordinates,
+                                                                gooseP)
+        for item in actualValue:
+            item.pretty_print_board()
+        self.assertEqual(len(actualValue), 1)
+
+    def test_matchMultipleCoordinatesToMoves_fox_ambiguous_long(self):
+        """ Test for single result from a long series of coordinates """
+        aiObject = ai.AI()
+        gooseP = False
+        listOfMoves = aiObject.getAllMovesForPlayer(self.looped_capture,
+                                                    gooseP)
+        coordinates = interface.getCoordinatesFromUserInput("42-24-46-64")
+        actualValue = interface.matchMultipleCoordinatesToMoves(listOfMoves,
+                                                                coordinates,
+                                                                gooseP)
+        self.assertEqual(len(actualValue), 1)
+
 
     def test_getCoordinatesFromUserInput_good(self):
         """ Get coordinates from good input """
@@ -160,6 +299,11 @@ class TestInterface(unittest.TestCase):
                          expectedValue0.get_x_board())
         self.assertEqual(actualValue[1].get_y_board(),
                          expectedValue1.get_y_board())
+
+    def test_getCoordinatesFromUserInput_very_long(self):
+        """ Get coordinates from a long input without extra notation """
+        actualValue = interface.getCoordinatesFromUserInput("42-24-46-64")
+        self.assertEqual(len(actualValue), 4)
 
     def test_getCoordinatesFromUserInput_bad_short(self):
         """ Parse a short bad input string """
@@ -204,3 +348,13 @@ class TestInterface(unittest.TestCase):
         self.assertFalse(interface.isCoordinateMatch(hnObject,
                                                      testCoordinate,
                                                      gooseP))
+
+    def test_parseAlphabetNotation_simple(self):
+        """ Parse a simple valid alphabetnotation input """
+        actualValue = interface.parseAlphabetNotation("a3b3")
+        self.assertEqual(actualValue, "1323")
+
+    def test_parseAlphabetNotation_mixed(self):
+        """ Parse a simple valid alphabetnotation input """
+        actualValue = interface.parseAlphabetNotation("a323")
+        self.assertEqual(actualValue, "1323")

@@ -63,6 +63,34 @@ nearlyWonGooseGame.setState(coordinate.Coordinate(5, 2), types.SUPERGOOSE)
 nearlyWonGooseGame.setState(coordinate.Coordinate(4, 3), types.SUPERGOOSE)
 nearlyWonGooseGame.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
 
+# 7         G - G - G
+#           | \ | / |
+# 6         . - . - .
+#           | / | \ |
+# 5 . - . - S - . - G - . - G
+#   | \ | / | \ | / | \ | / |
+# 4 . - . - . - . - . - . - G
+#   | / | \ | / | \ | / | \ |
+# 3 . - . - G - . - S - . - G
+#           | \ | / |
+# 2         . - F - .
+#           | / | \ |
+# 1         . - F - .
+#   1   2   3   4   5   6   7
+loopedFoxCapture = historynode.HistoryNode()
+loopedFoxCapture.setState(coordinate.Coordinate(3, 7), types.GOOSE)
+loopedFoxCapture.setState(coordinate.Coordinate(4, 7), types.GOOSE)
+loopedFoxCapture.setState(coordinate.Coordinate(5, 7), types.GOOSE)
+loopedFoxCapture.setState(coordinate.Coordinate(3, 5), types.SUPERGOOSE)
+loopedFoxCapture.setState(coordinate.Coordinate(5, 5), types.GOOSE)
+loopedFoxCapture.setState(coordinate.Coordinate(7, 5), types.GOOSE)
+loopedFoxCapture.setState(coordinate.Coordinate(7, 4), types.GOOSE)
+loopedFoxCapture.setState(coordinate.Coordinate(3, 3), types.GOOSE)
+loopedFoxCapture.setState(coordinate.Coordinate(5, 3), types.SUPERGOOSE)
+loopedFoxCapture.setState(coordinate.Coordinate(7, 3), types.GOOSE)
+loopedFoxCapture.setState(coordinate.Coordinate(4, 2), types.FOX)
+loopedFoxCapture.setState(coordinate.Coordinate(4, 1), types.FOX)
+
 @contextmanager
 def captured_output():
     """ Redirects stdout to StringIO so we can inspect Print statements """

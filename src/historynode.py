@@ -4,8 +4,7 @@
 from res import types
 from src import gamenode
 
-# Todo - move to settings file
-ALPHABETNOTATION = False # Display the x-axis as 'A B...' (True) or '1 2...'
+from settings import ALPHABETNOTATION
 
 class HistoryNode(gamenode.GameNode):
     """ Class that inherits from GameNode and has additional game specific
@@ -16,6 +15,13 @@ class HistoryNode(gamenode.GameNode):
         # Jaeger settings
         self.isCapture = False
         self.winningState = False
+
+    def __eq__(self, other):
+        for i in range(0, 7):
+            for j in range(0, 7):
+                if self.gameState[i][j] != other.gameState[i][j]:
+                    return False
+        return True
 
     def print_board(self):
         """ Prints a simplified representation of the board """

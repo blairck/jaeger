@@ -6,12 +6,13 @@ from src import coordinate
 from src import historynode
 from src import interface
 
-# Todo - move to settings file
-SEARCHPLY = 5 # How far computer searches. Higher numbers are slower.
-STANDARD = False #  Standard fox positions (True) or random (False)
-COMPPLAYSGOOSE = True # Computer plays goose (True) or fox (False)
+from settings import (DISPLAYEVALUATION,
+                      SEARCHPLY,
+                      STANDARD,
+                      USERPLAYSFOX)
 
 def aPlayerHasWon(game):
+    """ Check game state to see if a player has won """
     if game.geeseWinP():
         print("Geese win!")
         return True
@@ -21,12 +22,14 @@ def aPlayerHasWon(game):
     return False
 
 def determineDraw(game, ai):
+    """ Check game state to see if it is drawn """
     if ai.evaluationFunction(game, True) is None:
         print("Game is a draw")
         return True
     return False
 
 def setTwoRandomFoxCoordinatesInVictoryArea(game):
+    """ Randomize the fox starting positions """
     possibleCoordinates = []
     for x in range(3, 6):
         for y in range(1, 4):
@@ -37,6 +40,8 @@ def setTwoRandomFoxCoordinatesInVictoryArea(game):
 
 def createStartingPosition(standard):
     """
+    Generates the starting position board. Can optionally randomize fox
+    positions if standard is true.
     7         G - G - G
               | \ | / |
     6         G - G - G
@@ -93,16 +98,24 @@ def createStartingPosition(standard):
     return game
 
 if __name__ == '__main__':
+    """ Main game loop. Play alternates between user and computer. """
     game = createStartingPosition(STANDARD)
+    firstTurn = True
 
     aiObject = ai.AI()
-    if COMPPLAYSGOOSE:
+    if USERPLAYSFOX:
         computersTurn = True
     else:
         computersTurn = False
 
     while(True):
-        game.pretty_print_board()
+        if not firstTurn:
+            game.pretty_print_board()
+            print("----------------------------")
+        elif firstTurn and USERPLAYSFOX:
+            game.pretty_print_board()
+            print("----------------------------")
+
         if aPlayerHasWon(game):
             break
         elif determineDraw(game, aiObject):
@@ -110,26 +123,30 @@ if __name__ == '__main__':
 
         if computersTurn:
             game = aiObject.iterativeDeepeningSearch(game,
-                                                     COMPPLAYSGOOSE,
+                                                     USERPLAYSFOX,
                                                      SEARCHPLY)
             computersTurn = False
-
-        print("----------------------------")
 
         game.pretty_print_board()
         if aPlayerHasWon(game):
             break
         elif determineDraw(game, aiObject):
             break
-        print("Score: {0}".format(game.score))
+
+        if not game.score:
+            game.score = aiObject.evaluationFunction(game)
+
+        if DISPLAYEVALUATION:
+            print("Score: {0:.2f}".format(game.score))
 
         legalMoves = aiObject.getAllMovesForPlayer(game,
-                                                   not COMPPLAYSGOOSE)
+                                                   not USERPLAYSFOX)
         while(True):
             userInput = input('Enter a move: ')
-            result = interface.getPositionFromListOfMoves(legalMoves,
+            result = interface.getPositionFromListOfMoves(game,
+                                                          legalMoves,
                                                           str(userInput),
-                                                          not COMPPLAYSGOOSE)
+                                                          not USERPLAYSFOX)
             if len(result) != 1:
                 print("Unknown or invalid move, please try again")
                 continue
@@ -137,3 +154,5 @@ if __name__ == '__main__':
                 game = result[0]
                 computersTurn = True
                 break
+
+        firstTurn = False
