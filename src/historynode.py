@@ -15,6 +15,8 @@ class HistoryNode(gamenode.GameNode):
         # Jaeger settings
         self.isCapture = False
         self.winningState = False
+        self.foxesWin = None
+        self.geeseWin = None
 
     def __eq__(self, other):
         for i in range(0, 7):
@@ -128,30 +130,37 @@ class HistoryNode(gamenode.GameNode):
 
     def geeseWinP(self):
         """ Returns True if the geese have won, false otherwise """
-        foxSpacesOccupied = 0
-        for i in range(2, 5):
-            for j in range(0, 3):
-                if self.gameState[i][j] == 1 or self.gameState[i][j] == 3:
-                    foxSpacesOccupied += 1
-                    if foxSpacesOccupied == 9:
-                        # Geese win
-                        return True
-        # Geese haven't won yet
-        return False
+        if self.geeseWin is None:
+            foxSpacesOccupied = 0
+            for i in range(2, 5):
+                for j in range(0, 3):
+                    if self.gameState[i][j] == 1 or self.gameState[i][j] == 3:
+                        foxSpacesOccupied += 1
+                        if foxSpacesOccupied == 9:
+                            # Geese win
+                            self.geeseWin = True
+                            return self.geeseWin
+            # Geese haven't won yet
+            self.geeseWin = False
+        return self.geeseWin
 
     def foxesWinP(self):
-        """ Returns True if the foxes have won, false otherwise """
-        geeseRemaining = 0
-        for i in range(0, 7):
-            for j in range(0, 7):
-                if (self.gameState[i][j] == types.GOOSE
-                        or self.gameState[i][j] == types.SUPERGOOSE):
-                    geeseRemaining += 1
-                    # Too many geese, foxes have not won yet
-                    if geeseRemaining >= 9:
-                        return False
-        # Geese have insufficient material, Foxes win
-        return True
+        """ Returns True if the foxes have won, false otherwise.
+        The result is cached with the historynode. """
+        if self.foxesWin is None:
+            geeseRemaining = 0
+            for i in range(0, 7):
+                for j in range(0, 7):
+                    if (self.gameState[i][j] == types.GOOSE
+                            or self.gameState[i][j] == types.SUPERGOOSE):
+                        geeseRemaining += 1
+                        # Too many geese, foxes have not won yet
+                        if geeseRemaining >= 9:
+                            self.foxesWin = False
+                            return self.foxesWin
+            # Geese have insufficient material, Foxes win
+            self.foxesWin = True
+        return self.foxesWin
 
     def determineWinningState(self):
         """ Set winningState if this node is in one """
