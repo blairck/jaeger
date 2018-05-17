@@ -9,8 +9,6 @@ class Coordinate(object):
     and is used in the constructor.
     Array - Coordinate in the array, which is 0-indexed """
     def __init__(self, x, y):
-        helper.checkIfInt(x)
-        helper.checkIfInt(y)
         helper.checkIfCoordinateIsValid(x, y)
         self.x = x
         self.y = y
