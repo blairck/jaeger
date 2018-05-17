@@ -14,25 +14,20 @@ class Connection(object):
 
     def setstartX(self, value):
         """ Setter for startX with type checking """
-        helper.checkIfInt(value)
         self.startX = value
 
     def setstartY(self, value):
         """ Setter for startY with type checking """
-        helper.checkIfInt(value)
         self.startY = value
 
     def setdirection(self, value):
         """ Setter for direction with type checking """
-        helper.checkIfInt(value)
         self.direction = value
 
     def setendX(self, value):
         """ Setter for endX with type checking """
-        helper.checkIfInt(value)
         self.endX = value
 
     def setendY(self, value):
         """ Setter for endY with type checking """
-        helper.checkIfInt(value)
         self.endY = value
